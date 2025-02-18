@@ -26,7 +26,7 @@ export default function ExecutiveSearchPageClient() {
                         className="max-w-3xl text-center mx-auto"
                     >
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 px-4">
-                            Executive Search Excellence
+                            Executive Search
                         </h1>
                         <p className="text-lg md:text-xl text-gray-200 mb-8 px-4">
                             Connecting visionary leaders with transformative opportunities. Our executive search services combine deep industry insight with global reach to identify exceptional talent that drives organizational success.
