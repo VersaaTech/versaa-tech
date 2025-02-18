@@ -180,7 +180,7 @@ export default function ExecutiveSearchPageClient() {
                                         Strategic Needs Assessment
                                     </h3>
                                     <p className="text-lg text-gray-600 leading-relaxed">
-                                        We begin with an in-depth analysis of your organization's strategic objectives, cultural dynamics, and leadership requirements. Through structured interviews with key stakeholders and comprehensive market analysis, we develop a detailed leadership profile that aligns with your long-term vision.
+                                        We begin with an in-depth analysis of your organization&apos;s strategic objectives, cultural dynamics, and leadership requirements. Through structured interviews with key stakeholders and comprehensive market analysis, we develop a detailed leadership profile that aligns with your long-term vision.
                                     </p>
                                 </div>
                             </div>
