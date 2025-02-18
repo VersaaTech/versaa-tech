@@ -10,7 +10,7 @@ export default function ExecutiveSearchPageClient() {
     return (
         <div className="min-h-screen bg-[#f7fffc]">
             {/* Modified Hero Section */}
-            <section className="relative h-[60vh] min-h-[400px] md:h-[70vh] flex items-center justify-center">
+            <section className="relative h-auto min-h-[50vh] py-10 sm:min-h-[60vh] md:h-[70vh] flex items-center justify-center">
                 <Image
                     src="/images/executive-search-hero.avif"
                     alt="Executive Search"
@@ -25,7 +25,7 @@ export default function ExecutiveSearchPageClient() {
                         animate={{ opacity: 1, y: 0 }}
                         className="max-w-3xl text-center mx-auto"
                     >
-                        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 px-4">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 px-4">
                             Executive Search Excellence
                         </h1>
                         <p className="text-lg md:text-xl text-gray-200 mb-8 px-4">
@@ -33,7 +33,7 @@ export default function ExecutiveSearchPageClient() {
                         </p>
                         <div className="flex justify-center">
                             <Link href="/contact">
-                                <Button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-6 text-lg hover:from-blue-600 hover:to-blue-800 transition-colors">
+                                <Button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg hover:from-blue-600 hover:to-blue-800 transition-colors">
                                     Discuss Your Requirements
                                 </Button>
                             </Link>
@@ -296,6 +296,30 @@ export default function ExecutiveSearchPageClient() {
                             </div>
                         </motion.div>
                     </div>
+                </div>
+            </section>
+
+            {/* Call-to-Action Section for Executive Search */}
+            <section className="py-12 bg-white">
+                <div className="container mx-auto px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="max-w-3xl mx-auto text-center"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-4">
+                            Ready to Find Your Next Leader?
+                        </h2>
+                        <p className="text-lg text-gray-600 mb-8">
+                            Let's explore how our comprehensive executive search methodology can connect you with transformative leadership.
+                        </p>
+                        <Link href="/contact">
+                            <Button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg hover:from-blue-600 hover:to-blue-800 transition-colors">
+                                Get in Touch
+                            </Button>
+                        </Link>
+                    </motion.div>
                 </div>
             </section>
         </div>
