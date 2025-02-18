@@ -312,7 +312,7 @@ export default function ExecutiveSearchPageClient() {
                             Ready to Find Your Next Leader?
                         </h2>
                         <p className="text-lg text-gray-600 mb-8">
-                            Let's explore how our comprehensive executive search methodology can connect you with transformative leadership.
+                            Let&apos;s explore how our comprehensive executive search methodology can connect you with transformative leadership.
                         </p>
                         <Link href="/contact">
                             <Button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg hover:from-blue-600 hover:to-blue-800 transition-colors">

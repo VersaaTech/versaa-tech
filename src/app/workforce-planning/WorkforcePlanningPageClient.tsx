@@ -226,7 +226,7 @@ export default function WorkforcePlanningPageClient() {
                             Ready to Optimize Your Workforce?
                         </h2>
                         <p className="text-lg text-gray-600 mb-8">
-                            Let's discuss how our targeted approach to workforce planning and placement can transform your organization.
+                            Let&apos;s discuss how our targeted approach to workforce planning and placement can transform your organization.
                         </p>
                         <Link href="/contact">
                             <Button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-4 text-lg hover:from-blue-600 hover:to-blue-800 transition-colors">
