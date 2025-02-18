@@ -138,7 +138,7 @@ export default function WorkforcePlanningPageClient() {
                                         Gap Identification
                                     </h3>
                                     <p className="text-lg text-gray-600 leading-relaxed">
-                                        Through rigorous analysis, we pinpoint critical talent gaps that may limit your organization's growth and performance.
+                                        Through rigorous analysis, we pinpoint critical talent gaps that may limit your organization&apos;s growth and performance.
                                     </p>
                                 </div>
                             </div>
