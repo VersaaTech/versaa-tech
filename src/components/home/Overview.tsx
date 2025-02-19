@@ -114,7 +114,7 @@ export function Overview() {
                         </h2>
                     </div>
                     <div>
-                        <p className="text-gray-700 mb-6">We offer a comprehensive suite of human capital solutions, tailored to meet the unique challenges and opportunities in today's dynamic business landscape.</p>
+                        <p className="text-gray-700 mb-6">We offer a comprehensive suite of human capital solutions, tailored to meet the unique challenges and opportunities in today&apos;s dynamic business landscape.</p>
                     </div>
                     <ul className="grid grid-cols-2 gap-4">
                         <Link href="/executive-search" className="block">
