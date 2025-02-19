@@ -132,7 +132,7 @@ export function Overview() {
                                 variants={listItemVariants}
                             >
                                 <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">Workforce planning & placement</span>
+                                <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">Workforce planning &amp; placement</span>
                             </motion.li>
                         </Link>
                         <Link href="/hr-technology" className="block">
