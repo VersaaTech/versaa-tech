@@ -96,10 +96,10 @@ export function Overview() {
             viewport={{ once: true, amount: 0.2 }}
             variants={containerVariants}
         >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-8">
                 <motion.div
                     key="Our Services"
-                    className="p-6 space-y-6 col-span-2"
+                    className="p-6 space-y-6 md:col-span-2"
                     variants={cardVariants}
                 >
                     <div className="flex items-center gap-4 mb-4">
@@ -116,43 +116,66 @@ export function Overview() {
                     <div>
                         <p className="text-gray-700 mb-6">We offer a comprehensive suite of human capital solutions, tailored to meet the unique challenges and opportunities in today&apos;s dynamic business landscape.</p>
                     </div>
-                    <ul className="grid grid-cols-2 gap-4">
-                        <Link href="#" className="block">
-                            <motion.li
-                                className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
-                                variants={listItemVariants}
-                            >
-                                <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">Executive search</span>
-                            </motion.li>
-                        </Link>
-                        <Link href="#" className="block">
-                            <motion.li
-                                className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
-                                variants={listItemVariants}
-                            >
-                                <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">Workforce planning &amp; placement</span>
-                            </motion.li>
-                        </Link>
-                        <Link href="#" className="block">
-                            <motion.li
-                                className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
-                                variants={listItemVariants}
-                            >
-                                <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">HR technology and digital transformation</span>
-                            </motion.li>
-                        </Link>
-                        <Link href="#" className="block">
-                            <motion.li
-                                className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
-                                variants={listItemVariants}
-                            >
-                                <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">Organizational development consulting</span>
-                            </motion.li>
-                        </Link>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <motion.li
+                            variants={listItemVariants}
+                            className="w-full"
+                            key="exec-search"
+                        >
+                            <Link href="#" className="block">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
+                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                        Executive search
+                                    </span>
+                                </div>
+                            </Link>
+                        </motion.li>
+
+                        <motion.li
+                            variants={listItemVariants}
+                            className="w-full"
+                            key="workforce"
+                        >
+                            <Link href="#" className="block">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
+                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                        Workforce planning & placement
+                                    </span>
+                                </div>
+                            </Link>
+                        </motion.li>
+
+                        <motion.li
+                            variants={listItemVariants}
+                            className="w-full"
+                            key="hr-tech"
+                        >
+                            <Link href="#" className="block">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
+                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                        HR technology and digital transformation
+                                    </span>
+                                </div>
+                            </Link>
+                        </motion.li>
+
+                        <motion.li
+                            variants={listItemVariants}
+                            className="w-full"
+                            key="org-dev"
+                        >
+                            <Link href="#" className="block">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
+                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                        Organizational development consulting
+                                    </span>
+                                </div>
+                            </Link>
+                        </motion.li>
                     </ul>
                 </motion.div>
                 {services
@@ -193,7 +216,7 @@ export function Overview() {
                             </ul>
                         </motion.div>
                     ))}
-                </div>
+            </div>
         </motion.section>
     )
 }
