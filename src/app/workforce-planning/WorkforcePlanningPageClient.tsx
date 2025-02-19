@@ -57,22 +57,30 @@ export default function WorkforcePlanningPageClient() {
                         <p className="text-lg text-gray-600">
                             Workforce planning and placement involve a comprehensive analysis of your current workforce, forecasting future needs, and strategically positioning talent to drive efficiency and support growth.
                         </p>
-                        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="flex items-center justify-center">
-                                <DynamicIcon iconName="FaCogs" className="text-blue-600 mr-2" />
-                                <span className="text-lg text-gray-600">Tailored Talent Solutions</span>
+                        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="flex items-center">
+                                <div className="w-24 flex justify-end">
+                                    <DynamicIcon iconName="FaCogs" className="text-blue-600" />
+                                </div>
+                                <span className="text-lg text-gray-600 ml-3">Tailored Talent Solutions</span>
                             </div>
-                            <div className="flex items-center justify-center">
-                                <DynamicIcon iconName="FaChartLine" className="text-blue-600 mr-2" />
-                                <span className="text-lg text-gray-600">Data-Driven Forecasting</span>
+                            <div className="flex items-center">
+                                <div className="w-24 flex justify-end">
+                                    <DynamicIcon iconName="FaChartLine" className="text-blue-600" />
+                                </div>
+                                <span className="text-lg text-gray-600 ml-3">Data-Driven Forecasting</span>
                             </div>
-                            <div className="flex items-center justify-center">
-                                <DynamicIcon iconName="FaHandshake" className="text-blue-600 mr-2" />
-                                <span className="text-lg text-gray-600">Strategic Partnerships</span>
+                            <div className="flex items-center">
+                                <div className="w-24 flex justify-end">
+                                    <DynamicIcon iconName="FaHandshake" className="text-blue-600" />
+                                </div>
+                                <span className="text-lg text-gray-600 ml-3">Strategic Partnerships</span>
                             </div>
-                            <div className="flex items-center justify-center">
-                                <DynamicIcon iconName="FaRocket" className="text-blue-600 mr-2" />
-                                <span className="text-lg text-gray-600">Accelerated Growth</span>
+                            <div className="flex items-center">
+                                <div className="w-24 flex justify-end">
+                                    <DynamicIcon iconName="FaRocket" className="text-blue-600" />
+                                </div>
+                                <span className="text-lg text-gray-600 ml-3">Accelerated Growth</span>
                             </div>
                         </div>
                         <p className="text-base text-gray-500 mt-4">
@@ -99,7 +107,7 @@ export default function WorkforcePlanningPageClient() {
                         </p>
                     </motion.div>
 
-                    <div className="max-w-5xl mx-auto space-y-12">
+                    <div className="max-w-3xl mx-auto space-y-12">
                         {/* Step 1: Workforce Analysis */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}

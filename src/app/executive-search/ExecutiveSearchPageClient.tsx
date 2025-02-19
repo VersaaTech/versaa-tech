@@ -98,12 +98,14 @@ export default function ExecutiveSearchPageClient() {
                                 viewport={{ once: true, margin: "-50px" }}
                                 className="p-6 bg-[#f7fffc] rounded-xl border border-blue-50 hover:border-blue-100 transition-all"
                             >
-                                <div className="text-blue-600 text-3xl mb-4">
-                                    <DynamicIcon iconName={feature.icon} />
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="text-blue-600 text-2xl">
+                                        <DynamicIcon iconName={feature.icon} />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-gray-800">
+                                        {feature.title}
+                                    </h3>
                                 </div>
-                                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                                    {feature.title}
-                                </h3>
                                 <p className="text-gray-600">
                                     {feature.content}
                                 </p>
@@ -163,7 +165,7 @@ export default function ExecutiveSearchPageClient() {
                         </p>
                     </motion.div>
 
-                    <div className="max-w-5xl mx-auto space-y-12">
+                    <div className="max-w-3xl mx-auto space-y-12">
                         {/* 1. Strategic Needs Assessment */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}

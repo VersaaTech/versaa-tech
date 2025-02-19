@@ -57,7 +57,7 @@ export default function HRTechnologyPageClient() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
                 icon: 'FaCloud',
@@ -87,12 +87,14 @@ export default function HRTechnologyPageClient() {
                 viewport={{ once: true, margin: "-50px" }}
                 className="p-6 bg-[#f7fffc] rounded-xl border border-blue-50 hover:border-blue-100 transition-all text-center"
               >
-                <div className="text-blue-600 text-3xl mb-4">
-                  <DynamicIcon iconName={feature.icon} />
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="text-blue-600 text-3xl">
+                    <DynamicIcon iconName={feature.icon} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {feature.title}
+                  </h3>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                  {feature.title}
-                </h3>
                 <p className="text-gray-600">
                   {feature.content}
                 </p>
@@ -115,11 +117,11 @@ export default function HRTechnologyPageClient() {
               Our Digital Transformation Roadmap
             </h2>
             <p className="text-lg text-gray-600">
-              We partner with you every step of the way—from strategic assessment to continuous innovation.
+              We partner with you every step of the way from strategic assessment to continuous innovation.
             </p>
           </motion.div>
 
-          <div className="max-w-5xl mx-auto space-y-12">
+          <div className="max-w-3xl mx-auto space-y-12">
             {[
               {
                 icon: 'FaSearch',
@@ -147,13 +149,13 @@ export default function HRTechnologyPageClient() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                className="space-y-6"
+                className="flex flex-col items-center"
               >
-                <div className="flex items-center space-x-6">
-                  <div className="text-blue-600 text-3xl pt-1">
+                <div className="flex items-center gap-6 w-full">
+                  <div className="text-blue-600 text-3xl pt-1 shrink-0">
                     <DynamicIcon iconName={step.icon} />
                   </div>
-                  <div>
+                  <div className="text-left">
                     <h3 className="text-2xl font-semibold text-gray-800 mb-3">
                       {step.title}
                     </h3>
@@ -214,12 +216,14 @@ export default function HRTechnologyPageClient() {
                 viewport={{ once: true, margin: "-50px" }}
                 className="p-6 bg-white rounded-xl shadow-sm border border-gray-200 transition-all text-center"
               >
-                <div className="text-blue-600 text-3xl mb-4">
-                  <DynamicIcon iconName={benefit.icon} />
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="text-blue-600 text-3xl">
+                    <DynamicIcon iconName={benefit.icon} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {benefit.title}
+                  </h3>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                  {benefit.title}
-                </h3>
                 <p className="text-gray-600">
                   {benefit.content}
                 </p>
@@ -250,7 +254,7 @@ export default function HRTechnologyPageClient() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
-              className="space-y-4 text-center"
+              className="space-y-4 flex flex-col items-center"
               variants={{
                 hidden: { opacity: 0 },
                 visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
@@ -265,14 +269,14 @@ export default function HRTechnologyPageClient() {
               ].map((item, index) => (
                 <motion.li
                   key={index}
-                  className="flex items-center justify-center text-gray-700 text-center"
+                  className="flex items-start text-gray-700 max-w-[600px] w-full"
                   variants={{
                     hidden: { opacity: 0, x: -20 },
                     visible: { opacity: 1, x: 0 }
                   }}
                 >
-                  <span className="text-blue-600 mr-3">✓</span>
-                  {item}
+                  <span className="text-blue-600 mr-3 min-w-[25px]">✓</span>
+                  <span className="text-left">{item}</span>
                 </motion.li>
               ))}
             </motion.ul>
