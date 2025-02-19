@@ -117,7 +117,7 @@ export function Overview() {
                         <p className="text-gray-700 mb-6">We offer a comprehensive suite of human capital solutions, tailored to meet the unique challenges and opportunities in today&apos;s dynamic business landscape.</p>
                     </div>
                     <ul className="grid grid-cols-2 gap-4">
-                        <Link href="/executive-search" className="block">
+                        <Link href="#" className="block">
                             <motion.li
                                 className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
                                 variants={listItemVariants}
@@ -126,7 +126,7 @@ export function Overview() {
                                 <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">Executive search</span>
                             </motion.li>
                         </Link>
-                        <Link href="/workforce-planning" className="block">
+                        <Link href="#" className="block">
                             <motion.li
                                 className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
                                 variants={listItemVariants}
@@ -135,7 +135,7 @@ export function Overview() {
                                 <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">Workforce planning &amp; placement</span>
                             </motion.li>
                         </Link>
-                        <Link href="/hr-technology" className="block">
+                        <Link href="#" className="block">
                             <motion.li
                                 className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
                                 variants={listItemVariants}
@@ -144,7 +144,7 @@ export function Overview() {
                                 <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">HR technology and digital transformation</span>
                             </motion.li>
                         </Link>
-                        <Link href="/organizational-development" className="block">
+                        <Link href="#" className="block">
                             <motion.li
                                 className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200"
                                 variants={listItemVariants}
