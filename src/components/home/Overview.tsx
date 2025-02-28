@@ -122,7 +122,7 @@ export function Overview() {
                             className="w-full"
                             key="exec-search"
                         >
-                            <Link href="#" className="block">
+                            <Link href="/executive-search" className="block">
                                 <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
                                     <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
                                     <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
@@ -137,7 +137,7 @@ export function Overview() {
                             className="w-full"
                             key="workforce"
                         >
-                            <Link href="#" className="block">
+                            <Link href="/workforce-planning" className="block">
                                 <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
                                     <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
                                     <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
@@ -152,7 +152,7 @@ export function Overview() {
                             className="w-full"
                             key="hr-tech"
                         >
-                            <Link href="#" className="block">
+                            <Link href="/hr-technology" className="block">
                                 <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
                                     <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
                                     <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
@@ -167,7 +167,7 @@ export function Overview() {
                             className="w-full"
                             key="org-dev"
                         >
-                            <Link href="#" className="block">
+                            <Link href="/organizational-development" className="block">
                                 <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
                                     <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
                                     <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
