@@ -164,8 +164,8 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
         try {
           const errorData = await response.text();
           console.error("Error response:", errorData);
-        } catch (_) {
-          console.error("Could not read error response body");
+        } catch (error) {
+          console.error("Could not read error response body", error);
         }
         throw new Error(`Error: ${response.status}`);
       }
