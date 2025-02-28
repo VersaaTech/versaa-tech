@@ -22,67 +22,75 @@ interface Message {
   timestamp: Date;
 }
 
+// Initial greeting message with a stable ID
+const INITIAL_MESSAGE: Message = {
+  id: 'initial-greeting',
+  type: 'assistant',
+  content: '👋 Hi, I am Max! How can I assist you today?',
+  timestamp: new Date(),
+};
+
 export function Chat({ isOpen, onOpenChange }: ChatProps) {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      type: 'assistant',
-      content: '👋 Hi, I am Max! How can I assist you today?',
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastSentTime, setLastSentTime] = useState<number>(0);
+  const [isClient, setIsClient] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const webhookUrl = process.env.NEXT_PUBLIC_CHATBOT_WEBHOOK_URL;
 
-  // Load messages from localStorage on initial render
+  // Set isClient to true once the component mounts
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Load messages from localStorage only on client-side
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const savedMessages = localStorage.getItem('chatMessages');
     if (savedMessages) {
       try {
         const parsedMessages = JSON.parse(savedMessages);
         // Convert string timestamps back to Date objects
-        const messagesWithDateObjects = parsedMessages.map((msg: any) => ({
+        const messagesWithDateObjects = parsedMessages.map((msg: Record<string, unknown>) => ({
           ...msg,
-          timestamp: new Date(msg.timestamp)
+          timestamp: new Date(msg.timestamp as string)
         }));
         setMessages(messagesWithDateObjects);
       } catch (error) {
         console.error('Error parsing saved messages:', error);
       }
     }
-  }, []);
+  }, [isClient]); // Only run when isClient becomes true
 
   // Save messages to localStorage when they change
   useEffect(() => {
+    if (!isClient) return; // Skip on server-side
+    
     if (messages.length > 1) { // Don't save just the initial message
       localStorage.setItem('chatMessages', JSON.stringify(messages));
     }
-  }, [messages]);
+  }, [messages, isClient]);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
+    if (!isClient) return; // Skip on server-side
+    
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isLoading]);
+  }, [messages, isLoading, isClient]);
 
   // Clear chat history when sheet is closed
   useEffect(() => {
+    if (!isClient) return; // Skip on server-side
+    
     if (!isOpen) {
       // Keep the initial greeting message
-      setMessages([
-        {
-          id: '1',
-          type: 'assistant',
-          content: '👋 Hi, I am Max! How can I assist you today?',
-          timestamp: new Date(),
-        }
-      ]);
+      setMessages([INITIAL_MESSAGE]);
       localStorage.removeItem('chatMessages');
     }
-  }, [isOpen]);
+  }, [isOpen, isClient]);
 
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -91,7 +99,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
     const now = Date.now();
     if (now - lastSentTime < 1500) {
       setMessages(prev => [...prev, {
-        id: Date.now().toString(),
+        id: `error-${now}`, // More stable ID format
         type: 'error',
         content: 'Please wait a moment before sending another message',
         timestamp: new Date(),
@@ -102,7 +110,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
 
     // Add user message to chat
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: `user-${now}`, // More stable ID format
       type: 'user',
       content: input.trim(),
       timestamp: new Date(),
@@ -115,7 +123,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
     if (!webhookUrl) {
       console.error("Webhook URL is not defined");
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: `error-config-${now}`, // More stable ID format
         type: 'error',
         content: "Configuration error: Webhook URL is not defined. Please check your environment variables.",
         timestamp: new Date(),
@@ -126,9 +134,14 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
     }
     
     try {
+      // Generate a stable session ID that won't change between server/client
+      const sessionId = typeof crypto !== 'undefined' && crypto.randomUUID ? 
+        crypto.randomUUID() : 
+        `session-${now}`;
+      
       // Improved payload structure based on reference implementation
       const payload = {
-        sessionId: crypto.randomUUID(),
+        sessionId,
         chatInput: userMessage.content,
         timestamp: new Date().toISOString(),
         source: 'website_chat'
@@ -151,7 +164,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
         try {
           const errorData = await response.text();
           console.error("Error response:", errorData);
-        } catch (e) {
+        } catch (_) {
           console.error("Could not read error response body");
         }
         throw new Error(`Error: ${response.status}`);
@@ -185,7 +198,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
       
       // Add assistant response to chat
       const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: `assistant-${now}`, // More stable ID format
         type: 'assistant',
         content: responseContent,
         timestamp: new Date(),
@@ -198,7 +211,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
       
       // Add error message
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: `error-api-${now}`, // More stable ID format
         type: 'error',
         content: "Sorry, there was an error processing your request. Please try again later.",
         timestamp: new Date(),
@@ -219,21 +232,17 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    // Use a consistent format that won't vary between server and client
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
   const handleClearChat = () => {
     // Keep only the initial greeting message
-    setMessages([
-      {
-        id: '1',
-        type: 'assistant',
-        content: '👋 Hi, I am Max! How can I assist you today?',
-        timestamp: new Date(),
-      },
-    ]);
+    setMessages([INITIAL_MESSAGE]);
     // Clear localStorage
-    localStorage.removeItem('chatMessages');
+    if (isClient) {
+      localStorage.removeItem('chatMessages');
+    }
   };
 
   return (
@@ -246,100 +255,102 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
         </SheetHeader>
         
         <div className="flex-1 overflow-y-auto p-4 space-y-4 relative">
-          <AnimatePresence initial={false}>
-            {messages.map((message) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className={`flex ${
-                  message.type === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
-                <div className="flex flex-col max-w-[80%] gap-1">
-                  <div
-                    className={`rounded-2xl px-4 py-2 ${
-                      message.type === 'user'
-                        ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-tr-none'
-                        : message.type === 'error'
-                        ? 'bg-red-100 text-red-800 rounded-tl-none'
-                        : 'bg-gray-100 text-gray-800 rounded-tl-none'
-                    } relative`}
-                  >
-                    {message.type === 'assistant' ? (
-                      <div className="text-sm markdown-content">
-                        <ReactMarkdown 
-                          remarkPlugins={[remarkGfm]}
-                          components={{
-                            // Style links to be visible
-                            a: ({node, ...props}) => <a {...props} className="text-blue-600 underline hover:text-blue-800" />,
-                            // Style code blocks
-                            code: ({node, className, children, ...props}) => {
-                              const isInline = !className
-                              
-                              return isInline ? 
-                                <code {...props} className="bg-gray-200 px-1 py-0.5 rounded text-xs">{children}</code> : 
-                                <code {...props} className="block bg-gray-200 p-2 rounded-md text-xs overflow-x-auto my-2">{children}</code>
-                            },
-                            // Style lists
-                            ul: ({node, ...props}) => <ul {...props} className="list-disc pl-5 my-2" />,
-                            ol: ({node, ...props}) => <ol {...props} className="list-decimal pl-5 my-2" />,
-                            // Style headings
-                            h1: ({node, ...props}) => <h1 {...props} className="text-lg font-bold my-2" />,
-                            h2: ({node, ...props}) => <h2 {...props} className="text-base font-bold my-2" />,
-                            h3: ({node, ...props}) => <h3 {...props} className="text-sm font-bold my-2" />,
-                            // Style paragraphs
-                            p: ({node, ...props}) => <p {...props} className="my-2" />,
-                          }}
-                        >
-                          {message.content}
-                        </ReactMarkdown>
-                      </div>
-                    ) : (
-                      <div className="text-sm">{message.content}</div>
-                    )}
-                    
-                    {message.type === 'assistant' && (
-                      <div className="absolute -left-2 bottom-0 w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center">
-                        <MessageCircle className="w-3 h-3 text-gray-600" />
-                      </div>
-                    )}
+          {isClient && (
+            <AnimatePresence initial={false}>
+              {messages.map((message) => (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`flex ${
+                    message.type === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
+                >
+                  <div className="flex flex-col max-w-[80%] gap-1">
+                    <div
+                      className={`rounded-2xl px-4 py-2 ${
+                        message.type === 'user'
+                          ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-tr-none'
+                          : message.type === 'error'
+                          ? 'bg-red-100 text-red-800 rounded-tl-none'
+                          : 'bg-gray-100 text-gray-800 rounded-tl-none'
+                      } relative`}
+                    >
+                      {message.type === 'assistant' ? (
+                        <div className="text-sm markdown-content">
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              // Style links to be visible
+                              a: ({...props}) => <a {...props} className="text-blue-600 underline hover:text-blue-800" />,
+                              // Style code blocks
+                              code: ({className, children, ...props}) => {
+                                const isInline = !className
+                                
+                                return isInline ? 
+                                  <code {...props} className="bg-gray-200 px-1 py-0.5 rounded text-xs">{children}</code> : 
+                                  <code {...props} className="block bg-gray-200 p-2 rounded-md text-xs overflow-x-auto my-2">{children}</code>
+                              },
+                              // Style lists
+                              ul: ({...props}) => <ul {...props} className="list-disc pl-5 my-2" />,
+                              ol: ({...props}) => <ol {...props} className="list-decimal pl-5 my-2" />,
+                              // Style headings
+                              h1: ({...props}) => <h1 {...props} className="text-lg font-bold my-2" />,
+                              h2: ({...props}) => <h2 {...props} className="text-base font-bold my-2" />,
+                              h3: ({...props}) => <h3 {...props} className="text-sm font-bold my-2" />,
+                              // Style paragraphs
+                              p: ({...props}) => <p {...props} className="my-2" />,
+                            }}
+                          >
+                            {message.content}
+                          </ReactMarkdown>
+                        </div>
+                      ) : (
+                        <div className="text-sm">{message.content}</div>
+                      )}
+                      
+                      {message.type === 'assistant' && (
+                        <div className="absolute -left-2 bottom-0 w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center">
+                          <MessageCircle className="w-3 h-3 text-gray-600" />
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-xs text-gray-500 px-2">
+                      {formatTime(message.timestamp)}
+                    </span>
                   </div>
-                  <span className="text-xs text-gray-500 px-2">
-                    {formatTime(message.timestamp)}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-            {isLoading && (
-              <motion.div
-                key="typing-indicator"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="flex justify-start"
-              >
-                <div className="flex flex-col max-w-[80%] gap-1">
-                  <div className="rounded-2xl px-4 py-2 bg-gray-100 text-gray-800 rounded-tl-none">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-sm">Max is typing</span>
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                </motion.div>
+              ))}
+              {isLoading && (
+                <motion.div
+                  key="typing-indicator"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="flex justify-start"
+                >
+                  <div className="flex flex-col max-w-[80%] gap-1">
+                    <div className="rounded-2xl px-4 py-2 bg-gray-100 text-gray-800 rounded-tl-none">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm">Max is typing</span>
+                        <div className="flex space-x-1">
+                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
-            <div ref={messagesEndRef} />
-          </AnimatePresence>
+                </motion.div>
+              )}
+              <div ref={messagesEndRef} />
+            </AnimatePresence>
+          )}
           
-          {/* Clear Chat Button - Only show when there are more than 1 message */}
-          <AnimatePresence>
-            {messages.length > 1 && (
+          {/* Clear Chat Button - Only show when there are more than 1 message and on client-side */}
+          {isClient && messages.length > 1 && (
+            <AnimatePresence>
               <motion.button
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -351,8 +362,8 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
               >
                 Clear Chat
               </motion.button>
-            )}
-          </AnimatePresence>
+            </AnimatePresence>
+          )}
         </div>
 
         <div className="p-4 border-t">
@@ -364,11 +375,11 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
               placeholder="Type your message..."
               className="flex-1 min-h-10 p-3 border rounded-full resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={1}
-              disabled={isLoading}
+              disabled={isLoading || !isClient}
             />
             <button
               onClick={handleSendMessage}
-              disabled={!input.trim() || isLoading}
+              disabled={!input.trim() || isLoading || !isClient}
               className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-md transition-all hover:shadow-lg disabled:opacity-50"
               aria-label="Send message"
             >
