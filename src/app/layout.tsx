@@ -3,9 +3,9 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Navigation } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
-// import { PasswordProtection } from "@/components/PasswordProtection"
 import ScrollToTopButton from "@/components/ScrollToTopButton"
 import { Toaster } from 'sonner'
+import { ChatButton } from "@/components/chat/ChatButton"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,13 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <PasswordProtection> */}
         <Navigation />
         {children}
         <Footer />
         <ScrollToTopButton />
+        <ChatButton />
         <Toaster position="top-center" />
-        {/* </PasswordProtection> */}
       </body>
     </html>
   )
