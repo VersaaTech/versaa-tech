@@ -210,7 +210,7 @@ export function Overview() {
                                         custom={hIndex}
                                     >
                                         <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                        <button className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">{highlight}</button>
+                                        <span className="text-gray-700">{highlight}</span>
                                     </motion.li>
                                 ))}
                             </ul>
