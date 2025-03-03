@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Versaa Tech
 
-## Getting Started
+A modern web application built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## 🚀 Features
+
+- Next.js 15 with App Router
+- TypeScript for type safety
+- Tailwind CSS for styling
+- Radix UI components
+- Dark mode support with next-themes
+- Form handling with React Hook Form
+- Markdown support with react-markdown
+- Beautiful animations with Framer Motion
+- Toast notifications with Sonner
+- Modern UI components with shadcn/ui
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+- Node.js (v18 or higher)
+- npm or yarn package manager
+
+## 🛠️ Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/your-username/versaa-tech.git
+cd versaa-tech
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables:
+Create a `.env` file in the root directory and add necessary environment variables.
+
+## 🚀 Development
+
+To start the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To create a production build:
 
-## Learn More
+```bash
+npm run build
+# or
+yarn build
+```
 
-To learn more about Next.js, take a look at the following resources:
+To start the production server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+# or
+yarn start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧪 Linting
 
-## Deploy on Vercel
+To run the linter:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run lint
+# or
+yarn lint
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🏗️ Project Structure
+
+```
+versaa-tech/
+├── src/              # Source files
+├── public/           # Static files
+├── .next/           # Next.js build output
+├── components.json   # shadcn/ui components config
+├── tailwind.config.ts # Tailwind CSS configuration
+└── tsconfig.json    # TypeScript configuration
+```
+
+## 🛠️ Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - JavaScript with syntax for types
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
+- [Framer Motion](https://www.framer.com/motion/) - Animation library
+- [React Hook Form](https://react-hook-form.com/) - Form validation
+- [Zod](https://zod.dev/) - TypeScript-first schema validation
+- [Sonner](https://sonner.emilkowal.ski/) - Toast notifications
+
+## 📝 License
+
+<!-- add a copyright here -->
+Copyright © 2025 Versaa Tech. All rights reserved.
