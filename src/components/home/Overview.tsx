@@ -123,9 +123,9 @@ export function Overview() {
                             key="exec-search"
                         >
                             <Link href="/executive-search" className="block">
-                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
-                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200 hover:bg-blue-100 group">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1 group-hover:text-blue-500 transition duration-200" />
+                                    <span className="text-gray-700 group-hover:text-blue-500 transition duration-200">
                                         Executive search
                                     </span>
                                 </div>
@@ -138,9 +138,9 @@ export function Overview() {
                             key="workforce"
                         >
                             <Link href="/workforce-planning" className="block">
-                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
-                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200 hover:bg-blue-100 group">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1 group-hover:text-blue-500 transition duration-200" />
+                                    <span className="text-gray-700 group-hover:text-blue-500 transition duration-200">
                                         Workforce planning & placement
                                     </span>
                                 </div>
@@ -153,9 +153,9 @@ export function Overview() {
                             key="hr-tech"
                         >
                             <Link href="/hr-technology" className="block">
-                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
-                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200 hover:bg-blue-100 group">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1 group-hover:text-blue-500 transition duration-200" />
+                                    <span className="text-gray-700 group-hover:text-blue-500 transition duration-200">
                                         HR technology and digital transformation
                                     </span>
                                 </div>
@@ -168,9 +168,9 @@ export function Overview() {
                             key="org-dev"
                         >
                             <Link href="/organizational-development" className="block">
-                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200">
-                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                                    <span className="text-gray-700 hover:text-blue-500 hover:scale-105 transition duration-200">
+                                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200 hover:bg-blue-100 group">
+                                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1 group-hover:text-blue-500 transition duration-200" />
+                                    <span className="text-gray-700 group-hover:text-blue-500 transition duration-200">
                                         Organizational development consulting
                                     </span>
                                 </div>
