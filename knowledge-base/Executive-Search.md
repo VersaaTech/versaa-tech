@@ -1,6 +1,6 @@
-## Executive Search
+## Executive Search and Selection
 
-Connecting visionary leaders with transformative opportunities. Our executive search services combine deep industry insight with global reach to identify exceptional talent that drives organizational success.
+Connecting visionary leaders with transformative opportunities. Our executive search and selection services combine deep industry insight with global reach to identify exceptional talent that drives organizational success.
 
 ### Why Versaatech Stands Out in Executive Search
 

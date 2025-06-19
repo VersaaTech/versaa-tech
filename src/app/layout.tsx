@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Versaa Tech",
-  description: "Versaa Tech - Global human capital solutions provider specializing in recruitment, workforce planning, and HR technology across diverse industries. Partner with us for innovative talent acquisition strategies.",
+  description: "Versaa Tech - Global human capital solutions provider specializing in executive search and selection, recruitment services, workforce planning, HR process outsourcing, and payroll management across diverse industries. Partner with us for innovative talent acquisition strategies.",
 }
 
 export default function RootLayout({

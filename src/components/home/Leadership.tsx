@@ -16,7 +16,7 @@ const teamMembers: TeamMember[] = [
     },
     {
         name: "Bhawna Arora",
-        role: "Talent and Operations Head",
+        role: "Head Strategy and Business Development",
     }
 ];
 

@@ -26,10 +26,10 @@ export default function ExecutiveSearchPageClient() {
                         className="max-w-3xl text-center mx-auto"
                     >
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 px-4">
-                            Executive Search
+                            Executive Search and Selection
                         </h1>
                         <p className="text-lg md:text-xl text-gray-200 mb-8 px-4">
-                            Connecting visionary leaders with transformative opportunities. Our executive search services combine deep industry insight with global reach to identify exceptional talent that drives organizational success.
+                            Connecting visionary leaders with transformative opportunities. Our executive search and selection services combine deep industry insight with global reach to identify exceptional talent that drives organizational success.
                         </p>
                         <div className="flex justify-center">
                             <Link href="/contact">
@@ -51,7 +51,7 @@ export default function ExecutiveSearchPageClient() {
                         className="max-w-4xl mx-auto text-center mb-14"
                     >
                         <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-6">
-                            Why Versaatech Stands Out in Executive Search
+                            Why Versaatech Stands Out in Executive Search and Selection
                         </h2>
                         <p className="text-lg text-gray-600">
                             We redefine leadership recruitment through strategic innovation and global connectivity
@@ -158,10 +158,10 @@ export default function ExecutiveSearchPageClient() {
                         className="max-w-4xl mx-auto text-center mb-14"
                     >
                         <h2 className="text-3xl md:text-4xl font-bold text-blue-600 mb-6">
-                            Our Comprehensive Executive Search Methodology
+                            Our Comprehensive Executive Search and Selection Methodology
                         </h2>
                         <p className="text-lg text-gray-600">
-                            A rigorous, multi-phase approach to identifying and securing transformative leadership talent.
+                            A rigorous, multi-phase approach to identifying and selecting transformative leadership talent.
                         </p>
                     </motion.div>
 
