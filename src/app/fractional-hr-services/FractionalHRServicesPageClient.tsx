@@ -54,7 +54,7 @@ export default function FractionalHRServicesPageClient() {
                             Shared HR Expertise When You Need It
                         </h2>
                         <p className="text-lg text-gray-600">
-                            Our fractional HR services provide access to senior-level HR expertise without the cost of a full-time hire, delivering strategic HR support tailored to your organization's specific needs and growth stage.
+                            Our fractional HR services provide access to senior-level HR expertise without the cost of a full-time hire, delivering strategic HR support tailored to your organization&apos;s specific needs and growth stage.
                         </p>
                     </motion.div>
 
@@ -117,7 +117,7 @@ export default function FractionalHRServicesPageClient() {
                             Flexible Engagement Models
                         </h2>
                         <p className="text-lg text-gray-600 md:px-20">
-                            Customizable HR service arrangements designed to match your organization's needs and budget
+                            Customizable HR service arrangements designed to match your organization&apos;s needs and budget
                         </p>
                     </motion.div>
 

@@ -196,7 +196,7 @@ export default function HRProcessOutsourcingPageClient() {
                             Our HR Outsourcing Approach
                         </h2>
                         <p className="text-lg text-gray-600">
-                            We provide scalable, technology-driven HR outsourcing solutions tailored to your organization's specific needs.
+                            We provide scalable, technology-driven HR outsourcing solutions tailored to your organization&apos;s specific needs.
                         </p>
                     </motion.div>
 

@@ -199,7 +199,7 @@ const LeafletMap = () => {
                                     targetLayer.setStyle(getHighlightedStyle())
                                 },
                                 click: (e) => {
-                                    const targetLayer = e.target as any
+                                    const targetLayer = e.target as L.Layer & { getBounds?: () => L.LatLngBounds }
                                     if (targetLayer.getBounds) {
                                         mapInstanceRef.current?.fitBounds(targetLayer.getBounds(), {
                                             padding: [30, 30],
@@ -224,12 +224,13 @@ const LeafletMap = () => {
                 let hasHighlightedCountries = false
 
                 geoJsonLayer.eachLayer((layer) => {
-                    const feature = (layer as any).feature
+                    const feature = (layer as L.Layer & { feature?: { properties?: { NAME?: string; name?: string } } }).feature
                     const countryName = feature?.properties?.NAME || feature?.properties?.name || ''
                     const region = getCountryRegion(countryName)
                     
-                    if (region && (layer as any).getBounds) {
-                        highlightedBounds.extend((layer as any).getBounds())
+                    const layerWithBounds = layer as L.Layer & { getBounds?: () => L.LatLngBounds }
+                    if (region && layerWithBounds.getBounds) {
+                        highlightedBounds.extend(layerWithBounds.getBounds())
                         hasHighlightedCountries = true
                     }
                 })
@@ -251,7 +252,7 @@ const LeafletMap = () => {
                 
                 // Show error message on map
                 if (mapInstanceRef.current) {
-                    const errorPopup = L.popup()
+                    L.popup()
                         .setLatLng([0, 0])
                         .setContent(`
                             <div class="p-4 text-center">
