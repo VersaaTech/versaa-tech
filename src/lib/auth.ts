@@ -6,13 +6,13 @@ import pool from './db';
 // Production-safe logging utility
 const isDevelopment = process.env.NODE_ENV === 'development';
 const log = {
-  info: (message: string, ...args: any[]) => {
+  info: (message: string, ...args: unknown[]) => {
     if (isDevelopment) console.log(message, ...args);
   },
-  error: (message: string, ...args: any[]) => {
+  error: (message: string, ...args: unknown[]) => {
     console.error(message, ...args); // Always log errors
   },
-  warn: (message: string, ...args: any[]) => {
+  warn: (message: string, ...args: unknown[]) => {
     console.warn(message, ...args); // Always log warnings
   }
 };
@@ -79,14 +79,14 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       // Add custom properties to session from JWT token
       if (session?.user) {
-        (session.user as any).isAdmin = token.isAdmin || false;
+        (session.user as { isAdmin?: boolean }).isAdmin = token.isAdmin || false;
       }
       return session;
     },
     async jwt({ token, user }) {
       // Add custom properties to JWT token from user object during login
       if (user) {
-        token.isAdmin = (user as any).isAdmin || false;
+        token.isAdmin = (user as { isAdmin?: boolean }).isAdmin || false;
       }
       
       // Always refresh admin status from database on every token refresh

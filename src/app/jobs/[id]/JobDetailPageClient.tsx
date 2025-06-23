@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -35,13 +35,7 @@ export default function JobDetailPageClient({
   const [error, setError] = useState<string | null>(initialError || null);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!initialJob && !initialError) {
-      fetchJob();
-    }
-  }, [jobId]);
-
-  const fetchJob = async () => {
+  const fetchJob = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/jobs/${jobId}`);
@@ -59,7 +53,13 @@ export default function JobDetailPageClient({
     } finally {
       setLoading(false);
     }
-  };
+  }, [jobId]);
+
+  useEffect(() => {
+    if (!initialJob && !initialError) {
+      fetchJob();
+    }
+  }, [fetchJob, initialJob, initialError]);
 
   const formatSalary = (min?: number, max?: number, currency: string = 'USD') => {
     if (!min && !max) return null;

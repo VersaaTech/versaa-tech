@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     // Remove undefined values
     const cleanFilters = Object.fromEntries(
-      Object.entries(filters).filter(([_, value]) => value !== undefined)
+      Object.entries(filters).filter(([, value]) => value !== undefined)
     );
 
     const jobs = await JobsDB.getAllJobs(cleanFilters);

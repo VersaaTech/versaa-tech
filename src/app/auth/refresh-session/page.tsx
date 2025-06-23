@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -13,12 +13,7 @@ export default function RefreshSessionPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    // Auto-refresh session when component mounts
-    handleRefreshSession();
-  }, []);
-
-  const handleRefreshSession = async () => {
+  const handleRefreshSession = useCallback(async () => {
     setRefreshing(true);
     setMessage('Refreshing your session...');
     
@@ -37,7 +32,12 @@ export default function RefreshSessionPage() {
     } finally {
       setRefreshing(false);
     }
-  };
+  }, [update, router]);
+
+  useEffect(() => {
+    // Auto-refresh session when component mounts
+    handleRefreshSession();
+  }, [handleRefreshSession]);
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: '/auth/signin' });
@@ -67,7 +67,7 @@ export default function RefreshSessionPage() {
                 </div>
                 <p className="text-sm text-blue-700 mt-1">{session.user?.email}</p>
                 <p className="text-sm text-blue-700">
-                  Admin Status: {(session.user as any)?.isAdmin ? 'Yes' : 'No'}
+                  Admin Status: {session.user && 'isAdmin' in session.user && session.user.isAdmin ? 'Yes' : 'No'}
                 </p>
               </div>
             )}

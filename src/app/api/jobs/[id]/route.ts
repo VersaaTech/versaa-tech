@@ -78,7 +78,7 @@ export async function PUT(
     const body = await request.json();
 
     // Prepare update data
-    const updateData: any = {};
+    const updateData: Partial<import('@/lib/db').CreateJobData> = {};
     
     if (body.title !== undefined) updateData.title = body.title;
     if (body.company !== undefined) updateData.company = body.company;
@@ -96,7 +96,7 @@ export async function PUT(
     if (body.experience_level !== undefined) updateData.experience_level = body.experience_level;
     if (body.department !== undefined) updateData.department = body.department;
     if (body.application_deadline !== undefined) {
-      updateData.application_deadline = body.application_deadline ? new Date(body.application_deadline) : null;
+      updateData.application_deadline = body.application_deadline ? new Date(body.application_deadline) : undefined;
     }
     if (body.is_active !== undefined) updateData.is_active = body.is_active;
     if (body.featured !== undefined) updateData.featured = body.featured;

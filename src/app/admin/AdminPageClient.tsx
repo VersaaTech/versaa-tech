@@ -137,7 +137,7 @@ const JobFormModal = memo(({ isOpen, onClose, editingJob, onSubmit, submitting }
   }, [editingJob, isOpen]);
 
   // Optimized field update - simplified to avoid function creation on each render
-  const updateField = useCallback((field: keyof JobFormData, value: any) => {
+  const updateField = useCallback((field: keyof JobFormData, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
       [field]: value

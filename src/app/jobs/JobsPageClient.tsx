@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,7 @@ export default function JobsPageClient() {
     experienceLevel: ''
   });
 
-  const fetchJobs = async () => {
+  const fetchJobs = useCallback(async () => {
     try {
       setLoading(true);
       const queryParams = new URLSearchParams();
@@ -96,11 +96,11 @@ export default function JobsPageClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters.jobType, filters.workMode, filters.experienceLevel, filters.search]);
 
   useEffect(() => {
     fetchJobs();
-  }, [filters.jobType, filters.workMode, filters.experienceLevel]);
+  }, [fetchJobs]);
 
   useEffect(() => {
     // Debounce search
@@ -109,7 +109,7 @@ export default function JobsPageClient() {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [filters.search]);
+  }, [fetchJobs]);
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -387,7 +387,7 @@ export default function JobsPageClient() {
                <>
                  <h3 className="text-2xl font-semibold text-gray-700 mb-3">No Current Openings</h3>
                 <p className="text-gray-600 mb-6 max-w-lg mx-auto">
-                  We don't have any open positions at the moment, but we're always growing! 
+                  We don&apos;t have any open positions at the moment, but we&apos;re always growing! 
                   Check back soon or get in touch to learn about future opportunities.
                 </p>
                 <div className="space-y-4">

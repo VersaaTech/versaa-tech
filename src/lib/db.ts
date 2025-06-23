@@ -3,13 +3,13 @@ import { Pool } from 'pg';
 // Production-safe logging
 const isDevelopment = process.env.NODE_ENV === 'development';
 const log = {
-  info: (message: string, ...args: any[]) => {
+  info: (message: string, ...args: unknown[]) => {
     if (isDevelopment) console.log(message, ...args);
   },
-  error: (message: string, ...args: any[]) => {
+  error: (message: string, ...args: unknown[]) => {
     console.error(message, ...args);
   },
-  warn: (message: string, ...args: any[]) => {
+  warn: (message: string, ...args: unknown[]) => {
     console.warn(message, ...args);
   }
 };
@@ -104,7 +104,7 @@ testConnection();
 export default pool;
 
 // Helper function to execute queries with better error handling
-export async function query(text: string, params?: any[]) {
+export async function query(text: string, params?: unknown[]) {
   const client = await pool.connect();
   try {
     log.info('🔍 Executing query:', text.substring(0, 50) + (text.length > 50 ? '...' : ''));
@@ -199,7 +199,7 @@ export class JobsDB {
     offset?: number;
   }): Promise<Job[]> {
     let queryText = `SELECT * FROM jobs`;
-    const params: any[] = [];
+    const params: unknown[] = [];
     const conditions: string[] = [];
 
     if (filters) {
@@ -300,7 +300,7 @@ export class JobsDB {
   // Update a job
   static async updateJob(id: number, jobData: Partial<CreateJobData>): Promise<Job | null> {
     const fields: string[] = [];
-    const values: any[] = [];
+    const values: unknown[] = [];
     let paramCount = 1;
 
     Object.entries(jobData).forEach(([key, value]) => {
