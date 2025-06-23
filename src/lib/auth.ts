@@ -5,15 +5,19 @@ import pool from './db';
 
 // Production-safe logging utility
 const isDevelopment = process.env.NODE_ENV === 'development';
+const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
+                   process.env.npm_lifecycle_event === 'build' ||
+                   process.argv.includes('build');
+
 const log = {
   info: (message: string, ...args: unknown[]) => {
-    if (isDevelopment) console.log(message, ...args);
+    if (isDevelopment && !isBuildTime) console.log(message, ...args);
   },
   error: (message: string, ...args: unknown[]) => {
-    console.error(message, ...args); // Always log errors
+    if (!isBuildTime) console.error(message, ...args);
   },
   warn: (message: string, ...args: unknown[]) => {
-    console.warn(message, ...args); // Always log warnings
+    if (!isBuildTime) console.warn(message, ...args);
   }
 };
 

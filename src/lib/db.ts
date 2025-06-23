@@ -2,15 +2,19 @@ import { Pool } from 'pg';
 
 // Production-safe logging
 const isDevelopment = process.env.NODE_ENV === 'development';
+const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
+                   process.env.npm_lifecycle_event === 'build' ||
+                   process.argv.includes('build');
+
 const log = {
   info: (message: string, ...args: unknown[]) => {
-    if (isDevelopment) console.log(message, ...args);
+    if (isDevelopment && !isBuildTime) console.log(message, ...args);
   },
   error: (message: string, ...args: unknown[]) => {
-    console.error(message, ...args);
+    if (!isBuildTime) console.error(message, ...args);
   },
   warn: (message: string, ...args: unknown[]) => {
-    console.warn(message, ...args);
+    if (!isBuildTime) console.warn(message, ...args);
   }
 };
 
@@ -30,12 +34,14 @@ const isValidDatabaseUrl = databaseUrl &&
    /^postgres:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+:\d+\//.test(databaseUrl));
 
 // If we're in build mode or have an invalid database URL, skip connection pool creation
-const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
-                   process.env.npm_lifecycle_event === 'build' ||
-                   process.argv.includes('build');
+// isBuildTime is already declared above in the logging section
 
-if (isBuildTime && !isValidDatabaseUrl) {
+// Only log database warnings once and only in development mode
+let hasLoggedBuildWarning = false;
+
+if (isBuildTime && !isValidDatabaseUrl && !hasLoggedBuildWarning && isDevelopment) {
   log.warn('⚠️ Skipping database connection during build with invalid DATABASE_URL');
+  hasLoggedBuildWarning = true;
 }
 
 // Create a connection pool for better performance
@@ -57,7 +63,10 @@ try {
     });
   } else {
     // Create a dummy pool for build time or invalid URLs
-    log.warn('⚠️ Creating fallback database pool for build time');
+    if (!hasLoggedBuildWarning && isDevelopment) {
+      log.warn('⚠️ Creating fallback database pool for build time');
+      hasLoggedBuildWarning = true;
+    }
     pool = new Pool({
       connectionString: 'postgresql://fallback:fallback@localhost:5432/fallback',
       ssl: false,
@@ -156,7 +165,10 @@ export default pool;
 export async function query(text: string, params?: unknown[]) {
   // Skip database queries during build time
   if (isBuildTime) {
-    log.warn('⚠️ Skipping database query during build time');
+    // Only log this warning in development mode and avoid repeated warnings
+    if (isDevelopment) {
+      log.info('⚠️ Skipping database query during build time');
+    }
     return { rows: [], rowCount: 0 };
   }
 
