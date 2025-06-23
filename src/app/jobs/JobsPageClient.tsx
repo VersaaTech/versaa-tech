@@ -406,7 +406,7 @@ export default function JobsPageClient() {
                     </Button>
                   </div>
                   <p className="text-sm text-gray-500 mt-4">
-                    Want to be notified when new positions open up? Reach out to us and we'll keep you in mind.
+                    Want to be notified when new positions open up? Reach out to us and we&apos;ll keep you in mind.
                   </p>
                 </div>
               </>
