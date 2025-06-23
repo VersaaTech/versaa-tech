@@ -1,198 +1,41 @@
 import { Pool } from 'pg';
 
-// Production-safe logging
-const isDevelopment = process.env.NODE_ENV === 'development';
-const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
-                   process.env.npm_lifecycle_event === 'build' ||
-                   process.argv.includes('build');
-
-const log = {
-  info: (message: string, ...args: unknown[]) => {
-    if (isDevelopment && !isBuildTime) console.log(message, ...args);
-  },
-  error: (message: string, ...args: unknown[]) => {
-    if (!isBuildTime) console.error(message, ...args);
-  },
-  warn: (message: string, ...args: unknown[]) => {
-    if (!isBuildTime) console.warn(message, ...args);
-  }
-};
-
 // Validate required environment variables
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
 }
 
-// Additional validation to prevent build-time failures with invalid database URLs
-const databaseUrl = process.env.DATABASE_URL;
-const isValidDatabaseUrl = databaseUrl && 
-  (databaseUrl.startsWith('postgresql://') || 
-   databaseUrl.startsWith('postgres://') || 
-   databaseUrl.includes('localhost') ||
-   databaseUrl.includes('127.0.0.1') ||
-   // Allow valid hostnames (not just "base")
-   /^postgres:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+:\d+\//.test(databaseUrl));
-
-// If we're in build mode or have an invalid database URL, skip connection pool creation
-// isBuildTime is already declared above in the logging section
-
-// Only log database warnings once and only in development mode
-let hasLoggedBuildWarning = false;
-
-if (isBuildTime && !isValidDatabaseUrl && !hasLoggedBuildWarning && isDevelopment) {
-  log.warn('⚠️ Skipping database connection during build with invalid DATABASE_URL');
-  hasLoggedBuildWarning = true;
-}
-
-// Create a connection pool for better performance
-let pool: Pool;
-
-try {
-  // Only create pool if we have a valid database URL and not in build mode
-  if (!isBuildTime && isValidDatabaseUrl) {
-    pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV === 'production' ? {
-        rejectUnauthorized: false
-      } : false,
-      max: process.env.NODE_ENV === 'production' ? 20 : 10, // More connections in production
-      min: 2,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 5000,
-      statement_timeout: 30000, // 30 second query timeout
-    });
-  } else {
-    // Create a dummy pool for build time or invalid URLs
-    if (!hasLoggedBuildWarning && isDevelopment) {
-      log.warn('⚠️ Creating fallback database pool for build time');
-      hasLoggedBuildWarning = true;
-    }
-    pool = new Pool({
-      connectionString: 'postgresql://fallback:fallback@localhost:5432/fallback',
-      ssl: false,
-      max: 1,
-      min: 0,
-      idleTimeoutMillis: 1000,
-      connectionTimeoutMillis: 1000,
-    });
-  }
-} catch (error) {
-  log.error('❌ Failed to create database pool:', error);
-  // Create a minimal fallback pool
-  pool = new Pool({
-    connectionString: 'postgresql://fallback:fallback@localhost:5432/fallback',
-    ssl: false,
-    max: 1,
-    min: 0,
-  });
-}
-
-// Set search path for all connections
-pool.on('connect', async (client) => {
-  try {
-    // Set search path to include common schemas
-    await client.query('SET search_path TO public, "$user"');
-    log.info('✅ Search path set for connection');
-  } catch (error) {
-    log.error('❌ Error setting search path:', error);
-  }
+// Create a connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? {
+    rejectUnauthorized: false
+  } : false,
+  max: 20,
+  min: 2,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 });
 
-// Connection event handlers
-pool.on('connect', () => {
-  log.info('✅ Connected to PostgreSQL database');
-});
-
+// Handle pool errors
 pool.on('error', (err) => {
-  log.error('❌ PostgreSQL connection error:', err);
+  console.error('PostgreSQL pool error:', err);
 });
-
-// Test database connection on startup
-async function testConnection() {
-  try {
-    const client = await pool.connect();
-    log.info('🔄 Testing database connection...');
-    
-    // Test basic connection
-    const result = await client.query('SELECT NOW()');
-    log.info('✅ Database connection successful:', result.rows[0]);
-    
-    if (isDevelopment) {
-      // Only run detailed diagnostics in development
-      const dbInfo = await client.query('SELECT current_database(), current_schema(), current_user');
-      log.info('📋 Database info:', dbInfo.rows[0]);
-      
-      const searchPath = await client.query('SHOW search_path');
-      log.info('📋 Search path:', searchPath.rows[0]);
-      
-      const tables = await client.query(`
-        SELECT schemaname, tablename 
-        FROM pg_tables 
-        WHERE schemaname NOT IN ('information_schema', 'pg_catalog')
-        ORDER BY schemaname, tablename
-      `);
-      log.info('📋 Available tables:', tables.rows);
-      
-      const jobsCheck = await client.query(`
-        SELECT schemaname, tablename 
-        FROM pg_tables 
-        WHERE tablename = 'jobs'
-      `);
-      log.info('📋 Jobs table found in schemas:', jobsCheck.rows);
-    }
-    
-    client.release();
-  } catch (error) {
-    log.error('❌ Database connection failed:', error);
-    log.error('📋 DATABASE_URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
-    
-    // In production, exit process if database connection fails
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
-  }
-}
-
-// Only test connection during runtime, not during build
-if (!isBuildTime) {
-  // Test connection on startup only during runtime
-  testConnection();
-}
 
 export default pool;
 
-// Helper function to execute queries with better error handling
+// Helper function to execute queries
 export async function query(text: string, params?: unknown[]) {
-  // Skip database queries during build time
-  if (isBuildTime) {
-    // Only log this warning in development mode and avoid repeated warnings
-    if (isDevelopment) {
-      log.info('⚠️ Skipping database query during build time');
-    }
-    return { rows: [], rowCount: 0 };
-  }
-
   const client = await pool.connect();
   try {
-    log.info('🔍 Executing query:', text.substring(0, 50) + (text.length > 50 ? '...' : ''));
     const result = await client.query(text, params);
-    log.info('✅ Query successful, rows returned:', result.rows.length);
     return result;
   } catch (error) {
-    log.error('❌ Database query error:', error);
-    log.error('📋 Query:', text);
-    log.error('📋 Params:', params);
+    console.error('Database query error:', error);
     throw error;
   } finally {
     client.release();
   }
-}
-
-// Helper to get the correct table name with schema if needed
-export async function getTableName(tableName: string): Promise<string> {
-  // Since we know our tables are in the public schema, we can return the table name directly
-  // This avoids unnecessary database queries that were causing connection timeouts
-  return tableName;
 }
 
 // Type definitions for our database entities
@@ -210,7 +53,7 @@ export interface Job {
   requirements?: string;
   responsibilities?: string;
   benefits?: string;
-  skills?: string[]; // Will be stored as JSONB
+  skills?: string[];
   experience_level?: 'Entry' | 'Mid' | 'Senior' | 'Lead' | 'Executive';
   department?: string;
   posted_date?: Date;
@@ -399,7 +242,7 @@ export class JobsDB {
     return (result.rowCount ?? 0) > 0;
   }
 
-  // Get job statistics - optimized version with fewer queries
+  // Get job statistics
   static async getJobStats(): Promise<{
     total: number;
     active: number;
@@ -408,7 +251,6 @@ export class JobsDB {
     by_level: { [key: string]: number };
   }> {
     try {
-      // Use a single query to get comprehensive stats
       const statsResult = await query(`
         WITH job_stats AS (
           SELECT 
@@ -457,8 +299,7 @@ export class JobsDB {
         by_level: result.by_level || {}
       };
     } catch (error) {
-      log.error('❌ Error fetching job stats:', error);
-      // Return default stats if query fails
+      console.error('Error fetching job stats:', error);
       return {
         total: 0,
         active: 0,
