@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer"
 import ScrollToTopButton from "@/components/ScrollToTopButton"
 import { Toaster } from 'sonner'
 import { ChatButton } from "@/components/chat/ChatButton"
+import SessionProvider from "@/components/SessionProvider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,12 +23,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning>
-        <Navigation />
-        {children}
-        <Footer />
-        <ScrollToTopButton />
-        <ChatButton />
-        <Toaster position="top-center" />
+        <SessionProvider session={null}>
+          <Navigation />
+          {children}
+          <Footer />
+          <ScrollToTopButton />
+          <ChatButton />
+          <Toaster position="top-center" />
+        </SessionProvider>
       </body>
     </html>
   )

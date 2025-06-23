@@ -19,7 +19,7 @@ export function Regions() {
                 <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-8 text-center">
                     Regions We Serve
                 </h2>
-                <div className="w-full max-w-5xl mx-auto">
+                <div className="w-full max-w-5xl mx-auto relative z-0">
                     <LeafletMap />
                 </div>
             </div>

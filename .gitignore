@@ -42,3 +42,6 @@ next-env.d.ts
 
 # vercel-rag.md
 vercel-rag.md
+
+# database
+database/

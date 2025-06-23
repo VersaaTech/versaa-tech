@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { LayoutGrid, Building2, Lightbulb, Users, Building, Phone, Shield, Mail } from 'lucide-react'
+import { LayoutGrid, Building2, Lightbulb, Users, Building, Phone, Shield, Mail, Briefcase } from 'lucide-react'
 import { Separator } from "@/components/ui/separator"
 import Image from 'next/image'
 
@@ -45,6 +45,7 @@ export function Footer() {
                                 { name: 'How We Work', href: '#differentiators', icon: Lightbulb },
                                 { name: 'About', href: '#about', icon: Building },
                                 { name: 'Leadership', href: '#about-leadership', icon: Users },
+                                { name: 'Jobs', href: '/jobs', icon: Briefcase, isRoute: true },
                                 { name: 'Contact', href: '/contact', icon: Phone, isRoute: true },
                                 { name: 'Privacy Policy', href: '/privacy', icon: Shield, isRoute: true },
                             ].map((item) => (
@@ -71,10 +72,17 @@ export function Footer() {
                         <div className="space-y-4">
                             <h3 className="text-xl font-semibold">Contact Us</h3>
                             <div className="space-y-2 text-gray-200">
-                                <p className="text-sm flex items-center gap-2">
-                                    Meydan Grandstand, 6th floor, Meydan Road, Nad Al Sheba, Dubai, U.A.E
-                                </p>
-                                <a href="mailto:info@versaatech.com" className="text-sm hover:text-white transition-colors flex items-center gap-2">
+                                <div>
+                                    <p className="text-sm font-semibold">Registered Office:</p>
+                                    <p className="text-sm">
+                                        Meydan Grandstand, 6th floor, Meydan Road, Nad Al Sheba, Dubai, U.A.E
+                                    </p>
+                                </div>
+                                <div className="mt-2">
+                                    <p className="text-sm font-semibold">Operations Office:</p>
+                                    <p className="text-sm">The Mirage, Nairobi</p>
+                                </div>
+                                <a href="mailto:info@versaatech.com" className="text-sm hover:text-white transition-colors flex items-center gap-2 pt-2">
                                     <Mail size={16} />
                                     info@versaatech.com
                                 </a>

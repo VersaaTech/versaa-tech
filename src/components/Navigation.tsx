@@ -1,6 +1,6 @@
 import React from "react"
 import Link from "next/link"
-import { LayoutGrid, Building2, Lightbulb, Info, Users, ChevronDown, Building, Phone } from 'lucide-react'
+import { LayoutGrid, Building2, Lightbulb, Info, Users, ChevronDown, Building, Phone, Briefcase } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -16,6 +16,7 @@ export const navItems = [
     { title: "Overview", href: "/#overview", icon: LayoutGrid },
     { title: "Industries", href: "/#industries", icon: Building2 },
     { title: "How We Work", href: "/#differentiators", icon: Lightbulb },
+    { title: "Jobs", href: "/jobs", icon: Briefcase },
     { title: "Contact", href: "/contact", icon: Phone },
 ]
 
