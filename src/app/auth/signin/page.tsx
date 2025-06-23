@@ -46,7 +46,8 @@ function SignInContent() {
           setError('Failed to get session after login');
         }
       }
-    } catch (_err) {
+    } catch (error) {
+      console.error('Error during sign in:', error);
       setError('An error occurred during sign in');
     } finally {
       setLoading(false);

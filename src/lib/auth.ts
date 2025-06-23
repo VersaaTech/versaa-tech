@@ -40,7 +40,8 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             isAdmin: user.is_admin,
           };
-        } catch (_error) {
+        } catch (error) {
+          console.error('Error during user authorization:', error);
           return null;
         }
       }
@@ -74,7 +75,8 @@ export const authOptions: NextAuthOptions = {
           } else {
             token.isAdmin = false;
           }
-        } catch (_error) {
+        } catch (error) {
+          console.error('Error refreshing admin status in JWT callback:', error);
           // Keep existing value if database query fails
         }
       }
@@ -107,7 +109,8 @@ export async function isUserAdmin(email: string | null | undefined): Promise<boo
     );
     
     return result.rows.length > 0 && result.rows[0].is_admin === true;
-  } catch (_error) {
+  } catch (error) {
+    console.error('Error checking admin status:', error);
     return false;
   }
 }

@@ -26,7 +26,8 @@ export default function RefreshSessionPage() {
       setTimeout(() => {
         router.push('/admin');
       }, 2000);
-    } catch (_error) {
+    } catch (error) {
+      console.error('Error refreshing session:', error);
       setMessage('Failed to refresh session. Please try signing out and back in.');
     } finally {
       setRefreshing(false);
