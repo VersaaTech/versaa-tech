@@ -19,18 +19,64 @@ if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
 }
 
+// Additional validation to prevent build-time failures with invalid database URLs
+const databaseUrl = process.env.DATABASE_URL;
+const isValidDatabaseUrl = databaseUrl && 
+  (databaseUrl.startsWith('postgresql://') || 
+   databaseUrl.startsWith('postgres://') || 
+   databaseUrl.includes('localhost') ||
+   databaseUrl.includes('127.0.0.1') ||
+   // Allow valid hostnames (not just "base")
+   /^postgres:\/\/[^:]+:[^@]+@[a-zA-Z0-9.-]+:\d+\//.test(databaseUrl));
+
+// If we're in build mode or have an invalid database URL, skip connection pool creation
+const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
+                   process.env.npm_lifecycle_event === 'build' ||
+                   process.argv.includes('build');
+
+if (isBuildTime && !isValidDatabaseUrl) {
+  log.warn('⚠️ Skipping database connection during build with invalid DATABASE_URL');
+}
+
 // Create a connection pool for better performance
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? {
-    rejectUnauthorized: false
-  } : false,
-  max: process.env.NODE_ENV === 'production' ? 20 : 10, // More connections in production
-  min: 2,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
-  statement_timeout: 30000, // 30 second query timeout
-});
+let pool: Pool;
+
+try {
+  // Only create pool if we have a valid database URL and not in build mode
+  if (!isBuildTime && isValidDatabaseUrl) {
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === 'production' ? {
+        rejectUnauthorized: false
+      } : false,
+      max: process.env.NODE_ENV === 'production' ? 20 : 10, // More connections in production
+      min: 2,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
+      statement_timeout: 30000, // 30 second query timeout
+    });
+  } else {
+    // Create a dummy pool for build time or invalid URLs
+    log.warn('⚠️ Creating fallback database pool for build time');
+    pool = new Pool({
+      connectionString: 'postgresql://fallback:fallback@localhost:5432/fallback',
+      ssl: false,
+      max: 1,
+      min: 0,
+      idleTimeoutMillis: 1000,
+      connectionTimeoutMillis: 1000,
+    });
+  }
+} catch (error) {
+  log.error('❌ Failed to create database pool:', error);
+  // Create a minimal fallback pool
+  pool = new Pool({
+    connectionString: 'postgresql://fallback:fallback@localhost:5432/fallback',
+    ssl: false,
+    max: 1,
+    min: 0,
+  });
+}
 
 // Set search path for all connections
 pool.on('connect', async (client) => {
@@ -98,13 +144,22 @@ async function testConnection() {
   }
 }
 
-// Test connection on startup
-testConnection();
+// Only test connection during runtime, not during build
+if (!isBuildTime) {
+  // Test connection on startup only during runtime
+  testConnection();
+}
 
 export default pool;
 
 // Helper function to execute queries with better error handling
 export async function query(text: string, params?: unknown[]) {
+  // Skip database queries during build time
+  if (isBuildTime) {
+    log.warn('⚠️ Skipping database query during build time');
+    return { rows: [], rowCount: 0 };
+  }
+
   const client = await pool.connect();
   try {
     log.info('🔍 Executing query:', text.substring(0, 50) + (text.length > 50 ? '...' : ''));
