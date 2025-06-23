@@ -46,7 +46,7 @@ function SignInContent() {
           setError('Failed to get session after login');
         }
       }
-    } catch (err) {
+    } catch (_err) {
       setError('An error occurred during sign in');
     } finally {
       setLoading(false);

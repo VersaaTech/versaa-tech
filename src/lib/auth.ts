@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             isAdmin: user.is_admin,
           };
-        } catch (error) {
+        } catch (_error) {
           return null;
         }
       }
@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
           } else {
             token.isAdmin = false;
           }
-        } catch (error) {
+        } catch (_error) {
           // Keep existing value if database query fails
         }
       }
@@ -107,7 +107,7 @@ export async function isUserAdmin(email: string | null | undefined): Promise<boo
     );
     
     return result.rows.length > 0 && result.rows[0].is_admin === true;
-  } catch (error) {
+  } catch (_error) {
     return false;
   }
 }

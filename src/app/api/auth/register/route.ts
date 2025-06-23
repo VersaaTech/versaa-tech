@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
       headers: { 'X-RateLimit-Remaining': remaining.toString() }
     });
 
-  } catch (error) {
+  } catch (_error) {
     // Don't expose internal errors to client in production
     return NextResponse.json(
       { 
