@@ -126,8 +126,6 @@ export async function POST(request: NextRequest) {
 
     const newUser = result.rows[0];
 
-    console.log('✅ User registered successfully:', newUser.email);
-
     return NextResponse.json({
       success: true,
       message: 'User registered successfully',
@@ -143,16 +141,11 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('❌ Registration error:', error);
-    
-    // Don't expose internal errors to client
-    const isDev = process.env.NODE_ENV === 'development';
-    
+    // Don't expose internal errors to client in production
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Registration failed. Please try again.',
-        ...(isDev && { details: error instanceof Error ? error.message : 'Unknown error' })
+        error: 'Registration failed. Please try again.'
       },
       { status: 500 }
     );

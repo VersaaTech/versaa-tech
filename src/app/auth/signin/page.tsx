@@ -47,7 +47,6 @@ function SignInContent() {
         }
       }
     } catch (err) {
-      console.error('Sign in error:', err);
       setError('An error occurred during sign in');
     } finally {
       setLoading(false);

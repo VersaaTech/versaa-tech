@@ -3,24 +3,6 @@ import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import pool from './db';
 
-// Production-safe logging utility
-const isDevelopment = process.env.NODE_ENV === 'development';
-const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
-                   process.env.npm_lifecycle_event === 'build' ||
-                   process.argv.includes('build');
-
-const log = {
-  info: (message: string, ...args: unknown[]) => {
-    if (isDevelopment && !isBuildTime) console.log(message, ...args);
-  },
-  error: (message: string, ...args: unknown[]) => {
-    if (!isBuildTime) console.error(message, ...args);
-  },
-  warn: (message: string, ...args: unknown[]) => {
-    if (!isBuildTime) console.warn(message, ...args);
-  }
-};
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -30,42 +12,28 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
-        log.info('🔐 Auth attempt initiated');
-        
         if (!credentials?.email || !credentials?.password) {
-          log.info('❌ Missing credentials');
           return null;
         }
 
         try {
-          // Query the database for user
-          log.info('🔍 Querying database for user...');
-          
           const result = await pool.query(
             'SELECT id, email, password, name, is_admin FROM users WHERE email = $1',
             [credentials.email]
           );
 
-          log.info('📋 Query result:', result.rows.length, 'rows found');
           const user = result.rows[0];
           
           if (!user) {
-            log.info('❌ User not found');
             return null;
           }
-
-          log.info('👤 User authentication in progress');
 
           // Check password
           const isValidPassword = await bcrypt.compare(credentials.password, user.password);
-          log.info('✅ Password validation:', isValidPassword ? 'success' : 'failed');
           
           if (!isValidPassword) {
-            log.info('❌ Invalid password');
             return null;
           }
-
-          log.info('✅ Authentication successful');
           return {
             id: user.id.toString(),
             email: user.email,
@@ -73,7 +41,6 @@ export const authOptions: NextAuthOptions = {
             isAdmin: user.is_admin,
           };
         } catch (error) {
-          log.error('❌ Auth error:', error);
           return null;
         }
       }
@@ -93,8 +60,8 @@ export const authOptions: NextAuthOptions = {
         token.isAdmin = (user as { isAdmin?: boolean }).isAdmin || false;
       }
       
-      // Always refresh admin status from database on every token refresh
-      // This ensures admin privileges are up-to-date even if changed in database
+      // Always refresh admin status from database to ensure up-to-date privileges
+      // This is important for when admin status changes after login
       if (token.email) {
         try {
           const result = await pool.query(
@@ -102,10 +69,12 @@ export const authOptions: NextAuthOptions = {
             [token.email as string]
           );
           
-          const isAdmin = result.rows.length > 0 && result.rows[0].is_admin === true;
-          token.isAdmin = isAdmin;
+          if (result.rows.length > 0) {
+            token.isAdmin = result.rows[0].is_admin === true;
+          } else {
+            token.isAdmin = false;
+          }
         } catch (error) {
-          log.error('Error refreshing admin status in JWT:', error);
           // Keep existing value if database query fails
         }
       }
@@ -123,7 +92,6 @@ export const authOptions: NextAuthOptions = {
     maxAge: 7 * 24 * 60 * 60, // 7 days
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: isDevelopment,
   // Security: Enable CSRF protection
   useSecureCookies: process.env.NODE_ENV === 'production',
 };
@@ -140,7 +108,6 @@ export async function isUserAdmin(email: string | null | undefined): Promise<boo
     
     return result.rows.length > 0 && result.rows[0].is_admin === true;
   } catch (error) {
-    log.error('Error checking admin status:', error);
     return false;
   }
 }
