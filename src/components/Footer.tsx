@@ -79,7 +79,7 @@ export function Footer() {
                                     </p>
                                 </div>
                                 <div className="mt-2">
-                                    <p className="text-sm font-semibold">Operations Office:</p>
+                                    <p className="text-sm font-semibold">Kenya Office:</p>
                                     <p className="text-sm">The Mirage, Nairobi</p>
                                 </div>
                                 <a href="mailto:info@versaatech.com" className="text-sm hover:text-white transition-colors flex items-center gap-2 pt-2">
