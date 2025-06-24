@@ -122,14 +122,15 @@ export default function JobDetailPageClient({
           animate={{ opacity: 1, x: 0 }}
           className="mb-6"
         >
-          <Button 
-            variant="outline" 
-            onClick={() => router.back()}
-            className="flex items-center gap-2"
-          >
-            <DynamicIcon iconName="FaArrowLeft" />
-            Back to Jobs
-          </Button>
+          <Link href="/jobs">
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-2"
+            >
+              <DynamicIcon iconName="FaArrowLeft" />
+              Back to Jobs
+            </Button>
+          </Link>
         </motion.div>
 
         {/* Job Header */}
