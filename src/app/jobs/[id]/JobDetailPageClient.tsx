@@ -80,7 +80,7 @@ export default function JobDetailPageClient({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f7fffc] flex items-center justify-center">
+      <div className="min-h-screen bg-[#f7fffc] flex items-center justify-center px-4">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
           <p className="text-gray-600">Loading job details...</p>
@@ -91,19 +91,19 @@ export default function JobDetailPageClient({
 
   if (error || !job) {
     return (
-      <div className="min-h-screen bg-[#f7fffc] flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-[#f7fffc] flex items-center justify-center px-4">
+        <div className="text-center max-w-md mx-auto">
           <DynamicIcon iconName="FaExclamationTriangle" />
-          <h1 className="text-2xl font-bold text-gray-800 mt-4 mb-2">Job Not Found</h1>
-          <p className="text-gray-600 mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mt-4 mb-2">Job Not Found</h1>
+          <p className="text-gray-600 mb-6 text-sm sm:text-base">
             {error || 'The job you are looking for does not exist or has been removed.'}
           </p>
-          <div className="space-x-4">
-            <Button onClick={() => router.back()} variant="outline">
+          <div className="flex flex-col sm:flex-row gap-3 sm:space-x-4 sm:justify-center">
+            <Button onClick={() => router.back()} variant="outline" className="w-full sm:w-auto">
               Go Back
             </Button>
-            <Link href="/jobs">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Link href="/jobs" className="w-full sm:w-auto">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">
                 Browse All Jobs
               </Button>
             </Link>
@@ -114,18 +114,18 @@ export default function JobDetailPageClient({
   }
 
   return (
-    <div className="min-h-screen bg-[#f7fffc] py-8">
+    <div className="min-h-screen bg-[#f7fffc] py-4 sm:py-8">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
+          className="mb-4 sm:mb-6"
         >
           <Link href="/jobs">
             <Button 
               variant="outline" 
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-sm sm:text-base"
             >
               <DynamicIcon iconName="FaArrowLeft" />
               Back to Jobs
@@ -137,14 +137,16 @@ export default function JobDetailPageClient({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-lg shadow-md p-8 mb-6"
+          className="bg-white rounded-lg shadow-md p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6"
         >
-          <div className="flex justify-between items-start mb-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-bold text-gray-800">{job.title}</h1>
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 mb-6">
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 break-words">
+                  {job.title}
+                </h1>
                 {job.featured && (
-                  <Badge className="bg-yellow-500 text-white">
+                  <Badge className="bg-yellow-500 text-white self-start sm:self-auto">
                     Featured
                   </Badge>
                 )}
@@ -152,14 +154,14 @@ export default function JobDetailPageClient({
               
               <div className="flex items-center gap-2 text-gray-600 mb-4">
                 <DynamicIcon iconName="FaBuilding" />
-                <span className="text-xl font-semibold">{job.company}</span>
+                <span className="text-lg sm:text-xl font-semibold break-words">{job.company}</span>
               </div>
 
-              <div className="flex flex-wrap gap-4 text-gray-600 mb-6">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-gray-600 mb-6 text-sm sm:text-base">
                 {job.location && (
                   <div className="flex items-center gap-2">
                     <DynamicIcon iconName="FaMapMarkerAlt" />
-                    <span>{job.location}</span>
+                    <span className="break-words">{job.location}</span>
                   </div>
                 )}
                 
@@ -170,19 +172,19 @@ export default function JobDetailPageClient({
               </div>
 
               {/* Job Type Badges */}
-              <div className="flex flex-wrap gap-3 mb-6">
+              <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
                 {job.job_type && (
-                  <Badge>
+                  <Badge className="text-xs sm:text-sm">
                     {job.job_type}
                   </Badge>
                 )}
                 {job.work_mode && (
-                  <Badge className="bg-green-100 text-green-800">
+                  <Badge className="bg-green-100 text-green-800 text-xs sm:text-sm">
                     {job.work_mode}
                   </Badge>
                 )}
                 {job.experience_level && (
-                  <Badge className="bg-purple-100 text-purple-800">
+                  <Badge className="bg-purple-100 text-purple-800 text-xs sm:text-sm">
                     {job.experience_level}
                   </Badge>
                 )}
@@ -192,39 +194,41 @@ export default function JobDetailPageClient({
               {(job.salary_min || job.salary_max) && (
                 <div className="flex items-center gap-3 mb-6">
                   <DynamicIcon iconName="FaDollarSign" />
-                  <span className="text-lg font-semibold text-green-600">
-                    {formatSalary(job.salary_min, job.salary_max, job.salary_currency)}
-                  </span>
-                  <span className="text-gray-500">per year</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                    <span className="text-base sm:text-lg font-semibold text-green-600 break-words">
+                      {formatSalary(job.salary_min, job.salary_max, job.salary_currency)}
+                    </span>
+                    <span className="text-gray-500 text-sm sm:text-base">per year</span>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Apply Button */}
-            <div className="ml-6">
+            <div className="flex-shrink-0 w-full lg:w-auto">
               {job.application_url ? (
                 <a 
                   href={job.application_url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-block"
+                  className="block w-full lg:w-auto"
                 >
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2 sm:py-3 text-base sm:text-lg w-full lg:w-auto">
                     Apply Now
                   </Button>
                 </a>
               ) : job.application_email ? (
                 <a 
                   href={`mailto:${job.application_email}?subject=Application for ${job.title}`}
-                  className="inline-block"
+                  className="block w-full lg:w-auto"
                 >
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2 sm:py-3 text-base sm:text-lg w-full lg:w-auto">
                     Apply via Email
                   </Button>
                 </a>
               ) : (
-                <Link href="/contact">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg">
+                <Link href="/contact" className="block w-full lg:w-auto">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2 sm:py-3 text-base sm:text-lg w-full lg:w-auto">
                     Contact Us
                   </Button>
                 </Link>
@@ -234,26 +238,26 @@ export default function JobDetailPageClient({
         </motion.div>
 
         {/* Job Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="lg:col-span-2 space-y-6"
+            className="lg:col-span-2 space-y-4 sm:space-y-6"
           >
             {/* Job Description */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+              <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                   <DynamicIcon iconName="FaFileAlt" />
                   Job Description
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="prose max-w-none text-gray-700">
+              <CardContent className="p-4 sm:p-6 pt-0">
+                <div className="prose prose-sm sm:prose max-w-none text-gray-700">
                   {job.description.split('\n').map((paragraph, index) => (
-                    <p key={index} className="mb-4 last:mb-0">
+                    <p key={index} className="mb-3 sm:mb-4 last:mb-0 text-sm sm:text-base leading-relaxed break-words">
                       {paragraph}
                     </p>
                   ))}
@@ -264,16 +268,16 @@ export default function JobDetailPageClient({
             {/* Responsibilities */}
             {job.responsibilities && (
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                     <DynamicIcon iconName="FaTasks" />
                     Key Responsibilities
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="prose max-w-none text-gray-700">
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <div className="prose prose-sm sm:prose max-w-none text-gray-700">
                     {job.responsibilities.split('\n').map((paragraph, index) => (
-                      <p key={index} className="mb-4 last:mb-0">
+                      <p key={index} className="mb-3 sm:mb-4 last:mb-0 text-sm sm:text-base leading-relaxed break-words">
                         {paragraph}
                       </p>
                     ))}
@@ -285,16 +289,16 @@ export default function JobDetailPageClient({
             {/* Requirements */}
             {job.requirements && (
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                     <DynamicIcon iconName="FaCheckCircle" />
                     Requirements
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="prose max-w-none text-gray-700">
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <div className="prose prose-sm sm:prose max-w-none text-gray-700">
                     {job.requirements.split('\n').map((paragraph, index) => (
-                      <p key={index} className="mb-4 last:mb-0">
+                      <p key={index} className="mb-3 sm:mb-4 last:mb-0 text-sm sm:text-base leading-relaxed break-words">
                         {paragraph}
                       </p>
                     ))}
@@ -309,34 +313,34 @@ export default function JobDetailPageClient({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             {/* Job Overview */}
             <Card>
-              <CardHeader>
-                <CardTitle>Job Overview</CardTitle>
+              <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="text-lg sm:text-xl">Job Overview</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="p-4 sm:p-6 pt-0 space-y-3 sm:space-y-4">
                 {job.department && (
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Department</label>
-                    <p className="text-gray-800">{job.department}</p>
+                    <label className="text-xs sm:text-sm font-medium text-gray-500">Department</label>
+                    <p className="text-sm sm:text-base text-gray-800 break-words">{job.department}</p>
                   </div>
                 )}
                 
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Employment Type</label>
-                  <p className="text-gray-800">{job.job_type || 'Not specified'}</p>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Employment Type</label>
+                  <p className="text-sm sm:text-base text-gray-800 break-words">{job.job_type || 'Not specified'}</p>
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Work Location</label>
-                  <p className="text-gray-800">{job.work_mode || 'Not specified'}</p>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Work Location</label>
+                  <p className="text-sm sm:text-base text-gray-800 break-words">{job.work_mode || 'Not specified'}</p>
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Experience Level</label>
-                  <p className="text-gray-800">{job.experience_level || 'Not specified'}</p>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Experience Level</label>
+                  <p className="text-sm sm:text-base text-gray-800 break-words">{job.experience_level || 'Not specified'}</p>
                 </div>
               </CardContent>
             </Card>
@@ -344,13 +348,13 @@ export default function JobDetailPageClient({
             {/* Required Skills */}
             {job.skills && job.skills.length > 0 && (
               <Card>
-                <CardHeader>
-                  <CardTitle>Required Skills</CardTitle>
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-lg sm:text-xl">Required Skills</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="flex flex-wrap gap-2">
                     {job.skills.map((skill, index) => (
-                      <Badge key={index} className="border border-blue-300">
+                      <Badge key={index} className="border border-blue-300 text-xs sm:text-sm break-words">
                         {skill}
                       </Badge>
                     ))}
@@ -366,18 +370,18 @@ export default function JobDetailPageClient({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="mt-12"
+          className="mt-8 sm:mt-12"
         >
           <Card>
-            <CardContent className="p-8 text-center">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <CardContent className="p-6 sm:p-8 text-center">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 sm:mb-4">
                 Explore More Opportunities
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
                 Discover other exciting career opportunities at Versaatech
               </p>
               <Link href="/jobs">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base">
                   View All Jobs
                 </Button>
               </Link>

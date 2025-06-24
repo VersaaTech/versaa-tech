@@ -105,7 +105,7 @@ export default function ContactPage() {
                             </Card>
                         </motion.div>
                         
-                        {/* Operations Office Card */}
+                        {/* Kenya Office Card */}
                         <motion.div
                             className="w-full"
                             initial="hidden"
@@ -129,7 +129,7 @@ export default function ContactPage() {
                                         <MapPin className="h-7 w-7 text-green-500" />
                                     </div>
                                     <h3 className="font-semibold text-gray-900 text-lg mb-1">
-                                        Operations Office
+                                        Kenya Office
                                     </h3>
                                     <div className="text-gray-600 text-center">
                                         <p>The Mirage, Nairobi</p>

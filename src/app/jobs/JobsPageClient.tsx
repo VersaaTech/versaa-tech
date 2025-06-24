@@ -160,47 +160,48 @@ export default function JobsPageClient() {
         initial="hidden"
         animate="visible"
         whileHover={{ y: -4, transition: { duration: 0.2 } }}
+        className="h-full"
       >
         <Card className="h-full border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
-          <CardHeader>
-            <div className="flex justify-between items-start mb-2">
-              <CardTitle className="text-xl font-semibold text-gray-800">
+          <CardHeader className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
+              <CardTitle className="text-lg sm:text-xl font-semibold text-gray-800 break-words">
                 {job.title}
               </CardTitle>
               {job.featured && (
-                <Badge variant="default" className="bg-yellow-500 text-white">
+                <Badge variant="default" className="bg-yellow-500 text-white self-start sm:self-auto flex-shrink-0">
                   Featured
                 </Badge>
               )}
             </div>
-            <div className="flex items-center gap-2 text-gray-600">
+            <div className="flex items-center gap-2 text-gray-600 text-sm sm:text-base">
               <DynamicIcon iconName="FaBuilding" />
-              <span className="font-medium">{job.company}</span>
+              <span className="font-medium break-words">{job.company}</span>
             </div>
             {job.location && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-600 text-sm sm:text-base">
                 <DynamicIcon iconName="FaMapMarkerAlt" />
-                <span>{job.location}</span>
+                <span className="break-words">{job.location}</span>
               </div>
             )}
           </CardHeader>
           
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-4 sm:p-6 pt-0">
+            <div className="space-y-3 sm:space-y-4">
               {/* Job Type and Work Mode Badges */}
               <div className="flex flex-wrap gap-2">
                 {job.job_type && (
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs sm:text-sm">
                     {job.job_type}
                   </Badge>
                 )}
                 {job.work_mode && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
+                  <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs sm:text-sm">
                     {job.work_mode}
                   </Badge>
                 )}
                 {job.experience_level && (
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+                  <Badge variant="secondary" className="bg-purple-100 text-purple-800 text-xs sm:text-sm">
                     {job.experience_level}
                   </Badge>
                 )}
@@ -210,14 +211,14 @@ export default function JobsPageClient() {
               {(job.salary_min || job.salary_max) && (
                 <div className="flex items-center gap-2 text-gray-700">
                   <DynamicIcon iconName="FaDollarSign" />
-                  <span className="font-medium">
+                  <span className="font-medium text-sm sm:text-base break-words">
                     {formatSalary(job.salary_min, job.salary_max, job.salary_currency)}
                   </span>
                 </div>
               )}
 
               {/* Job Description Preview */}
-              <p className="text-gray-600 line-clamp-3">
+              <p className="text-gray-600 line-clamp-3 text-sm sm:text-base leading-relaxed">
                 {job.description.length > 150 
                   ? `${job.description.substring(0, 150)}...` 
                   : job.description
@@ -231,7 +232,7 @@ export default function JobsPageClient() {
                     <Badge 
                       key={skillIndex} 
                       variant="outline" 
-                      className="text-xs border-gray-300"
+                      className="text-xs border-gray-300 break-words"
                     >
                       {skill}
                     </Badge>
@@ -244,13 +245,13 @@ export default function JobsPageClient() {
                 </div>
               )}
 
-              {/* Posted Date */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                <span className="text-sm text-gray-500">
+              {/* Posted Date and Button */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 sm:pt-4 border-t border-gray-100">
+                <span className="text-xs sm:text-sm text-gray-500">
                   Posted {formatDate(job.posted_date || job.created_at)}
                 </span>
-                <Link href={`/jobs/${job.id}`}>
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Link href={`/jobs/${job.id}`} className="w-full sm:w-auto">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base w-full sm:w-auto">
                     View Details
                   </Button>
                 </Link>
@@ -263,18 +264,18 @@ export default function JobsPageClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7fffc] py-8">
+    <div className="min-h-screen bg-[#f7fffc] py-4 sm:py-8">
       <div className="container mx-auto px-4">
         {/* Page Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-blue-600 mb-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-blue-600 mb-3 sm:mb-4">
             Career Opportunities
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             Join our global team and make an impact in human capital management. 
             Discover opportunities that match your skills and aspirations.
           </p>
@@ -285,65 +286,68 @@ export default function JobsPageClient() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-lg shadow-md p-6 mb-8"
+          className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6 sm:mb-8"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {/* Search Input */}
-            <div className="lg:col-span-2">
+          <div className="space-y-4">
+            {/* Search Input - Full Width on Mobile */}
+            <div className="w-full">
               <Input
                 placeholder="Search jobs, companies, or locations..."
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
-                className="w-full"
+                className="w-full text-sm sm:text-base"
               />
             </div>
 
-            {/* Job Type Filter */}
-            <select
-              value={filters.jobType}
-              onChange={(e) => handleFilterChange('jobType', e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Types</option>
-              {JOB_TYPES.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
+            {/* Filter Dropdowns - Stack on Mobile, Grid on Desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              {/* Job Type Filter */}
+              <select
+                value={filters.jobType}
+                onChange={(e) => handleFilterChange('jobType', e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base w-full"
+              >
+                <option value="">All Types</option>
+                {JOB_TYPES.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
 
-            {/* Work Mode Filter */}
-            <select
-              value={filters.workMode}
-              onChange={(e) => handleFilterChange('workMode', e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Modes</option>
-              {WORK_MODES.map(mode => (
-                <option key={mode} value={mode}>{mode}</option>
-              ))}
-            </select>
+              {/* Work Mode Filter */}
+              <select
+                value={filters.workMode}
+                onChange={(e) => handleFilterChange('workMode', e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base w-full"
+              >
+                <option value="">All Modes</option>
+                {WORK_MODES.map(mode => (
+                  <option key={mode} value={mode}>{mode}</option>
+                ))}
+              </select>
 
-            {/* Experience Level Filter */}
-            <select
-              value={filters.experienceLevel}
-              onChange={(e) => handleFilterChange('experienceLevel', e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Levels</option>
-              {EXPERIENCE_LEVELS.map(level => (
-                <option key={level} value={level}>{level}</option>
-              ))}
-            </select>
+              {/* Experience Level Filter */}
+              <select
+                value={filters.experienceLevel}
+                onChange={(e) => handleFilterChange('experienceLevel', e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base w-full sm:col-span-2 lg:col-span-1"
+              >
+                <option value="">All Levels</option>
+                {EXPERIENCE_LEVELS.map(level => (
+                  <option key={level} value={level}>{level}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Clear Filters */}
-          <div className="mt-4 flex justify-between items-center">
-            <span className="text-sm text-gray-600">
+          <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <span className="text-xs sm:text-sm text-gray-600">
               {jobs.length} job{jobs.length !== 1 ? 's' : ''} found
             </span>
             <Button
               variant="outline"
               onClick={clearFilters}
-              className="text-sm"
+              className="text-xs sm:text-sm w-full sm:w-auto"
             >
               Clear Filters
             </Button>
@@ -354,58 +358,58 @@ export default function JobsPageClient() {
         {loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <p className="mt-4 text-gray-600">Loading opportunities...</p>
+            <p className="mt-4 text-gray-600 text-sm sm:text-base">Loading opportunities...</p>
           </div>
         ) : error ? (
           <div className="text-center py-12">
-            <p className="text-red-600 mb-4">{error}</p>
-            <Button onClick={fetchJobs}>Try Again</Button>
+            <p className="text-red-600 mb-4 text-sm sm:text-base">{error}</p>
+            <Button onClick={fetchJobs} className="text-sm sm:text-base">Try Again</Button>
           </div>
         ) : jobs.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-16"
+            className="text-center py-12 sm:py-16 px-4"
           >
             {/* Check if any filters are active */}
             {filters.search || filters.jobType || filters.workMode || filters.experienceLevel ? (
               // Message when filters are applied but no results
               <>
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                   <DynamicIcon iconName="FaSearch" />
                 </div>
-                <h3 className="text-2xl font-semibold text-gray-700 mb-3">No jobs found</h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-2 sm:mb-3">No jobs found</h3>
+                <p className="text-gray-600 mb-4 sm:mb-6 max-w-md mx-auto text-sm sm:text-base">
                   Try adjusting your search criteria or clear the filters to see more opportunities.
                 </p>
-                <Button onClick={clearFilters} className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Button onClick={clearFilters} className="bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base">
                   Clear All Filters
                 </Button>
               </>
             ) : (
-                             // Message when no jobs are available at all
-               <>
-                 <h3 className="text-2xl font-semibold text-gray-700 mb-3">No Current Openings</h3>
-                <p className="text-gray-600 mb-6 max-w-lg mx-auto">
+              // Message when no jobs are available at all
+              <>
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-2 sm:mb-3">No Current Openings</h3>
+                <p className="text-gray-600 mb-4 sm:mb-6 max-w-lg mx-auto text-sm sm:text-base">
                   We don&apos;t have any open positions at the moment, but we&apos;re always growing! 
                   Check back soon or get in touch to learn about future opportunities.
                 </p>
                 <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/contact">
-                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                    <Link href="/contact" className="w-full sm:w-auto">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base w-full sm:w-auto">
                         Contact Us About Future Roles
                       </Button>
                     </Link>
                     <Button 
                       variant="outline" 
                       onClick={fetchJobs}
-                      className="px-6 py-3"
+                      className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base w-full sm:w-auto"
                     >
                       Refresh Page
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-500 mt-4">
+                  <p className="text-xs sm:text-sm text-gray-500 mt-4">
                     Want to be notified when new positions open up? Reach out to us and we&apos;ll keep you in mind.
                   </p>
                 </div>
@@ -417,7 +421,7 @@ export default function JobsPageClient() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"
           >
             {jobs.map((job, index) => (
               <JobCard key={job.id} job={job} index={index} />
@@ -431,18 +435,18 @@ export default function JobsPageClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-16 text-center"
+            className="mt-12 sm:mt-16 text-center"
           >
-            <div className="bg-white rounded-lg shadow-md p-8">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <div className="bg-white rounded-lg shadow-md p-6 sm:p-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 sm:mb-4">
                 Don&apos;t see the right opportunity?
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
                 We&apos;re always looking for talented individuals. Send us your resume 
                 and we&apos;ll keep you in mind for future openings.
               </p>
               <Link href="/contact">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base">
                   Contact Us
                 </Button>
               </Link>
