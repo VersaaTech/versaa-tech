@@ -26,13 +26,13 @@ export function MobileMenu() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <SheetHeader>
-                    <SheetTitle>Navigation Menu</SheetTitle>
+                    <SheetTitle>Mobile Nav Menu</SheetTitle>
                     <SheetDescription>
-                        Access all sections of our website
+                        Website Links
                     </SheetDescription>
                 </SheetHeader>
                 <nav className="flex flex-col space-y-4 mt-4">
-                    <Link href="/" className="flex items-center" onClick={handleLinkClick}>
+                    <Link href="/" className="flex items-center justify-center" onClick={handleLinkClick}>
                         <Image 
                             src="/images/versaatech-logo.png"
                             alt="Versaa Tech Logo"
@@ -44,7 +44,7 @@ export function MobileMenu() {
                     {[...navItems, ...aboutItems].map((item) => (
                         <div key={item.title} onClick={handleLinkClick}>
                             <Link
-                                href={`/${item.href}`}
+                                href={item.href}
                                 className="text-md font-medium flex items-center gap-2 text-black hover:opacity-90 relative group"
                             >
                                 {React.createElement(item.icon, { 
