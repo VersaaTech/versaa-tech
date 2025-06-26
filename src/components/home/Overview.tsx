@@ -33,24 +33,24 @@ const overviewData: OverviewSection[] = [
                 description: "Find and recruit top-tier executives for your organization"
             },
             {
-                title: "Fractional HR Services (Shared HR Service)",
-                href: "/fractional-hr-services",
-                description: "Flexible HR support tailored to your needs"
-            },
-            {
                 title: "Recruitment Process Outsourcing (RPO)",
                 href: "/rpo-recruitment",
                 description: "End-to-end recruitment solutions"
             },
             {
-                title: "HR Process Outsourcing",
-                href: "/hr-process-outsourcing",
-                description: "Streamline your HR operations with our expert services"
-            },
-            {
                 title: "Industry HR Benchmarking",
                 href: "/industry-benchmarking",
                 description: "Data-driven insights for competitive positioning"
+            },
+            {
+                title: "Fractional HR Services (Shared HR Service)",
+                href: "/fractional-hr-services",
+                description: "Flexible HR support tailored to your needs"
+            },
+            {
+                title: "HR Process Outsourcing",
+                href: "/hr-process-outsourcing",
+                description: "Streamline your HR operations with our expert services"
             },
             {
                 title: "Payroll Outsourcing",
@@ -100,20 +100,26 @@ const ServiceLinkCard = ({ service, index }: { service: ServiceLink; index: numb
     };
 
     return (
-        <motion.li
+        <motion.div
             variants={listItemVariants}
             className="w-full"
             key={service.href}
         >
-            <Link href={service.href} className="block">
-                <div className="flex items-start p-3 bg-[#e2eeff] rounded-lg shadow-sm hover:shadow-md transition duration-200 hover:bg-blue-100 group">
-                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1 group-hover:text-blue-500 transition duration-200" />
-                    <span className="text-gray-700 group-hover:text-blue-500 transition duration-200">
+            <Link href={service.href} className="block h-full">
+                <div className="h-full p-6 border shadow-md rounded-2xl bg-white hover:shadow-lg transition-all duration-300 group">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors duration-300">
                         {service.title}
-                    </span>
+                    </h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                        {service.description}
+                    </p>
+                    <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors duration-300">
+                        <span className="mr-2">Learn more</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    </div>
                 </div>
             </Link>
-        </motion.li>
+        </motion.div>
     );
 };
 
@@ -227,7 +233,7 @@ export function Overview() {
                             <p className="text-gray-700 mb-6">{servicesSection.content}</p>
                         </div>
                         {servicesSection.serviceLinks && (
-                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {servicesSection.serviceLinks.map((service, index) => (
                                     <ServiceLinkCard 
                                         key={service.href} 
@@ -235,7 +241,7 @@ export function Overview() {
                                         index={index} 
                                     />
                                 ))}
-                            </ul>
+                            </div>
                         )}
                     </motion.div>
                 )}
