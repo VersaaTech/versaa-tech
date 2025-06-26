@@ -51,7 +51,7 @@ export default function ContactPage() {
                     <motion.h1
                         className="text-3xl font-bold text-center mb-16 text-blue-600 px-4"
                     >
-                        Let's Have a Conversation...
+                        Let&apos;s Have a Conversation...
                     </motion.h1>
 
                     {/* Contact Information Grid - 2x3 Layout */}
