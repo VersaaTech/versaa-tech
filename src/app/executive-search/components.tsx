@@ -194,7 +194,7 @@ export const CTASection = () => (
         variants={ANIMATION_VARIANTS.item}
         className="text-base md:text-lg mb-6 text-blue-100"
       >
-        Let's discuss your leadership requirements and how we can help you secure exceptional talent that drives transformation.
+        Let&apos;s discuss your leadership requirements and how we can help you secure exceptional talent that drives transformation.
       </motion.p>
       <motion.div variants={ANIMATION_VARIANTS.item}>
         <Link href="/contact">

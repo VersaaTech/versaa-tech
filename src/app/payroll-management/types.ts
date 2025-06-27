@@ -22,6 +22,6 @@ export interface Benefit {
 }
 
 export interface AnimationVariants {
-  hidden: Record<string, any>
-  visible: Record<string, any>
+  hidden: Record<string, unknown>
+  visible: Record<string, unknown>
 } 
