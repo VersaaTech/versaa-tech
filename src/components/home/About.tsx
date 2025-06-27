@@ -1,43 +1,7 @@
 'use client'
 
-import { Award, Users, Lightbulb, Target } from 'lucide-react'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Target, Eye } from 'lucide-react'
 import { motion } from 'framer-motion'
-
-// Interface for the highlight items
-interface HighlightItem {
-    icon: React.ComponentType<{ className?: string }>;
-    title: string;
-    description: string;
-    color: string;
-}
-
-const highlights: HighlightItem[] = [
-    {
-        icon: Users,
-        title: "Expert Leadership",
-        description: "Our executive team brings decades of diverse experience in Business, Technology, and Operations across global industries.",
-        color: "text-blue-600"
-    },
-    {
-        icon: Award,
-        title: "Customer Excellence",
-        description: "Passion and proven track record of delivering customer-centric services, establishing lifelong partnerships.",
-        color: "text-yellow-600"
-    },
-    {
-        icon: Lightbulb,
-        title: "Innovative Approach",
-        description: "Proven methodology in identifying, grooming, and applying Human Capital to drive high-impact business transformations.",
-        color: "text-green-600"
-    },
-    {
-        icon: Target,
-        title: "End-to-End Solutions",
-        description: "Comprehensive Human Capital Services and Solutions enabled through our trusted global partner network.",
-        color: "text-red-600"
-    }
-];
 
 // Animation variants
 const containerVariants = {
@@ -48,7 +12,7 @@ const containerVariants = {
         transition: {
             duration: 0.6,
             when: "beforeChildren",
-            staggerChildren: 0.2
+            staggerChildren: 0.15
         }
     }
 };
@@ -56,6 +20,15 @@ const containerVariants = {
 const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+        opacity: 1, 
+        scale: 1,
+        transition: { duration: 0.5 }
+    }
 };
 
 export function About() {
@@ -77,42 +50,45 @@ export function About() {
                         About Versaa Tech
                     </h2>
                     <motion.p 
-                        className="text-gray-600 max-w-3xl mx-auto text-lg"
+                        className="text-gray-700 max-w-4xl mx-auto text-lg leading-relaxed"
                         variants={itemVariants}
                     >
-                        Versaa Tech is a results-driven organization. We leverage deep job market data and human capital expertise to deliver specialized solutions.
+                        Versaa Tech is a results-driven organization that leverages deep job market data and human capital expertise to deliver specialized solutions. We are your trusted partner in transforming human capital challenges into competitive advantages.
                     </motion.p>
                 </motion.div>
 
-                {/* Key Highlights - Accordion Style */}
-                <motion.div 
-                    className="max-w-2xl mx-auto"
-                    variants={itemVariants}
-                >
-                    <Accordion type="single" collapsible className="w-full">
-                        {highlights.map((item, index) => {
-                            const Icon = item.icon;
-                            return (
-                                <motion.div 
-                                    key={index}
-                                    variants={itemVariants}
-                                >
-                                    <AccordionItem value={`item-${index}`}>
-                                        <AccordionTrigger>
-                                            <div className="flex items-center">
-                                                <Icon className={`mr-2 h-6 w-6 ${item.color}`} />
-                                                <span className="text-lg font-medium">{item.title}</span>
-                                            </div>
-                                        </AccordionTrigger>
-                                        <AccordionContent>
-                                            <p className="text-gray-600">{item.description}</p>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                </motion.div>
-                            );
-                        })}
-                    </Accordion>
-                </motion.div>
+                {/* Mission and Vision Cards */}
+                <div className="grid md:grid-cols-2 gap-8">
+                    <motion.div 
+                        className="bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-lg hover:shadow-xl p-8 border border-blue-100 transition-shadow duration-150"
+                        variants={cardVariants}
+                    >
+                        <div className="flex items-center mb-6">
+                            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-xl mr-4 shadow-md">
+                                <Target className="h-8 w-8 text-white" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-800">Our Mission</h3>
+                        </div>
+                        <p className="text-gray-600 text-base leading-relaxed">
+                            To empower organizations worldwide by delivering innovative, data-driven human capital solutions that drive sustainable growth, enhance operational efficiency, and create lasting value for businesses and their people.
+                        </p>
+                    </motion.div>
+
+                    <motion.div 
+                        className="bg-gradient-to-br from-green-50 to-white rounded-2xl shadow-lg hover:shadow-xl p-8 border border-green-100 transition-shadow duration-150"
+                        variants={cardVariants}
+                    >
+                        <div className="flex items-center mb-6">
+                            <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-xl mr-4 shadow-md">
+                                <Eye className="h-8 w-8 text-white" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-800">Our Vision</h3>
+                        </div>
+                        <p className="text-gray-600 text-base leading-relaxed">
+                            To be the global leader in human capital transformation, setting new standards in talent acquisition, HR excellence, and organizational development while fostering a world where every business has access to exceptional human capital solutions.
+                        </p>
+                    </motion.div>
+                </div>
             </div>
         </motion.section>
     );

@@ -75,16 +75,28 @@ export function Hero() {
                     >
                         Versaa Tech delivers innovative and results-driven human capital solutions to help organizations grow.
                     </motion.p>
-                    <Link href="/contact">
-                        <motion.div
-                            variants={buttonVariants}
-                            whileHover="hover"
-                        >
-                            <Button className="bg-gradient-to-r from-blue-500 to-blue-700 hover:bg-gradient-to-r hover:from-blue-500/90 hover:to-blue-700/90 text-white px-6 py-2">
-                                How We Can Help
-                            </Button>
-                        </motion.div>
-                    </Link>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <Link href="/contact">
+                            <motion.div
+                                variants={buttonVariants}
+                                whileHover="hover"
+                            >
+                                <Button className="bg-gradient-to-r from-blue-500 to-blue-700 hover:bg-gradient-to-r hover:from-blue-500/90 hover:to-blue-700/90 text-white px-6 py-2 w-full sm:w-auto">
+                                    HR Redefined
+                                </Button>
+                            </motion.div>
+                        </Link>
+                        <Link href="/jobs">
+                            <motion.div
+                                variants={buttonVariants}
+                                whileHover="hover"
+                            >
+                                <Button className="bg-gradient-to-r from-green-500 to-green-700 hover:bg-gradient-to-r hover:from-green-500/90 hover:to-green-700/90 text-white px-6 py-2 w-full sm:w-auto">
+                                    Job Seekers
+                                </Button>
+                            </motion.div>
+                        </Link>
+                    </div>
                 </div>
             </motion.div>
         </motion.section>
