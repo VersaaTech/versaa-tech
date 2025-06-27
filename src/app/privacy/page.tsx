@@ -16,10 +16,10 @@ export default function PrivacyPolicy() {
         <section className="mb-12">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">1. Introduction</h2>
           <p className="text-gray-600 mb-4">
-            Versaa Tech ("we", "us", "our", "the Company") is committed to protecting the privacy and security of your personal data. 
+            Versaa Tech (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;, &quot;the Company&quot;) is committed to protecting the privacy and security of your personal data. 
             This Privacy Policy explains how we collect, use, process, store, and protect your personal information in accordance with 
-            applicable data protection laws, including the Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data ("UAE PDPL"), 
-            the General Data Protection Regulation ("GDPR"), and other relevant privacy laws in jurisdictions where we operate.
+            applicable data protection laws, including the Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data (&quot;UAE PDPL&quot;), 
+            the General Data Protection Regulation (&quot;GDPR&quot;), and other relevant privacy laws in jurisdictions where we operate.
           </p>
           <p className="text-gray-600 mb-6">
             We are a human resources consulting firm headquartered in the United Arab Emirates, providing recruitment services, 
@@ -46,7 +46,7 @@ export default function PrivacyPolicy() {
             <li><strong>Contract Performance:</strong> Where processing is necessary for the performance of our services</li>
             <li><strong>Legal Obligations:</strong> Where we are required to process data to comply with applicable laws</li>
             <li><strong>Legitimate Interests:</strong> Where processing is necessary for our legitimate business interests (balanced against your rights and interests)</li>
-            <li><strong>Vital Interests:</strong> Where processing is necessary to protect someone's life or physical safety</li>
+            <li><strong>Vital Interests:</strong> Where processing is necessary to protect someone&apos;s life or physical safety</li>
             <li><strong>Public Task:</strong> Where processing is necessary for the performance of a task carried out in the public interest</li>
           </ul>
         </section>
@@ -200,7 +200,7 @@ export default function PrivacyPolicy() {
           <div className="space-y-3">
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-medium text-gray-800 mb-2">Right of Access</h3>
-              <p className="text-gray-600 text-sm">Request copies of your personal data and information about how it's processed</p>
+              <p className="text-gray-600 text-sm">Request copies of your personal data and information about how it&apos;s processed</p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-medium text-gray-800 mb-2">Right to Rectification</h3>
@@ -306,7 +306,7 @@ export default function PrivacyPolicy() {
         </section>
 
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">14. Children's Privacy</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">14. Children&apos;s Privacy</h2>
           <p className="text-gray-600 mb-6">
             Our services are not directed to individuals under 18 years of age. We do not knowingly collect personal information 
             from children. If we become aware that we have collected personal data from a child, we will take steps to delete 
@@ -347,7 +347,7 @@ export default function PrivacyPolicy() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">16. Policy Updates</h2>
           <p className="text-gray-600 mb-6">
             We may update this Privacy Policy periodically to reflect changes in our practices, services, or applicable laws. 
-            We will notify you of material changes by posting the updated policy on our website and updating the "Last Updated" date. 
+            We will notify you of material changes by posting the updated policy on our website and updating the &quot;Last Updated&quot; date. 
             For significant changes, we may provide additional notice via email or prominent website notification.
           </p>
         </section>
