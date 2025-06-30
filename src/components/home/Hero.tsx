@@ -67,13 +67,13 @@ export function Hero() {
                         className="text-3xl md:text-4xl font-bold leading-tight mb-4"
                         variants={textVariants}
                     >
-                        Your <span className="bg-gradient-to-r from-[#4EFF7D] to-[#48AFEC] text-transparent bg-clip-text">Trusted Partner</span> for All Human Capital Services!
+                        End-to-End <span className="bg-gradient-to-r from-[#4EFF7D] to-[#48AFEC] text-transparent bg-clip-text">Recruitment, HR, and Payroll</span> Outsourcing.
                     </motion.h1>
                     <motion.p 
                         className="text-base md:text-lg mb-6"
                         variants={textVariants}
                     >
-                        Versaa Tech delivers innovative and results-driven human capital solutions to help organizations grow.
+                        We find the right people, manage the day-to-day HR and payroll, and provide the expert guidance you need to build a stronger team.
                     </motion.p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link href="/contact">
@@ -82,7 +82,7 @@ export function Hero() {
                                 whileHover="hover"
                             >
                                 <Button className="bg-gradient-to-r from-blue-500 to-blue-700 hover:bg-gradient-to-r hover:from-blue-500/90 hover:to-blue-700/90 text-white px-6 py-2 w-full sm:w-auto">
-                                    HR Redefined
+                                    Talk to an Expert
                                 </Button>
                             </motion.div>
                         </Link>
