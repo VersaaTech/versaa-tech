@@ -70,7 +70,7 @@ export function About() {
                             <h3 className="text-xl font-bold text-gray-800">Our Mission</h3>
                         </div>
                         <p className="text-gray-600 text-base leading-relaxed">
-                            To empower organizations worldwide by delivering innovative, data-driven human capital solutions that drive sustainable growth, enhance operational efficiency, and create lasting value for businesses and their people.
+                            Streamlining HR processes through solutions that empower organizations and indivividuals, drive success and foster thriving workplaces.
                         </p>
                     </motion.div>
 
@@ -85,7 +85,7 @@ export function About() {
                             <h3 className="text-xl font-bold text-gray-800">Our Vision</h3>
                         </div>
                         <p className="text-gray-600 text-base leading-relaxed">
-                            To be the global leader in human capital transformation, setting new standards in talent acquisition, HR excellence, and organizational development while fostering a world where every business has access to exceptional human capital solutions.
+                            To shape the future of HR by creating inclusive and adaptive work environemnts that insipre excellence globally.
                         </p>
                     </motion.div>
                 </div>

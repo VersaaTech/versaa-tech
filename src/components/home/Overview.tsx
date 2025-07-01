@@ -30,32 +30,32 @@ const overviewData: OverviewSection[] = [
             {
                 title: "Executive Search and Selection",
                 href: "/executive-search",
-                description: "Find and recruit top-tier executives for your organization"
+                description: "Find and recruit top-tier executives for your organization."
             },
             {
                 title: "Recruitment Process Outsourcing (RPO)",
                 href: "/rpo-recruitment",
-                description: "End-to-end recruitment solutions"
+                description: "Let us help you recruit the right talent."
             },
             {
                 title: "Industry HR Benchmarking",
                 href: "/industry-benchmarking",
-                description: "Data-driven insights for competitive positioning"
+                description: "Data-driven insights for competitive positioning."
             },
             {
                 title: "Fractional HR Services (Shared HR Service)",
                 href: "/fractional-hr-services",
-                description: "Flexible HR support tailored to your needs"
+                description: "Flexible HR support tailored to your needs."
             },
             {
                 title: "HR Process Outsourcing",
                 href: "/hr-process-outsourcing",
-                description: "Streamline your HR operations with our expert services"
+                description: "Streamline your HR operations with our expert services."
             },
             {
                 title: "Payroll Outsourcing",
                 href: "/payroll-management",
-                description: "Comprehensive payroll management solutions"
+                description: "Comprehensive payroll management solutions."
             },
         ]
     },
