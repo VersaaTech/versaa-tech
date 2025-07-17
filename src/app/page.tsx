@@ -7,8 +7,6 @@ import { Differentiators } from "@/components/home/Differentiators";
 import { Regions } from "@/components/home/Regions";
 import ContactPage from "./contact/page";
 
-// Define the section spacing class in a variable. This is used to off set the navbar covering the 
-// titles of the sections.
 const sectionSpacing = "pt-[90px] -mt-[90px]";
 
 export default function Home() {

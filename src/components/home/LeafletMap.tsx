@@ -12,10 +12,8 @@ const targetRegions = {
         'Tanzania', 'Uganda'
     ],
     MiddleEast: [
-        'Turkey', 'Cyprus', 'Syria', 'Lebanon', 'Iraq', 'Iran', 'Israel', 
-        'Jordan', 'Egypt', 'Saudi Arabia', 'Kuwait', 'Oman', 'Bahrain', 
-        'Qatar', 'United Arab Emirates', 'UAE', 'Yemen', 'Afghanistan', 
-        'Armenia'
+        'Turkey', 'Cyprus', 'Israel', 'Jordan', 'Egypt', 'Saudi Arabia', 
+        'Kuwait', 'Oman', 'Bahrain', 'Qatar', 'United Arab Emirates'
     ],
     USA: ['United States of America', 'United States'],
     Mexico: ['Mexico']

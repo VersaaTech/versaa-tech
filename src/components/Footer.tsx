@@ -114,6 +114,7 @@ export function Footer() {
                                     height={100}
                                     className="rounded-full"
                                     loading="lazy"
+                                    quality={50}
                                 />
                             </div>
                             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
@@ -124,6 +125,7 @@ export function Footer() {
                                     height={100}
                                     className="rounded-full"
                                     loading="lazy"
+                                    quality={50}
                                 />
                             </div>
                         </div>

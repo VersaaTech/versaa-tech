@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,18 +10,6 @@ import Link from 'next/link'
 import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from 'react'
 import { toast } from 'sonner'
-
-// Animation variants
-const slideFromLeft = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
-};
-
-const slideFromRight = {
-    hidden: { opacity: 0, x: 50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
-};
-
 
 // Form Data interfaces
 interface JobSeekersFormData {
@@ -136,12 +123,7 @@ export function ContactForms() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             {/* Job Seekers Form */}
-            <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={slideFromLeft}
-            >
+            <div>
                 <Card className="rounded-2xl shadow-md border-blue-100">
                     <CardContent className="p-6">
                         <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-6">
@@ -243,15 +225,10 @@ export function ContactForms() {
                         </form>
                     </CardContent>
                 </Card>
-            </motion.div>
+            </div>
 
             {/* Employers Form */}
-            <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={slideFromRight}
-            >
+            <div>
                 <Card className="rounded-2xl shadow-md border-green-100">
                     <CardContent className="p-6">
                         <h3 className="text-xl font-semibold bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent mb-6">
@@ -363,7 +340,7 @@ export function ContactForms() {
                         </form>
                     </CardContent>
                 </Card>
-            </motion.div>
+            </div>
         </div>
     )
 } 

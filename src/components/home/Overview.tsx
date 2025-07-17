@@ -1,6 +1,3 @@
-'use client'
-
-import { motion } from 'framer-motion';
 import { ArrowRight, LineChart, Users2, Briefcase, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
@@ -86,27 +83,11 @@ const overviewData: OverviewSection[] = [
 ];
 
 // Reusable component for service links
-const ServiceLinkCard = ({ service, index }: { service: ServiceLink; index: number }) => {
-    const listItemVariants = {
-        hidden: { x: -20, opacity: 0 },
-        visible: {
-            x: 0,
-            opacity: 1,
-            transition: {
-                delay: index * 0.1,
-                duration: 0.4
-            }
-        }
-    };
-
+const ServiceLinkCard = ({ service }: { service: ServiceLink }) => {
     return (
-        <motion.div
-            variants={listItemVariants}
-            className="w-full"
-            key={service.href}
-        >
+        <div className="w-full" key={service.href}>
             <Link href={service.href} className="block h-full">
-                <div className="h-full p-6 border shadow-md rounded-2xl bg-white hover:shadow-lg transition-all duration-300 group">
+                <div className="h-full p-6 border shadow-md rounded-2xl bg-white hover:shadow-lg transition-all duration-300 group hover:-translate-y-1">
                     <h3 className="text-xl font-semibold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors duration-300">
                         {service.title}
                     </h3>
@@ -119,64 +100,35 @@ const ServiceLinkCard = ({ service, index }: { service: ServiceLink; index: numb
                     </div>
                 </div>
             </Link>
-        </motion.div>
+        </div>
     );
 };
 
 // Reusable component for highlight lists
 const HighlightList = ({ highlights }: { highlights: string[] }) => {
-    const listItemVariants = {
-        hidden: { x: -20, opacity: 0 },
-        visible: (i: number) => ({
-            x: 0,
-            opacity: 1,
-            transition: {
-                delay: i * 0.1,
-                duration: 0.4
-            }
-        })
-    };
-
     return (
         <ul className="space-y-3">
-            {highlights.map((highlight, index) => (
-                <motion.li
-                    key={index}
-                    className="flex items-start"
-                    variants={listItemVariants}
-                    custom={index}
-                >
-                    <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                    <span className="text-gray-700">{highlight}</span>
-                </motion.li>
-            ))}
+            {highlights.map((highlight, index) => {
+                return (
+                    <li key={index} className="flex items-start">
+                        <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
+                        <span className="text-gray-700">{highlight}</span>
+                    </li>
+                );
+            })}
         </ul>
     );
 };
 
 // Reusable component for section headers
 const SectionHeader = ({ section }: { section: OverviewSection }) => {
-    const iconVariants = {
-        hover: {
-            scale: 1.1,
-            transition: {
-                type: "spring",
-                stiffness: 300,
-                duration: 0.8
-            }
-        }
-    };
-
     const IconComponent = section.icon;
 
     return (
         <div className="flex items-center gap-4 mb-4">
-            <motion.div
-                whileHover="hover"
-                variants={iconVariants}
-            >
+            <div className="transition-transform duration-300 hover:scale-110">
                 <IconComponent className={`w-8 h-8 ${section.iconColor}`} strokeWidth={1.5} />
-            </motion.div>
+            </div>
             <h2 className="text-2xl font-semibold text-gray-700 bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text">
                 {section.title}
             </h2>
@@ -185,83 +137,50 @@ const SectionHeader = ({ section }: { section: OverviewSection }) => {
 };
 
 export function Overview() {
-    // Animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2,
-                when: "beforeChildren"
-            }
-        }
-    };
-
-    const cardVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                duration: 0.6,
-                ease: "easeOut"
-            }
-        }
-    };
-
     // Separate services section from other sections
     const servicesSection = overviewData.find(section => section.title === "Our Services");
     const otherSections = overviewData.filter(section => section.title !== "Our Services");
 
     return (
-        <motion.section
-            className="py-16 px-4 md:px-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={containerVariants}
-        >
+        <section className="py-16 px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-8">
                 {/* Services Section - Full Width */}
                 {servicesSection && (
-                    <motion.div
-                        className="p-6 space-y-6 md:col-span-2"
-                        variants={cardVariants}
-                    >
+                    <div className="p-6 space-y-6 md:col-span-2">
                         <SectionHeader section={servicesSection} />
                         <div>
                             <p className="text-gray-700 mb-6">{servicesSection.content}</p>
                         </div>
                         {servicesSection.serviceLinks && (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {servicesSection.serviceLinks.map((service, index) => (
+                                {servicesSection.serviceLinks.map((service) => (
                                     <ServiceLinkCard 
                                         key={service.href} 
                                         service={service} 
-                                        index={index} 
                                     />
                                 ))}
                             </div>
                         )}
-                    </motion.div>
+                    </div>
                 )}
 
                 {/* Other Sections - Half Width Each */}
-                {otherSections.map((section) => (
-                    <motion.div
-                        key={section.title}
-                        className="p-6 space-y-6 md:col-span-1"
-                        variants={cardVariants}
-                    >
-                        <SectionHeader section={section} />
-                        <div>
-                            <p className="text-gray-700 mb-6">{section.content}</p>
+                {otherSections.map((section) => {
+                    return (
+                        <div
+                            key={section.title}
+                            className="p-6 space-y-6 md:col-span-1"
+                        >
+                            <SectionHeader section={section} />
+                            <div>
+                                <p className="text-gray-700 mb-6">{section.content}</p>
+                            </div>
+                            {section.highlights && <HighlightList highlights={section.highlights} />}
                         </div>
-                        {section.highlights && <HighlightList highlights={section.highlights} />}
-                    </motion.div>
-                ))}
+                    );
+                })}
             </div>
-        </motion.section>
+        </section>
     );
 }
 

@@ -1,8 +1,5 @@
-"use client"
-
 import { createElement } from 'react'
 import { Users, Rocket, Building, Search, Badge, Handshake, Target, Award } from 'lucide-react'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 interface Differentiator {
@@ -70,47 +67,20 @@ const differentiators: Differentiator[] = [
 ]
 
 export function Differentiators() {
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2
-            }
-        }
-    }
-
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: { y: 0, opacity: 1 }
-    }
-
     return (
         <section className="py-12 overflow-hidden">
             <div className="container mx-auto px-4">
-                <motion.h2
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-8 text-center"
-                >
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-8 text-center">
                     Our Differentiators
-                </motion.h2>
+                </h2>
 
-                <motion.div
-                    className="grid grid-cols-1 md:grid-cols-3 gap-8"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                >
-                    {differentiators.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            className="relative p-6 rounded-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(8,49,78,0.12)] group"
-                            variants={itemVariants}
-                        >
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {differentiators.map((item, index) => {
+                        return (
+                            <div
+                                key={index}
+                                className="relative p-6 rounded-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(8,49,78,0.12)] group"
+                            >
                             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/0 group-hover:from-blue-500/3 group-hover:via-blue-500/5 group-hover:to-blue-500/3 transition-all duration-300 -z-10" />
                             <div className="flex flex-col items-center text-center relative z-10">
                                 <div className="p-3 bg-[#08314e]/10 rounded-full mb-4 transition-transform duration-300 group-hover:scale-110">
@@ -137,9 +107,10 @@ export function Differentiators() {
                                     {item.description}
                                 </p>
                             </div>
-                        </motion.div>
-                    ))}
-                </motion.div>
+                        </div>
+                        );
+                    })}
+                </div>
             </div>
         </section>
     )
