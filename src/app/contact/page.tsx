@@ -33,7 +33,7 @@ export default function ContactPage() {
                                     <div className="p-2 bg-blue-100 rounded-full">
                                         <MapPin className="h-6 w-6 text-blue-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900">Registered Office</h3>
+                                    <h2 className="text-xl font-bold text-gray-900">Registered Office</h2>
                                 </div>
                                 <div className="text-gray-600">
                                     <a 
@@ -57,7 +57,7 @@ export default function ContactPage() {
                                     <div className="p-2 bg-blue-100 rounded-full">
                                         <Phone className="h-6 w-6 text-blue-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900">Contact</h3>
+                                    <h2 className="text-xl font-bold text-gray-900">Contact</h2>
                                 </div>
                                 <div className="space-y-3">
                                     <div>
@@ -89,7 +89,7 @@ export default function ContactPage() {
                                     <div className="p-2 bg-orange-100 rounded-full">
                                         <Clock className="h-6 w-6 text-orange-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900">Business Hours</h3>
+                                    <h2 className="text-xl font-bold text-gray-900">Business Hours</h2>
                                 </div>
                                 <div className="text-gray-600 font-medium">
                                     <p>Monday - Friday</p>
@@ -105,7 +105,7 @@ export default function ContactPage() {
                                     <div className="p-2 bg-green-100 rounded-full">
                                         <MapPin className="h-6 w-6 text-green-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900">Kenya Office</h3>
+                                    <h2 className="text-xl font-bold text-gray-900">Kenya Office</h2>
                                 </div>
                                 <div className="text-gray-600">
                                     <a 
@@ -129,7 +129,7 @@ export default function ContactPage() {
                                     <div className="p-2 bg-purple-100 rounded-full">
                                         <MapPin className="h-6 w-6 text-purple-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900">US Office</h3>
+                                    <h2 className="text-xl font-bold text-gray-900">US Office</h2>
                                 </div>
                                 <div className="text-gray-600">
                                     <p>Bloomfield, Michigan, USA</p>

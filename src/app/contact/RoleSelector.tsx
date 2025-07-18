@@ -31,9 +31,9 @@ export function RoleSelector() {
     return (
         <>
             <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">
                     Select Your Role to Proceed
-                </h3>
+                </h2>
                 <div className="flex space-x-6">
                     <div className="flex items-center">
                         <input

@@ -2,16 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-      },
-      {
-        protocol: 'https',
-        hostname: 'via.placeholder.com',
-      }
-    ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
   },
@@ -21,9 +11,20 @@ const nextConfig: NextConfig = {
     NEXT_PHASE: process.env.NEXT_PHASE || 'phase-production-build',
   },
   
+  // Modern browser optimizations
+  compiler: {
+    // Remove console.logs in production
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
+  // Performance optimizations
+  poweredByHeader: false,
+  
   // Experimental features to improve build performance
   experimental: {
     optimizePackageImports: ['@/lib/db'],
+    // Enable modern CSS features
+    cssChunking: 'strict',
   },
 };
 

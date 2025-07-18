@@ -1,0 +1,19 @@
+# Modern browsers configuration
+# This reduces JavaScript polyfills and transpilation
+
+# Chrome, Firefox, Safari, Edge - last 2 versions
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Safari versions
+last 2 Edge versions
+
+# Additional modern browser support
+Chrome >= 90
+Firefox >= 88
+Safari >= 14
+Edge >= 90
+
+# Exclude legacy browsers that require heavy polyfills
+not IE 11
+not dead
+not < 0.25% 

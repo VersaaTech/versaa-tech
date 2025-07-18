@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 export function Hero() {
     return (
         <section 
-            className="relative w-full min-h-[500px] sm:min-h-[400px] md:h-[50vh] md:min-h-[400px] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#e0f7fa] to-[#b3e5fc] animate-[fadeIn_1s_ease-out_forwards] py-8 sm:py-12"
+            className="relative w-full min-h-[500px] sm:min-h-[400px] md:h-[50vh] md:min-h-[400px] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#e0f7fa] to-[#b3e5fc] py-8 sm:py-12"
         >
             {/* Background Image */}
             <Image
@@ -15,6 +15,7 @@ export function Hero() {
                 quality={75}
                 className="object-cover"
                 priority
+                fetchPriority="high"
             />
 
             {/* Fade Layer */}
@@ -22,7 +23,7 @@ export function Hero() {
 
             {/* Hero Content */}
             <div 
-                className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 animate-[fadeInUp_0.8s_ease-out_0.5s_forwards] opacity-0"
+                className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8"
             >
                 <div className="max-w-4xl mx-auto text-center text-white">
                     <h1 

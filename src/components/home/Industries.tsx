@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { Card, CardContent } from "@/components/ui/card"
 import { Monitor, Phone, Flame, Building2, Factory, Stethoscope, GraduationCap, Home, HardHat, ShoppingBag, Landmark, Shield } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
@@ -196,106 +197,108 @@ export function Industries() {
     }, [emblaApi, startAutoplay, resetAutoplay])
 
     return (
-        <motion.section 
-            className="py-12"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={containerVariants}
-        >
-            <div className="px-4 md:px-8">
-                <motion.div 
-                    className="text-center mb-12"
-                    variants={containerVariants}
-                >
-                    <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
-                        Our Industry Practices
-                    </h2>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
-                        We provide specialized human capital solutions across diverse industries, leveraging our deep understanding of sector-specific challenges and requirements.
-                    </p>
-                </motion.div>
+        <LazyMotion features={domAnimation}>
+            <m.section 
+                className="py-12"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={containerVariants}
+            >
+                <div className="px-4 md:px-8">
+                    <m.div 
+                        className="text-center mb-12"
+                        variants={containerVariants}
+                    >
+                        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
+                            Our Industry Practices
+                        </h2>
+                        <p className="text-gray-600 max-w-2xl mx-auto">
+                            We provide specialized human capital solutions across diverse industries, leveraging our deep understanding of sector-specific challenges and requirements.
+                        </p>
+                    </m.div>
 
-                <div className="relative">
-                    {/* Carousel Container */}
-                    <div className="overflow-hidden" ref={emblaRef}>
-                        <div className="flex gap-6 pl-6">
-                            {industries.map((industry, index) => {
-                                const Icon = industry.icon
-                                return (
-                                    <motion.div
-                                        key={index}
-                                        className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_calc(33.333%-1rem)]"
-                                        variants={cardVariants}
-                                    >
-                                        <motion.div
-                                            whileHover="hover"
+                    <div className="relative">
+                        {/* Carousel Container */}
+                        <div className="overflow-hidden" ref={emblaRef}>
+                            <div className="flex gap-6 pl-6">
+                                {industries.map((industry, index) => {
+                                    const Icon = industry.icon
+                                    return (
+                                        <m.div
+                                            key={index}
+                                            className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_calc(33.333%-1rem)]"
                                             variants={cardVariants}
                                         >
-                                            <Card className="group h-full transition-all duration-300 rounded-2xl overflow-hidden">
-                                                <CardContent className="p-6 h-full">
-                                                    <div className="flex flex-col sm:flex-row h-full sm:items-start gap-4">
-                                                        <div className="bg-[#08314e]/5 p-3 rounded-lg transition-colors shrink-0 w-fit">
-                                                            <Icon className={`w-6 h-6 ${industry.color}`} />
+                                            <m.div
+                                                whileHover="hover"
+                                                variants={cardVariants}
+                                            >
+                                                <Card className="group h-full transition-all duration-300 rounded-2xl overflow-hidden">
+                                                    <CardContent className="p-6 h-full">
+                                                        <div className="flex flex-col sm:flex-row h-full sm:items-start gap-4">
+                                                            <div className="bg-[#08314e]/5 p-3 rounded-lg transition-colors shrink-0 w-fit">
+                                                                <Icon className={`w-6 h-6 ${industry.color}`} />
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <h3 className="font-semibold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-2">
+                                                                    {industry.title}
+                                                                </h3>
+                                                                <p className="text-sm text-gray-600">
+                                                                    {industry.description}
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                        <div className="flex-1">
-                                                            <h3 className="font-semibold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-2">
-                                                                {industry.title}
-                                                            </h3>
-                                                            <p className="text-sm text-gray-600">
-                                                                {industry.description}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </motion.div>
-                                    </motion.div>
-                                )
-                            })}
+                                                    </CardContent>
+                                                </Card>
+                                            </m.div>
+                                        </m.div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Navigation Buttons */}
+                        <div className="flex justify-center gap-4 mt-8">
+                            <m.div
+                                whileHover="hover"
+                                variants={buttonVariants}
+                            >
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className={`rounded-full bg-white/90 shadow-md ${
+                                        !prevBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    onClick={scrollPrev}
+                                    disabled={!prevBtnEnabled}
+                                    aria-label="Previous"
+                                >
+                                    <ChevronLeft className="h-4 w-4" />
+                                </Button>
+                            </m.div>
+
+                            <m.div
+                                whileHover="hover"
+                                variants={buttonVariants}
+                            >
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className={`rounded-full bg-white/90 shadow-md ${
+                                        !nextBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    onClick={scrollNext}
+                                    disabled={!nextBtnEnabled}
+                                    aria-label="Next"
+                                >
+                                    <ChevronRight className="h-4 w-4" />
+                                </Button>
+                            </m.div>
                         </div>
                     </div>
-
-                    {/* Navigation Buttons */}
-                    <div className="flex justify-center gap-4 mt-8">
-                        <motion.div
-                            whileHover="hover"
-                            variants={buttonVariants}
-                        >
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                className={`rounded-full bg-white/90 shadow-md ${
-                                    !prevBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
-                                }`}
-                                onClick={scrollPrev}
-                                disabled={!prevBtnEnabled}
-                                aria-label="Previous"
-                            >
-                                <ChevronLeft className="h-4 w-4" />
-                            </Button>
-                        </motion.div>
-
-                        <motion.div
-                            whileHover="hover"
-                            variants={buttonVariants}
-                        >
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                className={`rounded-full bg-white/90 shadow-md ${
-                                    !nextBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
-                                }`}
-                                onClick={scrollNext}
-                                disabled={!nextBtnEnabled}
-                                aria-label="Next"
-                            >
-                                <ChevronRight className="h-4 w-4" />
-                            </Button>
-                        </motion.div>
-                    </div>
                 </div>
-            </div>
-        </motion.section>
+            </m.section>
+        </LazyMotion>
     )
 }
