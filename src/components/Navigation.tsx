@@ -27,16 +27,16 @@ export const aboutItems = [
 
 export function Navigation() {
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="px-4 md:px-6 flex items-center">
-                <nav className="flex items-center justify-between w-full">
-                    <Link href="/" className="flex items-center">
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 h-24 md:h-28">
+            <div className="px-4 md:px-6 flex items-center h-full">
+                <nav className="flex items-center justify-between w-full h-full">
+                    <Link href="/" className="flex items-center h-full">
                         <Image 
-                            src="/images/versaatech-logo.png"
+                            src="/images/ProRecruit-Versaatech-Logo.svg"
                             alt="Versaa Tech Logo"
                             width={90}
                             height={90}
-                            className="dark:invert object-contain md:w-[90px] md:h-[90px] w-[80px] h-[80px]"
+                            className="dark:invert object-contain h-full w-auto"
                         />
                     </Link>
                     <div className="hidden md:flex space-x-6">

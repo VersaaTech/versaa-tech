@@ -24,11 +24,11 @@ export function Footer() {
                     <div className="space-y-6">
                         <Link href="/" className="inline-block">
                             <Image 
-                                src="/images/versaatech-logo.png"
+                                src="/images/ProRecruit-Versaatech-Logo.svg"
                                 alt="Versaa Tech Logo"
-                                width={100}
-                                height={100}
-                                className="w-[100px] h-[100px]"
+                                width={160}
+                                height={160}
+                                className="w-[140px] h-[140px] md:w-[160px] md:h-[160px]"
                                 loading="lazy"
                                 fetchPriority="low"
                             />

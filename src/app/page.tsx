@@ -1,5 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { Team } from "@/components/home/Leadership";
+import { OurTeam } from "@/components/home/OurTeam";
 import { About } from "@/components/home/About";
 import { Overview } from "@/components/home/Overview";
 import { Industries } from "@/components/home/Industries";
@@ -30,6 +31,9 @@ export default function Home() {
           <About />
           <section id="about-leadership" className={sectionSpacing}>
             <Team />
+          </section>
+          <section id="our-team" className={sectionSpacing}>
+            <OurTeam />
           </section>
           <section id="contact">
             <ContactPage />
