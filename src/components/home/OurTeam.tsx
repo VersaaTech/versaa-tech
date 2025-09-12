@@ -1,6 +1,7 @@
 'use client'
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Linkedin } from "lucide-react";
 
 const cardStyles = "border shadow-md rounded-2xl";
 
@@ -21,7 +22,18 @@ export function OurTeam() {
                 <Card className={cardStyles}>
                     <CardContent className="p-6 md:p-8">
                         <div className="flex flex-col items-center text-center mb-4">
-                            <h3 className="text-2xl font-semibold text-gray-800">{name}</h3>
+                            <div className="flex items-center gap-4 mb-1">
+                                <h3 className="text-2xl font-semibold text-gray-800">{name}</h3>
+                                <a 
+                                    href="https://www.linkedin.com/in/fredrick-maeba/" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 hover:text-blue-700 transition-colors"
+                                    aria-label="Fredrick Maeba's LinkedIn profile"
+                                >
+                                    <Linkedin size={20} />
+                                </a>
+                            </div>
                             <p className="text-blue-600">{role}</p>
                         </div>
                         <p className="text-gray-600 leading-relaxed">
