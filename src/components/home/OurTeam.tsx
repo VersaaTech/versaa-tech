@@ -7,7 +7,7 @@ const cardStyles = "border shadow-md rounded-2xl";
 
 export function OurTeam() {
     const name = "Fredrick Maeba";
-    const role = "Executive Recruiter";
+    const role = "Lead - Recruitments";
     const description = "Fredrick Maeba is an Executive Recruiter with over 6 years of experience, specializing in talent acquisition across industries such as FMCG, technology, manufacturing, healthcare, financial services just to mention. He has successfully delivered more than 60 strategic placements ranging from junior to C-suite level through connecting exceptional talent with opportunities that drive both organizational performance and individual career growth.";
 
     return (
