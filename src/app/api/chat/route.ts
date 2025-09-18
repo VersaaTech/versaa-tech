@@ -170,7 +170,7 @@ ${knowledgeBase}
 Important note: Your role is to provide clear, accurate, and company-specific responses based only on the information available in the knowledge base above. Make sure your answers are high quality and directly relevant to Versaatech's services and offerings.`;
 
     const result = streamText({
-      model: openai('gpt-4.1'), // Using the new cheaper GPT-4.1 model
+      model: openai('gpt-5-mini'), // Using the new cheaper GPT-4.1 model
       system: systemPrompt,
       messages,
       temperature: 0.3, // Lower temperature for more consistent, factual responses

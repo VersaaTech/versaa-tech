@@ -8,6 +8,9 @@ With a deep understanding of industry trends and workforce dynamics, they specia
     Chief Growth Officer
 *   **Bhawna Arora**
     Talent and Operations Head
+*   **Fredrick Maeba**
+    Lead - Recruitments
+    Executive Recruiter with over 6 years of experience, specializing in talent acquisition across industries such as FMCG, technology, manufacturing, healthcare, and financial services. He has successfully delivered more than 60 strategic placements ranging from junior to C-suite level, connecting exceptional talent with opportunities that drive both organizational performance and individual career growth.
 
 **We Global Advisors in:**
 Team of Advisors in USA, Dubai, Mexico, India and Kenya
