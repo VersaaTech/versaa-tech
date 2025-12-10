@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://www.versaatech.com/sitemap.xml
-Disallow: /n8n.versaatech.com/
-Disallow: /knowledge-base/

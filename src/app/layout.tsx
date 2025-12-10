@@ -7,6 +7,7 @@ import ScrollToTopButton from "@/components/ScrollToTopButton"
 import { ChatButton } from "@/components/chat/ChatButton"
 import SessionProvider from "@/components/SessionProvider"
 import LazyToaster from "@/components/LazyToaster"
+
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
