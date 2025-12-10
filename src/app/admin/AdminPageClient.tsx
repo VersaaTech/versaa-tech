@@ -30,7 +30,9 @@ import {
   AlertCircle,
   Search, Star,
   MapPin,
-  Calendar
+  Calendar,
+  Lock,
+  Unlock
 } from 'lucide-react';
 import { Job } from '@/lib/db';
 import { toast } from 'sonner';
@@ -663,6 +665,30 @@ export default function AdminPageClient({ session }: AdminPageClientProps) {
     }
   }, [fetchData]);
 
+  const toggleJobClosed = useCallback(async (jobId: number, currentClosed: boolean) => {
+    try {
+      const response = await fetch(`/api/jobs/${jobId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          is_closed: !currentClosed,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update job closed status');
+      }
+
+      toast.success(`Job ${!currentClosed ? 'closed' : 'reopened'} successfully!`);
+      fetchData();
+    } catch (err) {
+      console.error('Error updating job closed status:', err);
+      toast.error('Failed to update job closed status');
+    }
+  }, [fetchData]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -808,6 +834,11 @@ export default function AdminPageClient({ session }: AdminPageClientProps) {
                             Featured
                           </span>
                         )}
+                        {job.is_closed && (
+                          <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">
+                            Closed
+                          </span>
+                        )}
                         <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">
                           {job.job_type}
                         </span>
@@ -932,6 +963,11 @@ export default function AdminPageClient({ session }: AdminPageClientProps) {
                                 Featured
                               </span>
                             )}
+                            {job.is_closed && (
+                              <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 w-fit">
+                                Closed
+                              </span>
+                            )}
                           </div>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-500">
@@ -974,6 +1010,15 @@ export default function AdminPageClient({ session }: AdminPageClientProps) {
                               className={job.featured ? "text-yellow-600 hover:text-yellow-700" : ""}
                             >
                               <Star className={`h-4 w-4 ${job.featured ? 'fill-current' : ''}`} />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => toggleJobClosed(job.id, job.is_closed || false)}
+                              title={job.is_closed ? "Reopen Job" : "Close Job"}
+                              className={job.is_closed ? "text-red-600 hover:text-red-700" : "text-gray-600 hover:text-gray-700"}
+                            >
+                              {job.is_closed ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
                             </Button>
                             <Button
                               variant="outline"

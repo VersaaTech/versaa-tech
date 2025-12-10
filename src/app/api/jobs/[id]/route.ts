@@ -100,6 +100,7 @@ export async function PUT(
     }
     if (body.is_active !== undefined) updateData.is_active = body.is_active;
     if (body.featured !== undefined) updateData.featured = body.featured;
+    if (body.is_closed !== undefined) updateData.is_closed = body.is_closed;
     if (body.application_email !== undefined) updateData.application_email = body.application_email;
     if (body.application_url !== undefined) updateData.application_url = body.application_url;
 

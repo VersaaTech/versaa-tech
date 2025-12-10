@@ -145,12 +145,28 @@ export default function JobDetailPageClient({
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 break-words">
                   {job.title}
                 </h1>
-                {job.featured && (
-                  <Badge className="bg-yellow-500 text-white self-start sm:self-auto">
-                    Featured
-                  </Badge>
-                )}
+                <div className="flex gap-2 self-start sm:self-auto">
+                  {job.is_closed && (
+                    <Badge className="bg-gray-500 text-white">
+                      Closed
+                    </Badge>
+                  )}
+                  {job.featured && !job.is_closed && (
+                    <Badge className="bg-yellow-500 text-white">
+                      Featured
+                    </Badge>
+                  )}
+                </div>
               </div>
+
+              {/* Closed Notice */}
+              {job.is_closed && (
+                <div className="bg-gray-100 border border-gray-300 rounded-lg p-3 sm:p-4 mb-4">
+                  <p className="text-gray-700 text-sm sm:text-base">
+                    <strong>This position is no longer accepting applications.</strong> The role has been filled or is no longer available.
+                  </p>
+                </div>
+              )}
               
               <div className="flex items-center gap-2 text-gray-600 mb-4">
                 <DynamicIcon iconName="FaBuilding" />
@@ -206,10 +222,17 @@ export default function JobDetailPageClient({
 
             {/* Apply Button */}
             <div className="flex-shrink-0 w-full lg:w-auto">
-              {job.application_url ? (
-                <a 
-                  href={job.application_url} 
-                  target="_blank" 
+              {job.is_closed ? (
+                <Button
+                  disabled
+                  className="bg-gray-400 text-white px-6 sm:px-8 py-2 sm:py-3 text-base sm:text-lg w-full lg:w-auto cursor-not-allowed"
+                >
+                  Position Closed
+                </Button>
+              ) : job.application_url ? (
+                <a
+                  href={job.application_url}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full lg:w-auto"
                 >
@@ -218,7 +241,7 @@ export default function JobDetailPageClient({
                   </Button>
                 </a>
               ) : job.application_email ? (
-                <a 
+                <a
                   href={`mailto:${job.application_email}?subject=Application for ${job.title}`}
                   className="block w-full lg:w-auto"
                 >

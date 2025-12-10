@@ -162,17 +162,24 @@ export default function JobsPageClient() {
         whileHover={{ y: -4, transition: { duration: 0.2 } }}
         className="h-full"
       >
-        <Card className="h-full border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
+        <Card className={`h-full border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 ${job.is_closed ? 'opacity-75 bg-gray-50' : ''}`}>
           <CardHeader className="p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
               <CardTitle className="text-lg sm:text-xl font-semibold text-gray-800 break-words">
                 {job.title}
               </CardTitle>
-              {job.featured && (
-                <Badge variant="default" className="bg-yellow-500 text-white self-start sm:self-auto flex-shrink-0">
-                  Featured
-                </Badge>
-              )}
+              <div className="flex gap-2 self-start sm:self-auto flex-shrink-0">
+                {job.is_closed && (
+                  <Badge variant="default" className="bg-gray-500 text-white">
+                    Closed
+                  </Badge>
+                )}
+                {job.featured && !job.is_closed && (
+                  <Badge variant="default" className="bg-yellow-500 text-white">
+                    Featured
+                  </Badge>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-2 text-gray-600 text-sm sm:text-base">
               <DynamicIcon iconName="FaBuilding" />

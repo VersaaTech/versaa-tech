@@ -60,6 +60,7 @@ export interface Job {
   application_deadline?: Date;
   is_active?: boolean;
   featured?: boolean;
+  is_closed?: boolean;
   created_at?: Date;
   updated_at?: Date;
   created_by?: string;
@@ -87,6 +88,7 @@ export interface CreateJobData {
   application_deadline?: Date;
   is_active?: boolean;
   featured?: boolean;
+  is_closed?: boolean;
   created_by?: string;
   application_email?: string;
   application_url?: string;
@@ -182,6 +184,7 @@ export class JobsDB {
       application_deadline,
       is_active,
       featured,
+      is_closed,
       created_by,
       application_email,
       application_url
@@ -192,15 +195,15 @@ export class JobsDB {
         title, company, location, job_type, work_mode, salary_min, salary_max,
         salary_currency, description, requirements, responsibilities, benefits,
         skills, experience_level, department, application_deadline, is_active,
-        featured, created_by, application_email, application_url
+        featured, is_closed, created_by, application_email, application_url
       ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22
       ) RETURNING *`,
       [
         title, company, location, job_type, work_mode, salary_min, salary_max,
         salary_currency, description, requirements, responsibilities, benefits,
         JSON.stringify(skills), experience_level, department, application_deadline,
-        is_active, featured, created_by, application_email, application_url
+        is_active, featured, is_closed, created_by, application_email, application_url
       ]
     );
 
