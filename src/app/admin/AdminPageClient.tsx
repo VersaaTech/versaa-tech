@@ -105,12 +105,11 @@ interface JobFormModalProps {
 }
 
 const JobFormModal = memo(({ isOpen, onClose, editingJob, onSubmit, submitting }: JobFormModalProps): JSX.Element => {
-  const [formData, setFormData] = useState<JobFormData>(initialJobForm);
-
-  // Initialize form data when modal opens or editing job changes
-  useEffect(() => {
+  // Use lazy initialization based on editingJob prop
+  // The parent component should use a key prop to remount when editingJob changes
+  const [formData, setFormData] = useState<JobFormData>(() => {
     if (editingJob) {
-      setFormData({
+      return {
         title: editingJob.title,
         company: editingJob.company,
         location: editingJob.location || '',
@@ -126,17 +125,16 @@ const JobFormModal = memo(({ isOpen, onClose, editingJob, onSubmit, submitting }
         skills: Array.isArray(editingJob.skills) ? editingJob.skills.join(', ') : '',
         experience_level: editingJob.experience_level || 'Mid',
         department: editingJob.department || '',
-        application_deadline: editingJob.application_deadline ? 
+        application_deadline: editingJob.application_deadline ?
           new Date(editingJob.application_deadline).toISOString().split('T')[0] : '',
         is_active: editingJob.is_active || false,
         featured: editingJob.featured || false,
         application_email: editingJob.application_email || 'info@versaatech.com',
         application_url: editingJob.application_url || '',
-      });
-    } else {
-      setFormData(initialJobForm);
+      };
     }
-  }, [editingJob, isOpen]);
+    return initialJobForm;
+  });
 
   // Optimized field update - simplified to avoid function creation on each render
   const updateField = useCallback((field: keyof JobFormData, value: string | boolean) => {
@@ -1164,6 +1162,7 @@ export default function AdminPageClient({ session }: AdminPageClientProps) {
 
       {/* Optimized Job Form Modal */}
       <JobFormModal
+        key={editingJob?.id ?? 'new'}
         isOpen={showJobModal}
         onClose={() => setShowJobModal(false)}
         editingJob={editingJob}

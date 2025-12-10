@@ -141,7 +141,7 @@ export class JobsDB {
       queryText += ` WHERE ${conditions.join(' AND ')}`;
     }
 
-    queryText += ' ORDER BY featured DESC, posted_date DESC';
+    queryText += ' ORDER BY COALESCE(is_closed, false) ASC, posted_date DESC';
 
     if (filters?.limit) {
       queryText += ` LIMIT $${params.length + 1}`;
