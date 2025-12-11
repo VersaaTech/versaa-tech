@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
+    qualities: [50, 75],
   },
   
   // Build optimization: Set build-time environment
