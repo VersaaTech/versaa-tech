@@ -4,6 +4,7 @@ import { createElement } from 'react'
 import { LazyMotion, domAnimation } from 'framer-motion'
 import * as m from 'framer-motion/m'
 import { Button } from "@/components/ui/button"
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -161,7 +162,7 @@ export default function FractionalHRServicesPage() {
         {/* Hero Section */}
         <section className="relative h-auto min-h-[50vh] py-12 flex items-center justify-center">
           <Image
-            src="/images/fractional-hr.jpg"
+            src="/images/fractional-hr.webp"
             alt="Fractional HR Services"
             fill
             className="object-cover"
@@ -172,10 +173,7 @@ export default function FractionalHRServicesPage() {
           <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8">
             <div className="max-w-4xl text-center mx-auto">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-white mb-4">
-                Strategic HR Leadership
-                <span className="bg-gradient-to-r from-blue-400 to-green-400 text-transparent bg-clip-text block">
-                  On-Demand
-                </span>
+                Fractional HR: Strategic Leadership On-Demand
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-6 px-2 sm:px-0">
                 Access senior HR expertise with flexible engagement models that scale with your business needs while reducing costs and accelerating results.
@@ -199,6 +197,15 @@ export default function FractionalHRServicesPage() {
             </div>
           </div>
         </section>
+
+        <div className="container mx-auto px-4 py-4">
+          <Breadcrumbs
+            items={[
+              { name: 'Services', href: '/#overview' },
+              { name: 'Fractional HR Services', href: '/fractional-hr-services' }
+            ]}
+          />
+        </div>
 
         {/* Statistics Section */}
         <m.section

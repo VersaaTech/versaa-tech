@@ -7,7 +7,7 @@ export const revalidate = 0
 const BASE_URL = 'https://www.versaatech.com'
 
 // Fixed date for static pages to prevent misleading freshness signals
-const STATIC_PAGES_DATE = new Date('2025-01-15')
+const STATIC_PAGES_DATE = new Date('2026-02-01')
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [

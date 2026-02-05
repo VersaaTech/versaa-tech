@@ -4,6 +4,7 @@ import { createElement } from 'react'
 import { LazyMotion, domAnimation } from 'framer-motion'
 import * as m from 'framer-motion/m'
 import { Button } from "@/components/ui/button"
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -197,6 +198,15 @@ export default function PayrollManagementPage() {
             </div>
           </div>
         </section>
+
+        <div className="container mx-auto px-4 py-4">
+          <Breadcrumbs
+            items={[
+              { name: 'Services', href: '/#overview' },
+              { name: 'Payroll Management', href: '/payroll-management' }
+            ]}
+          />
+        </div>
 
         {/* Statistics Section */}
         <m.section

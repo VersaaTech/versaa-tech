@@ -4,6 +4,7 @@ import { createElement } from 'react'
 import { LazyMotion, domAnimation } from 'framer-motion'
 import * as m from 'framer-motion/m'
 import { Button } from "@/components/ui/button"
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -161,7 +162,7 @@ export default function HRProcessOutsourcingPage() {
         {/* Hero Section */}
         <section className="relative h-auto min-h-[50vh] py-12 flex items-center justify-center">
           <Image
-            src="/images/hr-outsourcing.jpg"
+            src="/images/hr-outsourcing.webp"
             alt="HR Process Outsourcing Services"
             fill
             className="object-cover"
@@ -172,10 +173,7 @@ export default function HRProcessOutsourcingPage() {
           <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8">
             <div className="max-w-4xl text-center mx-auto">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-white mb-4">
-                Streamline Your
-                <span className="bg-gradient-to-r from-blue-400 to-green-400 text-transparent bg-clip-text block">
-                  HR Operations
-                </span>
+                HR Process Outsourcing: Streamline Your Operations
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-6 px-2 sm:px-0">
                 Transform your HR processes with comprehensive outsourcing solutions that reduce costs, enhance efficiency, and ensure compliance while freeing your team to focus on strategic initiatives.
@@ -199,6 +197,15 @@ export default function HRProcessOutsourcingPage() {
             </div>
           </div>
         </section>
+
+        <div className="container mx-auto px-4 py-4">
+          <Breadcrumbs
+            items={[
+              { name: 'Services', href: '/#overview' },
+              { name: 'HR Process Outsourcing', href: '/hr-process-outsourcing' }
+            ]}
+          />
+        </div>
 
         {/* Statistics Section */}
         <m.section

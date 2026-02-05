@@ -1,6 +1,7 @@
 'use client'
 
 import { LazyMotion, domAnimation } from 'framer-motion'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import {
   ServiceHero,
   MotionServiceSection,
@@ -24,8 +25,7 @@ import {
 const HERO_CONTENT: HeroContent = {
   backgroundImage: '/images/executive-search-hero.avif',
   imageAlt: 'Executive Search',
-  titleLine1: 'Find Your Next',
-  titleLine2: 'Game-Changing Leader',
+  title: 'Executive Search: Find Your Game-Changing Leader',
   description:
     'Connect with visionary executives who transform organizations. Our global network and AI-enhanced process deliver exceptional leaders in record time.',
   ctaText: 'Start Your Search',
@@ -160,6 +160,15 @@ export default function ExecutiveSearchPage() {
     <div className="min-h-screen bg-background">
       <LazyMotion features={domAnimation}>
         <ServiceHero content={HERO_CONTENT} />
+
+        <div className="container mx-auto px-4 py-4">
+          <Breadcrumbs
+            items={[
+              { name: 'Services', href: '/#overview' },
+              { name: 'Executive Search', href: '/executive-search' }
+            ]}
+          />
+        </div>
 
         {/* Statistics Section */}
         <MotionServiceSection className="bg-card">

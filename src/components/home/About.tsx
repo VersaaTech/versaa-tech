@@ -9,11 +9,8 @@ export function About() {
                     <h2 className="text-3xl font-bold font-display text-foreground mb-6">
                         About Versaatech
                     </h2>
-                    <p className="text-muted-foreground max-w-4xl mx-auto text-lg leading-relaxed mb-6">
+                    <p className="text-muted-foreground max-w-4xl mx-auto text-lg leading-relaxed">
                         Versaatech is a results-driven HR consulting firm that leverages deep job market data and human capital expertise to deliver specialized talent acquisition and workforce solutions. As a trusted partner in human capital management, we transform organizational challenges into competitive advantages through strategic recruitment, comprehensive HR services, and data-driven insights.
-                    </p>
-                    <p className="text-muted-foreground max-w-4xl mx-auto text-base leading-relaxed">
-                        Our team of experienced HR professionals brings together decades of expertise in executive search, recruitment process outsourcing, payroll management, and HR consulting. We serve organizations across diverse industries, providing tailored human capital solutions that drive sustainable growth and operational excellence.
                     </p>
                 </div>
 

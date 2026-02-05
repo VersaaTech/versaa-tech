@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import DynamicIcon from '@/components/DynamicIcon';
 import { Job } from '@/lib/db';
 
@@ -116,6 +117,16 @@ export default function JobDetailPageClient({
   return (
     <div className="min-h-screen bg-[#f7fffc] py-4 sm:py-8">
       <div className="container mx-auto px-4 max-w-4xl">
+        {/* Breadcrumbs */}
+        <div className="mb-4">
+          <Breadcrumbs
+            items={[
+              { name: 'Jobs', href: '/jobs' },
+              { name: job.title, href: `/jobs/${jobId}` }
+            ]}
+          />
+        </div>
+
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -123,8 +134,8 @@ export default function JobDetailPageClient({
           className="mb-4 sm:mb-6"
         >
           <Link href="/jobs">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="flex items-center gap-2 text-sm sm:text-base"
             >
               <DynamicIcon iconName="FaArrowLeft" />

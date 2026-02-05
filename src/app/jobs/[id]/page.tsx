@@ -32,7 +32,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         job.work_mode,
         job.experience_level,
         ...(job.skills || [])
-      ].filter(Boolean).join(', ')
+      ].filter(Boolean).join(', '),
+      alternates: {
+        canonical: `/jobs/${id}`,
+      },
     };
   } catch (error) {
     console.error('Error generating metadata:', error);

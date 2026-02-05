@@ -10,11 +10,15 @@ export const organizationSchema = {
   '@id': `${BASE_URL}/#organization`,
   name: 'Versaatech',
   url: BASE_URL,
-  logo: `${BASE_URL}/favicons/android-chrome-512x512.png`,
+  logo: `${BASE_URL}/images/ProRecruit-Versaatech-Logo.svg`,
   description:
-    'Versaatech is a global human capital solutions provider specializing in executive search, recruitment process outsourcing, HR services, payroll management, and industry benchmarking across Africa, Middle East, and beyond.',
+    'Versaatech is a global human capital solutions provider specializing in executive search, recruitment process outsourcing (RPO), HR consulting, payroll management, and workforce strategies. With offices in Dubai (UAE) and Nairobi (Kenya), we serve organizations across the Americas, Europe, Middle East, Africa, and Asia-Pacific regions.',
   email: 'info@versaatech.com',
   telephone: '+254781126819',
+  foundingLocation: {
+    '@type': 'Place',
+    name: 'Dubai, United Arab Emirates',
+  },
   sameAs: [
     'https://www.linkedin.com/company/versaatech',
   ],
@@ -23,15 +27,17 @@ export const organizationSchema = {
       '@type': 'PostalAddress',
       streetAddress: 'Meydan Grandstand, 6th Floor, Meydan Road, Nad Al Sheba',
       addressLocality: 'Dubai',
+      addressRegion: 'Dubai',
       addressCountry: 'AE',
-      name: 'Dubai Office',
+      name: 'Dubai Office (UAE)',
     },
     {
       '@type': 'PostalAddress',
       streetAddress: 'The Mirage, Tower 2, Floor M1, Unit 7',
       addressLocality: 'Nairobi',
+      addressRegion: 'Nairobi',
       addressCountry: 'KE',
-      name: 'Kenya Office',
+      name: 'Kenya Office (Nairobi)',
     },
   ],
   contactPoint: [
@@ -40,20 +46,44 @@ export const organizationSchema = {
       telephone: '+254781126819',
       contactType: 'customer service',
       email: 'info@versaatech.com',
-      areaServed: ['AE', 'KE', 'Africa', 'Middle East'],
+      areaServed: [
+        'Americas',
+        'Europe',
+        'Middle East',
+        'Africa',
+        'Asia-Pacific',
+        'AE',
+        'KE',
+      ],
       availableLanguage: ['English'],
     },
   ],
+  // Services offered by Versaatech
+  knowsAbout: [
+    'Executive Search',
+    'Recruitment Process Outsourcing',
+    'RPO',
+    'Payroll Management',
+    'HR Consulting',
+    'Human Capital Solutions',
+    'Talent Acquisition',
+    'Workforce Strategies',
+    'HR Outsourcing',
+    'Industry Benchmarking',
+    'Fractional HR Services',
+    'Organizational Development',
+  ],
+  // Comprehensive service areas covering global regions
   areaServed: [
     {
-      '@type': 'GeoCircle',
-      geoMidpoint: {
-        '@type': 'GeoCoordinates',
-        latitude: -1.2921,
-        longitude: 36.8219,
-      },
-      geoRadius: '5000000',
-      name: 'Africa',
+      '@type': 'Place',
+      name: 'Americas',
+      description: 'North America, Central America, South America',
+    },
+    {
+      '@type': 'Place',
+      name: 'Europe',
+      description: 'Western Europe, Eastern Europe, Nordic countries',
     },
     {
       '@type': 'GeoCircle',
@@ -65,7 +95,91 @@ export const organizationSchema = {
       geoRadius: '3000000',
       name: 'Middle East',
     },
+    {
+      '@type': 'GeoCircle',
+      geoMidpoint: {
+        '@type': 'GeoCoordinates',
+        latitude: -1.2921,
+        longitude: 36.8219,
+      },
+      geoRadius: '5000000',
+      name: 'Africa',
+    },
+    {
+      '@type': 'Place',
+      name: 'Asia-Pacific',
+      description: 'Southeast Asia, East Asia, Oceania',
+    },
+    {
+      '@type': 'Country',
+      name: 'United Arab Emirates',
+    },
+    {
+      '@type': 'Country',
+      name: 'Kenya',
+    },
   ],
+  // Explicit service offerings for rich results
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Human Capital Solutions',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Executive Search',
+          description:
+            'Strategic executive recruitment and headhunting services for senior leadership positions across diverse industries.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Recruitment Process Outsourcing (RPO)',
+          description:
+            'End-to-end recruitment solutions that streamline talent acquisition processes and reduce time-to-hire.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Payroll Management',
+          description:
+            'Comprehensive payroll processing, compliance, and administration services for organizations of all sizes.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'HR Consulting',
+          description:
+            'Strategic HR advisory services including organizational development, workforce planning, and HR transformation.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Fractional HR Services',
+          description:
+            'Flexible, on-demand HR leadership and expertise for growing organizations.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Industry Benchmarking',
+          description:
+            'Data-driven compensation and workforce benchmarking to ensure competitive positioning.',
+        },
+      },
+    ],
+  },
 };
 
 // WebSite Schema with SearchAction
@@ -171,6 +285,13 @@ export function generateJobPostingSchema(job: Job) {
     baseSchema.validThrough = new Date(job.application_deadline)
       .toISOString()
       .split('T')[0];
+  }
+
+  // Default to 60 days from posting if no deadline set
+  if (!baseSchema.validThrough) {
+    const defaultExpiry = new Date(baseSchema.datePosted as string);
+    defaultExpiry.setDate(defaultExpiry.getDate() + 60);
+    baseSchema.validThrough = defaultExpiry.toISOString().split('T')[0];
   }
 
   // Add salary information if available
@@ -294,6 +415,20 @@ export function generateContactPageSchema() {
         },
       ],
     },
+  };
+}
+
+// Jobs ItemList Schema Generator
+export function generateJobsListSchema(jobs: Job[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Career Opportunities at Versaatech',
+    itemListElement: jobs.map((job, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `${BASE_URL}/jobs/${job.id}`,
+    })),
   };
 }
 

@@ -131,7 +131,7 @@ export function Footer() {
                         <div className="flex flex-wrap gap-4">
                             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
                                 <Image
-                                    src="/images/credentials/hr.jpg"
+                                    src="/images/credentials/hr.webp"
                                     alt="ISO Certification"
                                     width={100}
                                     height={100}
@@ -142,7 +142,7 @@ export function Footer() {
                             </div>
                             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
                                 <Image
-                                    src="/images/credentials/data-protection.jpg"
+                                    src="/images/credentials/data-protection.webp"
                                     alt="SNITA Approved Trainer"
                                     width={100}
                                     height={100}

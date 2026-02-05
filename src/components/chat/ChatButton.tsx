@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react"
 import { MessageCircle } from "lucide-react"
 import { LazyMotion, domAnimation, AnimatePresence, m } from "framer-motion"
-import { Chat } from "./Chat"
+import dynamic from 'next/dynamic'
+
+const Chat = dynamic(() => import('./Chat').then(mod => mod.Chat), {
+  ssr: false,
+  loading: () => null,
+})
 
 export function ChatButton() {
   const [isOpen, setIsOpen] = useState(false)

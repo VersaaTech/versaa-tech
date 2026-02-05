@@ -1,6 +1,7 @@
 'use client'
 
 import { LazyMotion, domAnimation } from 'framer-motion'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import {
   ServiceHero,
   MotionServiceSection,
@@ -22,10 +23,9 @@ import {
 
 // Page-specific content
 const HERO_CONTENT: HeroContent = {
-  backgroundImage: '/images/hr-benchmarking.jpg',
+  backgroundImage: '/images/hr-benchmarking.webp',
   imageAlt: 'Industry HR Benchmarking Services',
-  titleLine1: 'Strategic HR',
-  titleLine2: 'Industry Benchmarking',
+  title: 'Strategic HR Industry Benchmarking',
   description:
     'Gain competitive intelligence through comprehensive industry benchmarking studies that optimize your HR strategies and drive organizational excellence.',
   ctaText: 'Explore Benchmarking Solutions',
@@ -162,6 +162,15 @@ export default function IndustryBenchmarkingPage() {
     <div className="min-h-screen bg-background">
       <LazyMotion features={domAnimation}>
         <ServiceHero content={HERO_CONTENT} />
+
+        <div className="container mx-auto px-4 py-4">
+          <Breadcrumbs
+            items={[
+              { name: 'Services', href: '/#overview' },
+              { name: 'Industry Benchmarking', href: '/industry-benchmarking' }
+            ]}
+          />
+        </div>
 
         {/* Statistics Section */}
         <MotionServiceSection className="bg-card">

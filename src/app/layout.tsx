@@ -13,12 +13,14 @@ import { organizationSchema, websiteSchema } from "@/lib/schema"
 const inter = Inter({
   subsets: ["latin"],
   variable: '--font-inter',
+  display: 'swap',
 })
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: '--font-jakarta',
   weight: ['500', '600', '700', '800'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -76,6 +78,10 @@ export default function RootLayout({
       <head>
         {/* Structured Data - Organization and WebSite Schema */}
         <JsonLd data={[organizationSchema, websiteSchema]} />
+
+        {/* Preconnect for Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
         {/* Resource hints for performance */}
         <link rel="dns-prefetch" href="https://unpkg.com" />

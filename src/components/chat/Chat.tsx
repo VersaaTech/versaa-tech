@@ -4,59 +4,68 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { Send, MessageCircle } from 'lucide-react';
 import { LazyMotion, domAnimation, AnimatePresence, m } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useChat } from '@ai-sdk/react';
+import { TextStreamChatTransport, UIMessage } from 'ai';
 
 interface ChatProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
+const INITIAL_MESSAGE: UIMessage = {
+  id: 'initial-greeting',
+  role: 'assistant',
+  parts: [{ type: 'text', text: '👋 Hi, I am Max! How can I assist you with Versaatech\'s services today?' }],
+};
+
 export function Chat({ isOpen, onOpenChange }: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+  const [input, setInput] = useState('');
+
+  const transport = useMemo(() => new TextStreamChatTransport({ api: '/api/chat' }), []);
+
   const {
     messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
+    sendMessage,
+    status,
     setMessages
   } = useChat({
-    api: '/api/chat',
-    initialMessages: [
-      {
-        id: 'initial-greeting',
-        role: 'assistant',
-        content: '👋 Hi, I am Max! How can I assist you with Versaatech\'s services today?',
-      }
-    ],
+    transport,
+    messages: [INITIAL_MESSAGE],
     onError: (error) => {
       console.error('Chat error:', error);
     }
   });
+
+  const isLoading = status === 'streaming' || status === 'submitted';
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Clear chat history when sheet is closed
-  useEffect(() => {
-    if (!isOpen) {
-      setMessages([
-        {
-          id: 'initial-greeting',
-          role: 'assistant',
-          content: '👋 Hi, I am Max! How can I assist you with Versaatech\'s services today?',
-        }
-      ]);
+  // Handle sheet open/close with chat reset
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      // Reset chat when closing
+      setMessages([INITIAL_MESSAGE]);
+      setInput('');
     }
-  }, [isOpen, setMessages]);
+    onOpenChange(open);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    sendMessage({ text: input });
+    setInput('');
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -70,24 +79,28 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
   };
 
   const handleClearChat = () => {
-    setMessages([
-      {
-        id: 'initial-greeting',
-        role: 'assistant',
-        content: '👋 Hi, I am Max! How can I assist you with Versaatech\'s services today?',
-      }
-    ]);
+    setMessages([INITIAL_MESSAGE]);
+    setInput('');
+  };
+
+  // Helper to get message content as string from parts array
+  const getMessageContent = (message: typeof messages[0]): string => {
+    if (!message.parts) return '';
+    return message.parts
+      .filter((part): part is { type: 'text'; text: string } => part.type === 'text')
+      .map(part => part.text)
+      .join('');
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetContent className="flex flex-col h-full p-0 gap-0 w-full sm:max-w-md">
         <SheetHeader className="px-4 py-3 border-b">
           <SheetTitle className="text-gradient bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent font-bold">
             Versaa Chat
           </SheetTitle>
         </SheetHeader>
-        
+
         <LazyMotion features={domAnimation}>
           <div className="flex-1 overflow-y-auto p-4 space-y-4 relative">
             <AnimatePresence initial={false}>
@@ -135,11 +148,11 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
                               p: ({...props}) => <p {...props} className="my-2" />,
                             }}
                           >
-                            {message.content}
+                            {getMessageContent(message)}
                           </ReactMarkdown>
                         </div>
                       ) : (
-                        <div className="text-sm">{message.content}</div>
+                        <div className="text-sm">{getMessageContent(message)}</div>
                       )}
 
                       {message.role === 'assistant' && (
@@ -149,7 +162,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
                       )}
                     </div>
                     <span className="text-xs text-gray-500 px-2">
-                      {message.createdAt ? formatTime(new Date(message.createdAt)) : formatTime(new Date())}
+                      {formatTime(new Date())}
                     </span>
                   </div>
                 </m.div>
@@ -202,7 +215,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
             <textarea
               value={input}
-              onChange={handleInputChange}
+              onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask about Versaatech's services..."
               className="flex-1 min-h-10 p-3 border rounded-full resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"

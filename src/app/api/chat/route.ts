@@ -69,7 +69,7 @@ Respond with only the filenames, comma-separated, nothing else:`;
       model: openai('gpt-4.1'), // Using the new cheaper GPT-4.1 model
       prompt: classificationPrompt,
       temperature: 0.1, // Very low temperature for consistent classification
-      maxTokens: 100, // Keep classification response short
+      maxOutputTokens: 100, // Keep classification response short
     });
 
     const relevantFiles = text
@@ -174,10 +174,10 @@ Important note: Your role is to provide clear, accurate, and company-specific re
       system: systemPrompt,
       messages,
       temperature: 0.3, // Lower temperature for more consistent, factual responses
-      maxTokens: 1000, // Limit response length for better UX
+      maxOutputTokens: 1000, // Limit response length for better UX
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error('Error in chat API:', error);
     return new Response('Internal Server Error', { status: 500 });

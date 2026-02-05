@@ -1,6 +1,7 @@
 'use client'
 
 import { LazyMotion, domAnimation } from 'framer-motion'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import {
   ServiceHero,
   MotionServiceSection,
@@ -24,8 +25,7 @@ import {
 const HERO_CONTENT: HeroContent = {
   backgroundImage: '/images/recruitment-outsourcing.webp',
   imageAlt: 'RPO Recruitment Process Outsourcing',
-  titleLine1: 'Transform Your',
-  titleLine2: 'Talent Acquisition',
+  title: 'RPO Solutions: Transform Your Talent Acquisition',
   description:
     'Scale your recruitment with our comprehensive RPO solutions. From sourcing to onboarding, we deliver quality candidates faster and more cost-effectively.',
   ctaText: 'Explore RPO Solutions',
@@ -161,6 +161,15 @@ export default function RPORecruitmentPage() {
     <div className="min-h-screen bg-background">
       <LazyMotion features={domAnimation}>
         <ServiceHero content={HERO_CONTENT} />
+
+        <div className="container mx-auto px-4 py-4">
+          <Breadcrumbs
+            items={[
+              { name: 'Services', href: '/#overview' },
+              { name: 'RPO Recruitment', href: '/rpo-recruitment' }
+            ]}
+          />
+        </div>
 
         {/* Statistics Section */}
         <MotionServiceSection className="bg-card">

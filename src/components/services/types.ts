@@ -26,8 +26,7 @@ export interface Benefit {
 export interface HeroContent {
   backgroundImage: string
   imageAlt: string
-  titleLine1: string
-  titleLine2: string
+  title: string
   description: string
   ctaText: string
   ctaHref?: string

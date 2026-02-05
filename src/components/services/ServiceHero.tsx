@@ -9,7 +9,7 @@ interface ServiceHeroProps {
 }
 
 export function ServiceHero({ content }: ServiceHeroProps) {
-  const { backgroundImage, imageAlt, titleLine1, titleLine2, description, ctaText, ctaHref = '/contact' } = content
+  const { backgroundImage, imageAlt, title, description, ctaText, ctaHref = '/contact' } = content
 
   return (
     <section className="relative h-auto min-h-[50vh] py-12 flex items-center justify-center">
@@ -25,10 +25,7 @@ export function ServiceHero({ content }: ServiceHeroProps) {
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-4xl text-center mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold font-display text-white mb-4">
-            {titleLine1}
-            <span className="bg-gradient-to-r from-blue-400 to-green-400 text-transparent bg-clip-text block">
-              {titleLine2}
-            </span>
+            {title}
           </h1>
           <p className="text-base md:text-lg text-gray-200 mb-6">
             {description}

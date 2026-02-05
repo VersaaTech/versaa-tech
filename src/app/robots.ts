@@ -7,10 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: [
         '/admin',
-        '/admin/',
         '/auth/',
         '/api/',
-        '/n8n.versaatech.com/',
         '/knowledge-base/',
       ],
     },
