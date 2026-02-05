@@ -1,3 +1,6 @@
+import Link from 'next/link'
+import { ArrowRight, Search, Users, Banknote, UserCog, Settings, BarChart3, Phone, Home } from 'lucide-react'
+
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-white">
@@ -16,7 +19,7 @@ export default function PrivacyPolicy() {
         <section className="mb-12">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">1. Introduction</h2>
           <p className="text-gray-600 mb-4">
-            Versaa Tech (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;, &quot;the Company&quot;) is committed to protecting the privacy and security of your personal data. 
+            Versaatech (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;, &quot;the Company&quot;) is committed to protecting the privacy and security of your personal data. 
             This Privacy Policy explains how we collect, use, process, store, and protect your personal information in accordance with 
             applicable data protection laws, including the Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data (&quot;UAE PDPL&quot;), 
             the General Data Protection Regulation (&quot;GDPR&quot;), and other relevant privacy laws in jurisdictions where we operate.
@@ -33,7 +36,7 @@ export default function PrivacyPolicy() {
           <div className="mb-6">
             <h3 className="text-lg font-medium text-gray-800 mb-3">Data Controller</h3>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-gray-600 mb-2"><strong>Company Name:</strong> Versaa Tech</p>
+              <p className="text-gray-600 mb-2"><strong>Company Name:</strong> Versaatech</p>
               <p className="text-gray-600 mb-2"><strong>Address:</strong> Meydan Grandstand, 6th floor, Meydan Road, Nad Al Sheba, Dubai, U.A.E</p>
               <p className="text-gray-600 mb-2"><strong>Email:</strong> info@versaatech.com</p>
             </div>
@@ -375,10 +378,93 @@ export default function PrivacyPolicy() {
 
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-sm text-gray-500 text-center">
-            This Privacy Policy is governed by applicable data protection and privacy laws including the UAE Federal Decree-Law No. 45 of 2021 
+            This Privacy Policy is governed by applicable data protection and privacy laws including the UAE Federal Decree-Law No. 45 of 2021
             on the Protection of Personal Data, GDPR, and other relevant laws in jurisdictions where we operate.
           </p>
         </div>
+
+        {/* Internal Links Section - Prevents Dead-End Page */}
+        <section className="mt-16 pt-12 border-t border-gray-200">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+            Explore Versaatech HR Solutions
+          </h2>
+          <p className="text-gray-600 mb-8 text-center max-w-2xl mx-auto">
+            Learn more about our comprehensive HR services designed to support your organization&apos;s growth and talent management needs.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <Link
+              href="/executive-search"
+              className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group"
+            >
+              <Search className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-700 group-hover:text-blue-600 transition-colors">Executive Search Services</span>
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 ml-auto transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/rpo-recruitment"
+              className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group"
+            >
+              <Users className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-700 group-hover:text-blue-600 transition-colors">RPO Recruitment Solutions</span>
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 ml-auto transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/payroll-management"
+              className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group"
+            >
+              <Banknote className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-700 group-hover:text-blue-600 transition-colors">Payroll Management</span>
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 ml-auto transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/fractional-hr-services"
+              className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group"
+            >
+              <UserCog className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-700 group-hover:text-blue-600 transition-colors">Fractional HR Leadership</span>
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 ml-auto transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/hr-process-outsourcing"
+              className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group"
+            >
+              <Settings className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-700 group-hover:text-blue-600 transition-colors">HR Process Outsourcing</span>
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 ml-auto transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/industry-benchmarking"
+              className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group"
+            >
+              <BarChart3 className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-700 group-hover:text-blue-600 transition-colors">Industry Benchmarking</span>
+              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 ml-auto transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg hover:from-blue-600 hover:to-blue-800 transition-all font-medium"
+            >
+              <Phone className="w-5 h-5" />
+              Contact Us
+            </Link>
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            >
+              <Home className="w-5 h-5" />
+              Back to Home
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   )

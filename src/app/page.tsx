@@ -13,7 +13,7 @@ const sectionSpacing = "pt-[90px] -mt-[90px]";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="bg-[#f7fffc]">
+      <main className="bg-background">
         <Hero />
         <section id="overview" className={sectionSpacing}>
           <Overview />

@@ -6,17 +6,20 @@ export const revalidate = 0
 
 const BASE_URL = 'https://www.versaatech.com'
 
+// Fixed date for static pages to prevent misleading freshness signals
+const STATIC_PAGES_DATE = new Date('2025-01-15')
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${BASE_URL}/contact`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
@@ -28,43 +31,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/executive-search`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/rpo-recruitment`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/industry-benchmarking`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/fractional-hr-services`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/hr-process-outsourcing`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/payroll-management`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/privacy`,
-      lastModified: new Date(),
+      lastModified: STATIC_PAGES_DATE,
       changeFrequency: 'yearly',
       priority: 0.3,
     },

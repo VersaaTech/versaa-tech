@@ -2,7 +2,6 @@
 
 import { LazyMotion, domAnimation } from 'framer-motion';
 import * as m from 'framer-motion/m';
-import { Card, CardContent } from "@/components/ui/card"
 import { Monitor, Phone, Flame, Building2, Factory, Stethoscope, GraduationCap, Home, HardHat, ShoppingBag, Landmark, Shield } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback, useEffect, useState, useRef } from 'react'
@@ -45,7 +44,7 @@ const industries: Industry[] = [
         title: "Manufacturing",
         icon: Factory,
         description: "Recruiting skilled workers and management professionals for modern manufacturing environments.",
-        color: "text-gray-600"
+        color: "text-muted-foreground"
     },
     {
         title: "Pharma & Health",
@@ -63,7 +62,7 @@ const industries: Industry[] = [
         title: "Real Estate",
         icon: Home,
         description: "Talent solutions for property development, management, and real estate services.",
-        color: "text-teal-600"
+        color: "text-cyan-600"
     },
     {
         title: "Construction",
@@ -142,7 +141,7 @@ export function Industries() {
 
     const startAutoplay = useCallback(() => {
         if (!emblaApi) return
-        
+
         if (autoplayRef.current) {
             clearInterval(autoplayRef.current)
         }
@@ -198,7 +197,7 @@ export function Industries() {
 
     return (
         <LazyMotion features={domAnimation}>
-            <m.section 
+            <m.section
                 className="py-12"
                 initial="hidden"
                 whileInView="visible"
@@ -206,14 +205,14 @@ export function Industries() {
                 variants={containerVariants}
             >
                 <div className="px-4 md:px-8">
-                    <m.div 
+                    <m.div
                         className="text-center mb-12"
                         variants={containerVariants}
                     >
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
+                        <h2 className="text-3xl font-bold font-display text-foreground mb-4">
                             Our Industry Practices
                         </h2>
-                        <p className="text-gray-600 max-w-2xl mx-auto">
+                        <p className="text-muted-foreground max-w-2xl mx-auto">
                             We provide specialized human capital solutions across diverse industries, leveraging our deep understanding of sector-specific challenges and requirements.
                         </p>
                     </m.div>
@@ -221,36 +220,33 @@ export function Industries() {
                     <div className="relative">
                         {/* Carousel Container */}
                         <div className="overflow-hidden" ref={emblaRef}>
-                            <div className="flex gap-6 pl-6">
+                            <div className="flex">
                                 {industries.map((industry, index) => {
                                     const Icon = industry.icon
                                     return (
                                         <m.div
                                             key={index}
-                                            className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_calc(33.333%-1rem)]"
+                                            className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_calc(33.333%)] border-r border-border last:border-r-0"
                                             variants={cardVariants}
                                         >
                                             <m.div
                                                 whileHover="hover"
                                                 variants={cardVariants}
+                                                className="group h-full"
                                             >
-                                                <Card className="group h-full transition-all duration-300 rounded-2xl overflow-hidden">
-                                                    <CardContent className="p-6 h-full">
-                                                        <div className="flex flex-col sm:flex-row h-full sm:items-start gap-4">
-                                                            <div className="bg-[#08314e]/5 p-3 rounded-lg transition-colors shrink-0 w-fit">
-                                                                <Icon className={`w-6 h-6 ${industry.color}`} />
-                                                            </div>
-                                                            <div className="flex-1">
-                                                                <h3 className="font-semibold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-2">
-                                                                    {industry.title}
-                                                                </h3>
-                                                                <p className="text-sm text-gray-600">
-                                                                    {industry.description}
-                                                                </p>
-                                                            </div>
+                                                <div className="p-6 h-full">
+                                                    <div className="flex flex-col sm:flex-row h-full sm:items-start gap-4">
+                                                        <Icon className={`w-7 h-7 ${industry.color} shrink-0 transition-transform duration-300 group-hover:scale-110`} />
+                                                        <div className="flex-1">
+                                                            <h3 className="font-semibold font-display text-foreground mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                                                                {industry.title}
+                                                            </h3>
+                                                            <p className="text-sm text-muted-foreground">
+                                                                {industry.description}
+                                                            </p>
                                                         </div>
-                                                    </CardContent>
-                                                </Card>
+                                                    </div>
+                                                </div>
                                             </m.div>
                                         </m.div>
                                     )
@@ -267,7 +263,7 @@ export function Industries() {
                                 <Button
                                     variant="outline"
                                     size="icon"
-                                    className={`rounded-full bg-white/90 shadow-md ${
+                                    className={`rounded-full ${
                                         !prevBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
                                     }`}
                                     onClick={scrollPrev}
@@ -285,7 +281,7 @@ export function Industries() {
                                 <Button
                                     variant="outline"
                                     size="icon"
-                                    className={`rounded-full bg-white/90 shadow-md ${
+                                    className={`rounded-full ${
                                         !nextBtnEnabled ? 'opacity-50 cursor-not-allowed' : ''
                                     }`}
                                     onClick={scrollNext}

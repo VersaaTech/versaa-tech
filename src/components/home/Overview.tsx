@@ -21,7 +21,7 @@ const overviewData: OverviewSection[] = [
     {
         title: "Our Services",
         icon: Briefcase,
-        iconColor: "text-yellow-500",
+        iconColor: "text-blue-600",
         content: "We offer a comprehensive suite of human capital solutions, tailored to meet the unique challenges and opportunities in today's dynamic business landscape.",
         serviceLinks: [
             {
@@ -35,7 +35,7 @@ const overviewData: OverviewSection[] = [
                 description: "Let us help you recruit the right talent."
             },
             {
-                title: "Industry HR Benchmarking",
+                title: "Industry Benchmarking",
                 href: "/industry-benchmarking",
                 description: "Data-driven insights for competitive positioning."
             },
@@ -59,7 +59,7 @@ const overviewData: OverviewSection[] = [
     {
         title: "Technical Expertise",
         icon: LineChart,
-        iconColor: "text-red-500",
+        iconColor: "text-blue-600",
         content: "Our cornerstone is deep knowledge of job trends and market insights, coupled with vast experience in recruitment across various industry verticals.",
         highlights: [
             "Cutting-edge job market analytics",
@@ -71,10 +71,10 @@ const overviewData: OverviewSection[] = [
     {
         title: "Why Choose Us",
         icon: Users2,
-        iconColor: "text-green-500",
-        content: "Versaa Tech brings together a unique blend of corporate acumen and consulting prowess, led by globally recognized executives and industry veterans.",
+        iconColor: "text-blue-600",
+        content: "Versaatech brings together a unique blend of corporate acumen and consulting prowess, led by globally recognized executives and industry veterans.",
         highlights: [
-            "Leadership with Fortune 500 experience",
+            "Leadership team with decades of experience",
             "Agile and adaptive methodologies",
             "Client-centric approach to solutions",
             "Proven track record of success"
@@ -82,23 +82,17 @@ const overviewData: OverviewSection[] = [
     }
 ];
 
-// Reusable component for service links
-const ServiceLinkCard = ({ service }: { service: ServiceLink }) => {
+// Reusable component for service links - Editorial Style
+const ServiceLinkCard = ({ service, isLastInRow }: { service: ServiceLink; isLastInRow: boolean }) => {
     return (
-        <div className="w-full" key={service.href}>
-            <Link href={service.href} className="block h-full">
-                <div className="h-full p-6 border shadow-md rounded-2xl bg-white hover:shadow-lg transition-all duration-300 group hover:-translate-y-1">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors duration-300">
-                        {service.title}
-                    </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                        {service.description}
-                    </p>
-                    <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors duration-300">
-                        <span className="mr-2">Learn more</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </div>
-                </div>
+        <div className={`group ${!isLastInRow ? 'lg:border-r border-border' : ''}`}>
+            <Link href={service.href} className="block h-full p-6">
+                <h3 className="text-xl font-semibold font-display text-foreground mb-4 group-hover:text-blue-600 transition-colors duration-300 inline bg-gradient-to-r from-blue-600 to-blue-600 bg-no-repeat bg-[length:0%_2px] bg-[position:0_100%] group-hover:bg-[length:100%_2px] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">
+                    {service.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                    {service.description}
+                </p>
             </Link>
         </div>
     );
@@ -111,8 +105,8 @@ const HighlightList = ({ highlights }: { highlights: string[] }) => {
             {highlights.map((highlight, index) => {
                 return (
                     <li key={index} className="flex items-start">
-                        <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1" />
-                        <span className="text-gray-700">{highlight}</span>
+                        <ArrowRight className="w-5 h-5 mr-2 flex-shrink-0 mt-1 text-blue-600" />
+                        <span className="text-muted-foreground">{highlight}</span>
                     </li>
                 );
             })}
@@ -125,11 +119,11 @@ const SectionHeader = ({ section }: { section: OverviewSection }) => {
     const IconComponent = section.icon;
 
     return (
-        <div className="flex items-center gap-4 mb-4">
-            <div className="transition-transform duration-300 hover:scale-110">
+        <div className="flex items-center gap-4 mb-4 group/header">
+            <div className="transition-transform duration-300 group-hover/header:scale-110">
                 <IconComponent className={`w-8 h-8 ${section.iconColor}`} strokeWidth={1.5} />
             </div>
-            <h2 className="text-2xl font-semibold text-gray-700 bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text">
+            <h2 className="text-2xl font-semibold font-display text-foreground">
                 {section.title}
             </h2>
         </div>
@@ -149,31 +143,47 @@ export function Overview() {
                     <div className="p-6 space-y-6 md:col-span-2">
                         <SectionHeader section={servicesSection} />
                         <div>
-                            <p className="text-gray-700 mb-6">{servicesSection.content}</p>
+                            <p className="text-muted-foreground mb-6">{servicesSection.content}</p>
                         </div>
                         {servicesSection.serviceLinks && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {servicesSection.serviceLinks.map((service) => (
-                                    <ServiceLinkCard 
-                                        key={service.href} 
-                                        service={service} 
-                                    />
-                                ))}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                                {servicesSection.serviceLinks.map((service, index) => {
+                                    const isLastInRow = (index + 1) % 3 === 0;
+                                    const rowIndex = Math.floor(index / 3);
+                                    const isLastRow = rowIndex === Math.floor((servicesSection.serviceLinks!.length - 1) / 3);
+
+                                    return (
+                                        <div
+                                            key={service.href}
+                                            className={`
+                                                border-b border-border
+                                                ${isLastRow ? 'lg:border-b-0' : ''}
+                                                last:border-b-0
+                                            `}
+                                        >
+                                            <ServiceLinkCard
+                                                service={service}
+                                                isLastInRow={isLastInRow}
+                                            />
+                                        </div>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
                 )}
 
                 {/* Other Sections - Half Width Each */}
-                {otherSections.map((section) => {
+                {otherSections.map((section, index) => {
+                    const isLast = index === otherSections.length - 1;
                     return (
                         <div
                             key={section.title}
-                            className="p-6 space-y-6 md:col-span-1"
+                            className={`p-6 space-y-6 md:col-span-1 ${!isLast ? 'md:border-r border-border' : ''}`}
                         >
                             <SectionHeader section={section} />
                             <div>
-                                <p className="text-gray-700 mb-6">{section.content}</p>
+                                <p className="text-muted-foreground mb-6">{section.content}</p>
                             </div>
                             {section.highlights && <HighlightList highlights={section.highlights} />}
                         </div>
@@ -183,4 +193,3 @@ export function Overview() {
         </section>
     );
 }
-

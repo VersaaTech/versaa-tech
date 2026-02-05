@@ -6,6 +6,10 @@ import AdminPageClient from './AdminPageClient';
 export const metadata = {
   title: 'Admin Dashboard | Versaatech',
   description: 'Administrative dashboard for managing jobs and content at Versaatech.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function AdminPage() {

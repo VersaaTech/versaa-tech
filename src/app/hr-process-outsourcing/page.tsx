@@ -1,16 +1,52 @@
+"use client"
+
+import { createElement } from 'react'
+import { LazyMotion, domAnimation } from 'framer-motion'
+import * as m from 'framer-motion/m'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import Link from 'next/link'
 import Image from 'next/image'
-import DynamicIcon from '@/components/DynamicIcon'
-import { CheckCircle } from 'lucide-react'
+import {
+  CheckCircle,
+  Banknote,
+  Shield,
+  FileText,
+  Scale,
+  Laptop,
+  Headphones,
+  Search,
+  Settings,
+  Plug,
+  BarChart3
+} from 'lucide-react'
+import { RelatedServices, ServiceContent } from '@/components/services'
 
-// SEO metadata for Next.js
-export const metadata = {
-  title: "HR Process Outsourcing Services | Versaatech",
-  description:
-    "Streamline your human resources operations with our comprehensive HR Process Outsourcing solutions, designed to enhance efficiency while reducing costs and administrative burden.",
-};
+// TypeScript interfaces
+interface Feature {
+  icon: React.ElementType
+  title: string
+  description: string
+}
+
+interface ProcessStep {
+  icon: React.ElementType
+  title: string
+  description: string
+}
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.8, staggerChildren: 0.15 }
+  }
+}
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
+}
 
 // Static data
 const HPO_STATS = [
@@ -34,63 +70,63 @@ const HPO_STATS = [
     label: "Support Available",
     description: "Continuous operational support coverage"
   }
-];
+]
 
-const KEY_FEATURES = [
+const KEY_FEATURES: Feature[] = [
   {
-    icon: 'FaMoneyBillWave',
+    icon: Banknote,
     title: 'Payroll Processing',
     description: 'Complete payroll management from calculation to disbursement with full compliance and accuracy.'
   },
   {
-    icon: 'FaShieldAlt',
+    icon: Shield,
     title: 'Benefits Administration',
     description: 'Comprehensive employee benefits management and enrollment services for seamless operations.'
   },
   {
-    icon: 'FaFileAlt',
+    icon: FileText,
     title: 'HR Documentation',
     description: 'Complete HR record keeping, documentation management, and administrative support systems.'
   },
   {
-    icon: 'FaGavel',
+    icon: Scale,
     title: 'Compliance Management',
     description: 'Expert oversight ensuring adherence to labor laws and regulatory requirements.'
   },
   {
-    icon: 'FaLaptop',
+    icon: Laptop,
     title: 'Technology Integration',
     description: 'Advanced HRIS platforms and automation tools for optimized workflow efficiency.'
   },
   {
-    icon: 'FaHeadset',
+    icon: Headphones,
     title: 'Employee Support',
     description: 'Dedicated HR helpdesk and employee service center for immediate assistance.'
   }
-];
+]
 
-const PROCESS_STEPS = [
+const PROCESS_STEPS: ProcessStep[] = [
   {
-    icon: 'FaSearch',
+    icon: Search,
     title: 'Process Assessment',
     description: 'Comprehensive evaluation of current HR processes and optimization opportunities'
   },
   {
-    icon: 'FaCogs',
+    icon: Settings,
     title: 'Solution Design',
     description: 'Custom HR outsourcing solutions aligned with business objectives'
   },
   {
-    icon: 'FaPlug',
+    icon: Plug,
     title: 'System Integration',
     description: 'Seamless integration with existing infrastructure and workflows'
   },
   {
-    icon: 'FaChartBar',
+    icon: BarChart3,
     title: 'Ongoing Management',
     description: 'Continuous process management with performance monitoring and support'
   }
-];
+]
 
 const KEY_BENEFITS = [
   {
@@ -109,177 +145,281 @@ const KEY_BENEFITS = [
     title: "Strategic Focus",
     description: "Free internal resources to concentrate on core business and strategic initiatives"
   }
-];
+]
+
+const HR_OPERATIONS_CONTENT = [
+  "HR process outsourcing represents a fundamental shift in how organizations approach their people operations. Rather than building and maintaining internal HR infrastructure, forward-thinking companies are partnering with specialized providers like Versaatech to handle transactional HR functions with greater efficiency, accuracy, and compliance. This allows internal HR teams to evolve from administrative support functions to strategic business partners focused on talent development, culture building, and organizational effectiveness.",
+  "The scope of HR process outsourcing extends across the entire employee lifecycle. From pre-hire background screening and onboarding document management to benefits enrollment, leave administration, and offboarding processes, Versaatech delivers consistent, compliant, and employee-friendly experiences. Our HRIS platforms provide self-service capabilities that empower employees while reducing administrative workload. Managers gain access to real-time workforce data and analytics that inform better decisions about team composition, performance management, and resource allocation.",
+  "Compliance represents one of the most compelling drivers for HR outsourcing. Labor regulations, tax requirements, and employment laws vary significantly across jurisdictions and change frequently. Staying current with these requirements demands specialized expertise that most organizations cannot maintain internally. Versaatech's compliance specialists monitor regulatory developments across all the regions where our clients operate, ensuring policies and practices remain current and defensible. This proactive approach to compliance significantly reduces the risk of costly violations and litigation.",
+  "Versaatech's HR process outsourcing solutions are designed for flexibility and scalability. Whether you need comprehensive HR administration covering all transactional functions or targeted support in specific areas like benefits administration or compliance management, we customize our engagement to match your needs. Our technology infrastructure scales seamlessly as your organization grows, whether you're adding employees in existing locations or expanding into new markets. Transform your HR operations from a cost center to a competitive advantage with Versaatech's HR process outsourcing expertise."
+]
 
 export default function HRProcessOutsourcingPage() {
   return (
-    <div className="min-h-screen bg-[#f7fffc]">
-      {/* Hero Section */}
-      <section className="relative h-auto min-h-[50vh] py-12 flex items-center justify-center">
-        <Image
-          src="/images/hr-outsourcing.jpg"
-          alt="HR Process Outsourcing Services"
-          fill
-          className="object-cover brightness-[0.4]"
-          priority
-          sizes="100vw"
-        />
-        <div className="relative z-10 container mx-auto px-4">
-          <div className="max-w-4xl text-center mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Streamline Your
-              <span className="bg-gradient-to-r from-blue-400 to-green-400 text-transparent bg-clip-text block">
-                HR Operations
-              </span>
-            </h1>
-            <p className="text-base md:text-lg text-gray-200 mb-6">
-              Transform your HR processes with comprehensive outsourcing solutions that reduce costs, enhance efficiency, and ensure compliance while freeing your team to focus on strategic initiatives.
-            </p>
-            <Link href="/contact">
-              <Button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 px-6 py-3 text-base font-semibold transition-colors">
-                Explore HR Outsourcing
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Statistics Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {HPO_STATS.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-base md:text-lg font-semibold text-gray-800 mb-2">
-                  {stat.label}
-                </div>
-                <div className="text-sm text-gray-600">
-                  {stat.description}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Key Features Section */}
-      <section className="py-16 bg-[#f7fffc]">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
-              Comprehensive HR Outsourcing Services
-            </h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
-              From payroll processing to compliance management, we handle all your HR operational needs with expertise and precision.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {KEY_FEATURES.map((feature, index) => (
-              <div key={index} className="group">
-                <Card className="h-full border-0 shadow-md hover:shadow-xl transition-all duration-300 bg-white">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="bg-blue-100 p-3 rounded-xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                        <DynamicIcon iconName={feature.icon} className="w-6 h-6" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {feature.title}
-                      </h3>
-                    </div>
-                    <p className="text-gray-600 text-base leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process Overview Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
-              Our Outsourcing Process
-            </h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
-              A proven methodology that ensures seamless transition and continuous optimization of your HR operations.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PROCESS_STEPS.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-2xl shadow-sm border border-blue-100 hover:shadow-md transition-shadow duration-300 h-full">
-                  <div className="text-blue-600 text-3xl mb-6">
-                    <DynamicIcon iconName={step.icon} className="w-8 h-8 mx-auto" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-16 bg-[#f7fffc]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
-                Strategic Business Benefits
-              </h2>
-              <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
-                Transform your HR operations into a strategic advantage that drives business growth and operational excellence.
+    <div className="min-h-screen bg-background">
+      <LazyMotion features={domAnimation}>
+        {/* Hero Section */}
+        <section className="relative h-auto min-h-[50vh] py-12 flex items-center justify-center">
+          <Image
+            src="/images/hr-outsourcing.jpg"
+            alt="HR Process Outsourcing Services"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 md:px-8">
+            <div className="max-w-4xl text-center mx-auto">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display text-white mb-4">
+                Streamline Your
+                <span className="bg-gradient-to-r from-blue-400 to-green-400 text-transparent bg-clip-text block">
+                  HR Operations
+                </span>
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-6 px-2 sm:px-0">
+                Transform your HR processes with comprehensive outsourcing solutions that reduce costs, enhance efficiency, and ensure compliance while freeing your team to focus on strategic initiatives.
               </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {KEY_BENEFITS.map((benefit, index) => (
-                <div key={index} className="flex items-start gap-4 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                  <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      {benefit.title}
-                    </h3>
-                    <p className="text-gray-600 text-base">
-                      {benefit.description}
-                    </p>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-sm sm:max-w-none mx-auto">
+                <Link href="/contact" className="w-full sm:w-auto">
+                  <div className="transition-transform duration-300 ease-in-out hover:scale-105 w-full">
+                    <Button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 px-6 py-3 text-base font-semibold w-full sm:w-auto">
+                      Explore HR Outsourcing
+                    </Button>
                   </div>
-                </div>
+                </Link>
+                <Link href="#features" className="w-full sm:w-auto">
+                  <div className="transition-transform duration-300 ease-in-out hover:scale-105 w-full">
+                    <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-6 py-3 text-base font-semibold w-full sm:w-auto backdrop-blur-sm">
+                      Learn More
+                    </Button>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Statistics Section */}
+        <m.section
+          className="py-16 bg-card"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4">
+              {HPO_STATS.map((stat, index) => (
+                <m.div
+                  key={index}
+                  className={`text-center p-4 group ${index !== HPO_STATS.length - 1 ? 'md:border-r border-border' : ''}`}
+                  variants={itemVariants}
+                >
+                  <div className="text-3xl md:text-4xl font-bold font-display bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-base md:text-lg font-semibold text-foreground mb-2 transition-colors duration-300 group-hover:text-blue-600">
+                    {stat.label}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {stat.description}
+                  </div>
+                </m.div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </m.section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">
-              Ready to Transform Your HR Operations?
-            </h2>
-            <p className="text-base md:text-lg mb-6 text-blue-100">
-              Discover how our HR process outsourcing can streamline your operations, reduce costs, and enhance strategic focus.
-            </p>
-            <Link href="/contact">
-              <Button className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 text-base font-semibold transition-colors">
-                Start Your Transformation
-              </Button>
-            </Link>
+        {/* Key Features Section */}
+        <m.section
+          id="features"
+          className="py-16 bg-background"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <div className="container mx-auto px-4">
+            <m.div className="text-center mb-12" variants={itemVariants}>
+              <h2 className="text-3xl font-bold font-display text-foreground mb-4">
+                Comprehensive HR Outsourcing Services
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+                From payroll processing to compliance management, we handle all your HR operational needs with expertise and precision.
+              </p>
+            </m.div>
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              {KEY_FEATURES.map((feature, index) => {
+                const isLastInRow = (index + 1) % 3 === 0
+                const isLastRow = index >= KEY_FEATURES.length - 3
+                return (
+                  <m.div
+                    key={index}
+                    className={`
+                      relative p-6 group
+                      border-b border-border
+                      ${!isLastInRow ? 'md:border-r' : ''}
+                      ${isLastRow ? 'md:border-b-0' : ''}
+                      last:border-b-0 md:last:border-b-0
+                    `}
+                    variants={itemVariants}
+                  >
+                    <div className="flex flex-col items-center text-center">
+                      <div className="mb-4">
+                        {createElement(feature.icon, {
+                          className: "w-7 h-7 text-blue-600 transition-transform duration-300 group-hover:scale-110"
+                        })}
+                      </div>
+                      <h3 className="text-xl font-semibold font-display text-foreground mb-2 transition-colors duration-300 group-hover:text-blue-600">
+                        {feature.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </m.div>
+                )
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </m.section>
+
+        {/* Process Overview Section */}
+        <m.section
+          className="py-16 bg-card"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <div className="container mx-auto px-4">
+            <m.div className="text-center mb-12" variants={itemVariants}>
+              <h2 className="text-3xl font-bold font-display text-foreground mb-4">
+                Our Outsourcing Process
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+                A proven methodology that ensures seamless transition and continuous optimization of your HR operations.
+              </p>
+            </m.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+              {PROCESS_STEPS.map((step, index) => (
+                <m.div
+                  key={index}
+                  className={`
+                    relative p-6 group text-center
+                    ${index !== PROCESS_STEPS.length - 1 ? 'lg:border-r border-border' : ''}
+                  `}
+                  variants={itemVariants}
+                >
+                  <div className="flex items-center justify-center mb-4">
+                    {createElement(step.icon, {
+                      className: "w-8 h-8 text-blue-600 transition-transform duration-300 group-hover:scale-110"
+                    })}
+                  </div>
+                  <h3 className="text-lg font-semibold font-display text-foreground mb-3 transition-colors duration-300 group-hover:text-blue-600">
+                    {step.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {step.description}
+                  </p>
+                </m.div>
+              ))}
+            </div>
+          </div>
+        </m.section>
+
+        {/* Benefits Section */}
+        <m.section
+          className="py-16 bg-background"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <m.div className="text-center mb-12" variants={itemVariants}>
+                <h2 className="text-3xl font-bold font-display text-foreground mb-4">
+                  Strategic Business Benefits
+                </h2>
+                <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+                  Transform your HR operations into a strategic advantage that drives business growth and operational excellence.
+                </p>
+              </m.div>
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                {KEY_BENEFITS.map((benefit, index) => {
+                  const isLastInRow = (index + 1) % 2 === 0
+                  const isLastRow = index >= KEY_BENEFITS.length - 2
+                  return (
+                    <m.div
+                      key={index}
+                      className={`
+                        flex items-start gap-4 p-6 group
+                        border-b border-border
+                        ${!isLastInRow ? 'md:border-r' : ''}
+                        ${isLastRow ? 'md:border-b-0' : ''}
+                        last:border-b-0 md:last:border-b-0
+                      `}
+                      variants={itemVariants}
+                    >
+                      <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1 transition-transform duration-300 group-hover:scale-110" />
+                      <div>
+                        <h3 className="text-lg font-semibold font-display text-foreground mb-2 transition-colors duration-300 group-hover:text-blue-600">
+                          {benefit.title}
+                        </h3>
+                        <p className="text-muted-foreground text-base">
+                          {benefit.description}
+                        </p>
+                      </div>
+                    </m.div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </m.section>
+
+        {/* Transform Your HR Operations Section */}
+        <ServiceContent
+          title="Transform Your HR Operations"
+          content={HR_OPERATIONS_CONTENT}
+          className="bg-card"
+        />
+
+        {/* Related Services Section */}
+        <RelatedServices
+          currentService="hr-process-outsourcing"
+          relatedKeys={['payroll-management', 'fractional-hr-services', 'rpo-recruitment']}
+        />
+
+        {/* CTA Section */}
+        <m.section
+          className="py-16 bg-gradient-to-r from-blue-600 to-blue-800"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <div className="container mx-auto px-4">
+            <m.div className="max-w-3xl mx-auto text-center text-white" variants={itemVariants}>
+              <h2 className="text-3xl font-bold font-display mb-4">
+                Ready to Transform Your HR Operations?
+              </h2>
+              <p className="text-base md:text-lg mb-6 text-blue-100">
+                Discover how our HR process outsourcing can streamline your operations, reduce costs, and enhance strategic focus.
+              </p>
+              <Link href="/contact">
+                <div className="inline-block transition-transform duration-300 ease-in-out hover:scale-105">
+                  <Button className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 text-base font-semibold">
+                    Get HR Outsourcing Proposal
+                  </Button>
+                </div>
+              </Link>
+            </m.div>
+          </div>
+        </m.section>
+      </LazyMotion>
     </div>
   )
 }

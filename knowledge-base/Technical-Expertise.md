@@ -9,9 +9,9 @@ Our cornerstone is deep knowledge of job trends and market insights, coupled wit
 
 ## Why Choose Us
 
-Versaa Tech brings together a unique blend of corporate acumen and consulting prowess, led by globally recognized executives and industry veterans.
+Versaatech brings together a unique blend of corporate acumen and consulting prowess, led by globally recognized executives and industry veterans.
 
-*   Leadership with Fortune 500 experience
+*   Leadership team with decades of experience
 *   Agile and adaptive methodologies
 *   Client-centric approach to solutions
 *   Proven track record of success

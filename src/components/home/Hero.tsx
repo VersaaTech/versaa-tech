@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button"
 
 export function Hero() {
     return (
-        <section 
-            className="relative w-full min-h-[500px] sm:min-h-[400px] md:h-[50vh] md:min-h-[400px] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#e0f7fa] to-[#b3e5fc] py-8 sm:py-12"
+        <section
+            className="relative w-full min-h-[500px] sm:min-h-[400px] md:h-[50vh] md:min-h-[400px] flex items-center justify-center overflow-hidden py-8 sm:py-12"
         >
             {/* Background Image */}
             <Image
                 src="/images/handshake.webp"
                 alt="Background images of two people shaking hands"
                 fill
+                sizes="100vw"
                 quality={75}
                 className="object-cover"
                 priority
@@ -29,7 +30,7 @@ export function Hero() {
                     <h1 
                         className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4 sm:mb-6"
                     >
-                        End-to-End <span className="bg-gradient-to-r from-[#4EFF7D] to-[#48AFEC] text-transparent bg-clip-text">Recruitment, HR, and Payroll</span> Outsourcing.
+                        End-to-End <span className="text-blue-400">Recruitment, HR, and Payroll</span> Outsourcing.
                     </h1>
                     <p 
                         className="text-sm sm:text-base md:text-lg mb-6 sm:mb-8 px-2 sm:px-0"
@@ -41,7 +42,7 @@ export function Hero() {
                             <div
                                 className="transition-transform duration-300 ease-in-out hover:scale-105 w-full"
                             >
-                                <Button className="bg-gradient-to-r from-blue-500 to-blue-700 hover:bg-gradient-to-r hover:from-blue-500/90 hover:to-blue-700/90 text-white px-6 py-3 sm:py-2 w-full sm:w-auto text-sm sm:text-base">
+                                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 sm:py-2 w-full sm:w-auto text-sm sm:text-base">
                                     Talk to an Expert
                                 </Button>
                             </div>
@@ -50,7 +51,7 @@ export function Hero() {
                             <div
                                 className="transition-transform duration-300 ease-in-out hover:scale-105 w-full"
                             >
-                                <Button className="bg-gradient-to-r from-green-500 to-green-700 hover:bg-gradient-to-r hover:from-green-500/90 hover:to-green-700/90 text-white px-6 py-3 sm:py-2 w-full sm:w-auto text-sm sm:text-base">
+                                <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-6 py-3 sm:py-2 w-full sm:w-auto text-sm sm:text-base backdrop-blur-sm">
                                     Job Seekers
                                 </Button>
                             </div>

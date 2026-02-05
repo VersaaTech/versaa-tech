@@ -16,9 +16,12 @@ export function Regions() {
     return (
         <div className="container mx-auto px-4">
             <div>
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-8 text-center">
+                <h2 className="text-3xl font-bold font-display text-foreground mb-4 text-center">
                     Regions We Serve
                 </h2>
+                <p className="text-muted-foreground max-w-3xl mx-auto text-center mb-8">
+                    As a global HR consulting and international recruitment firm, Versaatech delivers human capital solutions across six continents. With established offices in Dubai (UAE) and Nairobi (Kenya), we provide strategic talent acquisition and HR services throughout the Americas, Europe, Middle East, Africa, and Asia-Pacific regions. Our local expertise combined with global reach enables us to source exceptional talent and implement effective workforce strategies for organizations operating in diverse markets and regulatory environments.
+                </p>
                 <div className="w-full max-w-5xl mx-auto relative z-0">
                     <LeafletMap />
                 </div>

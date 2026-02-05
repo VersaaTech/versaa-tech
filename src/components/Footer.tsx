@@ -1,8 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
-import { LayoutGrid, Building2, Lightbulb, Users, Building, Phone, Shield, Mail, Briefcase } from 'lucide-react'
+import { LayoutGrid, Building2, Lightbulb, Users, Building, Phone, Shield, Mail, Briefcase, Search, UserCheck, Banknote, UserCog, Settings, BarChart3 } from 'lucide-react'
 import { Separator } from "@/components/ui/separator"
 import Image from 'next/image'
+import { CopyrightYear } from './CopyrightYear'
 
 export function Footer() {
     const regions = [
@@ -16,16 +17,26 @@ export function Footer() {
         return `/?region=${region.toLowerCase().replace(/\s+/g, '-')}#regions`
     }
 
+    // Service links with keyword-rich anchor text for SEO
+    const serviceLinks = [
+        { name: 'Executive Search Services', href: '/executive-search', icon: Search },
+        { name: 'RPO Recruitment Solutions', href: '/rpo-recruitment', icon: UserCheck },
+        { name: 'Payroll Management Services', href: '/payroll-management', icon: Banknote },
+        { name: 'Fractional HR Leadership', href: '/fractional-hr-services', icon: UserCog },
+        { name: 'HR Process Outsourcing', href: '/hr-process-outsourcing', icon: Settings },
+        { name: 'Industry Benchmarking Studies', href: '/industry-benchmarking', icon: BarChart3 },
+    ]
+
     return (
-        <footer className="bg-gradient-to-r from-blue-500 to-blue-700 text-white">
+        <footer className="bg-slate-900 text-white">
             <div className="container mx-auto px-6 pt-12 pb-8">
-                {/* Top Row - Company Info, Quick Links, and Contact Us */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                {/* Top Row - Company Info, Quick Links, Services, and Contact Us */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     <div className="space-y-6">
                         <Link href="/" className="inline-block">
-                            <Image 
+                            <Image
                                 src="/images/ProRecruit-Versaatech-Logo.svg"
-                                alt="Versaa Tech Logo"
+                                alt="Versaatech Logo"
                                 width={160}
                                 height={160}
                                 className="w-[140px] h-[140px] md:w-[160px] md:h-[160px]"
@@ -34,7 +45,7 @@ export function Footer() {
                             />
                         </Link>
                         <p className="text-sm leading-relaxed text-gray-200">
-                            Versaa Tech is a knowledge-driven organization built on a foundation of deep expertise. Our core strengths exist in our comprehensive understanding of job trends, actionable market insights, and extensive experience, which enable us to deliver exceptional value.
+                            Versaatech is a knowledge-driven organization built on a foundation of deep expertise. Our core strengths exist in our comprehensive understanding of job trends, actionable market insights, and extensive experience, which enable us to deliver exceptional value.
                         </p>
                     </div>
                     <div className="space-y-6">
@@ -70,10 +81,26 @@ export function Footer() {
                         </ul>
                     </div>
                     <div className="space-y-6">
+                        <h3 className="text-xl font-semibold">Our Services</h3>
+                        <ul className="space-y-3">
+                            {serviceLinks.map((service) => (
+                                <li key={service.href}>
+                                    <Link
+                                        href={service.href}
+                                        className="text-sm text-gray-200 hover:text-white transition-colors flex items-center gap-2"
+                                    >
+                                        {React.createElement(service.icon, { size: 16 })}
+                                        {service.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="space-y-6">
                         <h3 className="text-xl font-semibold">Contact Us</h3>
                         <div className="space-y-2 text-gray-200">
                             <div>
-                                <p className="text-sm font-semibold">Registered Office:</p>
+                                <p className="text-sm font-semibold">Dubai Office:</p>
                                 <p className="text-sm">
                                     Meydan Grandstand, 6th floor, Meydan Road, Nad Al Sheba, Dubai, U.A.E
                                 </p>
@@ -81,10 +108,6 @@ export function Footer() {
                             <div className="mt-2">
                                 <p className="text-sm font-semibold">Kenya Office:</p>
                                 <p className="text-sm">The Mirage, Tower 2, Floor M1, Unit 7, Nairobi, Kenya</p>
-                            </div>
-                            <div className="mt-2">
-                                <p className="text-sm font-semibold">US Office:</p>
-                                <p className="text-sm">Bloomfield, Michigan, USA</p>
                             </div>
                             <a href="mailto:info@versaatech.com" className="text-sm hover:text-white transition-colors flex items-center gap-2 pt-2">
                                 <Mail size={16} />
@@ -171,7 +194,7 @@ export function Footer() {
                 <Separator className="my-8 bg-white/20" />
                 <div className="text-center">
                     <p className="text-sm text-gray-200">
-                        &copy; {new Date().getFullYear()} Versaa Tech. All rights reserved.
+                        &copy; <CopyrightYear /> Versaatech. All rights reserved.
                     </p>
                 </div>
             </div>

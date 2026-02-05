@@ -1,6 +1,6 @@
-## About Versaa Tech
+## About Versaatech
 
-Versaa Tech is a results-driven organization. We leverage deep job market data and human capital expertise to deliver specialized solutions.
+Versaatech is a results-driven organization. We leverage deep job market data and human capital expertise to deliver specialized solutions.
 
 *   **Expert Leadership**
     Our executive team brings decades of diverse experience in Business, Technology, and Operations across global industries.

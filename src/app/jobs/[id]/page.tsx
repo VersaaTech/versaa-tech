@@ -1,5 +1,8 @@
 import { notFound } from 'next/navigation';
 import JobDetailPageClient from './JobDetailPageClient';
+import { JsonLd } from '@/components/JsonLd';
+import { generateJobPostingSchema } from '@/lib/schema';
+import { Job } from '@/lib/db';
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
@@ -77,5 +80,14 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
   }
 
   const { id } = await params;
-  return <JobDetailPageClient jobId={id} initialJob={job} initialError={error} />;
+
+  // Generate JobPosting schema if job data is available
+  const jobPostingSchema = job ? generateJobPostingSchema(job as Job) : null;
+
+  return (
+    <>
+      {jobPostingSchema && <JsonLd data={jobPostingSchema} />}
+      <JobDetailPageClient jobId={id} initialJob={job} initialError={error} />
+    </>
+  );
 } 

@@ -10,6 +10,10 @@ export default {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			display: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
+  			body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -50,7 +54,39 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+  			// Custom Versaatech colors
+  			navy: {
+  				DEFAULT: '#0F172A',
+  				50: '#E2E8F0',
+  				100: '#CBD5E1',
+  				200: '#94A3B8',
+  				300: '#64748B',
+  				400: '#475569',
+  				500: '#334155',
+  				600: '#1E293B',
+  				700: '#0F172A',
+  				800: '#0B1120',
+  				900: '#070D17',
+  			},
+  			teal: {
+  				DEFAULT: '#0D9488',
+  				50: '#F0FDFA',
+  				100: '#CCFBF1',
+  				200: '#99F6E4',
+  				300: '#5EEAD4',
+  				400: '#2DD4BF',
+  				500: '#14B8A6',
+  				600: '#0D9488',
+  				700: '#0F766E',
+  				800: '#115E59',
+  				900: '#134E4A',
+  			},
+  		},
+  		boxShadow: {
+  			'soft': '0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 12px -4px rgba(0, 0, 0, 0.05)',
+  			'card': '0 4px 16px -4px rgba(0, 0, 0, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04)',
+  			'elevated': '0 8px 32px -8px rgba(0, 0, 0, 0.12), 0 4px 16px -4px rgba(0, 0, 0, 0.08)',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

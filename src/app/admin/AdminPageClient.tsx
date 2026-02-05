@@ -104,7 +104,7 @@ interface JobFormModalProps {
   submitting: boolean;
 }
 
-const JobFormModal = memo(({ isOpen, onClose, editingJob, onSubmit, submitting }: JobFormModalProps): JSX.Element => {
+const JobFormModal = memo(({ isOpen, onClose, editingJob, onSubmit, submitting }: JobFormModalProps): React.JSX.Element => {
   // Use lazy initialization based on editingJob prop
   // The parent component should use a key prop to remount when editingJob changes
   const [formData, setFormData] = useState<JobFormData>(() => {

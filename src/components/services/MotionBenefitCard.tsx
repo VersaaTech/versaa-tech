@@ -1,0 +1,42 @@
+'use client'
+
+import * as m from 'framer-motion/m'
+import { CheckCircle } from 'lucide-react'
+import { SERVICE_STYLES } from './styles'
+import { itemVariants } from './animations'
+import type { Benefit } from './types'
+
+interface MotionBenefitCardProps {
+  benefit: Benefit
+  isLastInRow?: boolean
+  isLastRow?: boolean
+}
+
+export function MotionBenefitCard({
+  benefit,
+  isLastInRow = false,
+  isLastRow = false,
+}: MotionBenefitCardProps) {
+  return (
+    <m.div
+      className={`
+        flex items-start gap-4 p-6 group
+        border-b border-border
+        ${!isLastInRow ? 'md:border-r' : ''}
+        ${isLastRow ? 'md:border-b-0' : ''}
+        last:border-b-0 md:last:border-b-0
+      `}
+      variants={itemVariants}
+    >
+      <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1 transition-transform duration-300 group-hover:scale-110" />
+      <div>
+        <h3
+          className={`text-lg font-semibold font-display text-foreground mb-2 ${SERVICE_STYLES.titleHover}`}
+        >
+          {benefit.title}
+        </h3>
+        <p className="text-muted-foreground text-base">{benefit.description}</p>
+      </div>
+    </m.div>
+  )
+}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import L from 'leaflet'
+import type * as LType from 'leaflet'
 
 // TypeScript interfaces for GeoJSON structure
 interface GeoJSONProperties {
@@ -109,18 +109,18 @@ const getDefaultStyle = () => ({
 })
 
 const getHighlightedStyle = () => ({
-    fillColor: '#3b82f6',
+    fillColor: '#374151',  // gray-700
     weight: 2,
     opacity: 1,
-    color: '#1d4ed8',
+    color: '#1f2937',      // gray-800
     fillOpacity: 0.5
 })
 
 const getHoverStyle = () => ({
-    fillColor: '#1d4ed8',
+    fillColor: '#1f2937',  // gray-800
     weight: 3,
     opacity: 1,
-    color: '#1e40af',
+    color: '#111827',      // gray-900
     fillOpacity: 0.7
 })
 
@@ -168,8 +168,9 @@ const processCountriesInChunks = async (
 
 const LeafletMap = () => {
     const mapRef = useRef<HTMLDivElement>(null)
-    const mapInstanceRef = useRef<L.Map | null>(null)
-    const geoJsonLayerRef = useRef<L.GeoJSON | null>(null)
+    const mapInstanceRef = useRef<LType.Map | null>(null)
+    const geoJsonLayerRef = useRef<LType.GeoJSON | null>(null)
+    const leafletRef = useRef<typeof LType | null>(null)
     const [isMapVisible, setIsMapVisible] = useState(false)
     const [isInitialized, setIsInitialized] = useState(false)
     const [loadingProgress, setLoadingProgress] = useState(0)
@@ -204,7 +205,8 @@ const LeafletMap = () => {
 
     // Optimized GeoJSON loading function
     const loadCountryBoundaries = useCallback(async () => {
-        if (!mapInstanceRef.current || !mapRef.current) {
+        const L = leafletRef.current
+        if (!mapInstanceRef.current || !mapRef.current || !L) {
             console.warn('Map not ready, skipping GeoJSON load')
             return
         }
@@ -212,12 +214,12 @@ const LeafletMap = () => {
         try {
             setLoadingStage('downloading')
             setLoadingProgress(0)
-            
+
             console.log('Loading country boundaries...')
-            
+
             // Using fetch with streaming support for large files
             const response = await fetch('/world.geojson')
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`)
             }
@@ -225,7 +227,7 @@ const LeafletMap = () => {
             // Stream the response for better memory usage
             const geoJsonData: GeoJSONData = await response.json()
             console.log('GeoJSON data loaded successfully')
-            
+
             setLoadingStage('processing')
             setLoadingProgress(25)
 
@@ -263,8 +265,8 @@ const LeafletMap = () => {
                         layer.bindPopup(`
                             <div class="p-3">
                                 <h3 class="font-bold text-lg text-gray-800">${countryName}</h3>
-                                ${region ? 
-                                    `<p class="text-blue-600 font-medium mt-1">Region: ${region.replace(/([A-Z])/g, ' $1').trim()}</p>` : 
+                                ${region ?
+                                    `<p class="text-blue-600 font-medium mt-1">Region: ${region.replace(/([A-Z])/g, ' $1').trim()}</p>` :
                                     '<p class="text-gray-500 mt-1">Not in our active regions</p>'
                                 }
                             </div>
@@ -277,20 +279,20 @@ const LeafletMap = () => {
                         if (isHighlighted && region) {
                             layer.on({
                                 mouseover: (e) => {
-                                    const targetLayer = e.target as L.Path
+                                    const targetLayer = e.target as LType.Path
                                     targetLayer.setStyle(getHoverStyle())
-                                    
+
                                     // Bring to front for better visibility
                                     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                                         targetLayer.bringToFront()
                                     }
                                 },
                                 mouseout: (e) => {
-                                    const targetLayer = e.target as L.Path
+                                    const targetLayer = e.target as LType.Path
                                     targetLayer.setStyle(getHighlightedStyle())
                                 },
                                 click: (e) => {
-                                    const targetLayer = e.target as L.Layer & { getBounds?: () => L.LatLngBounds }
+                                    const targetLayer = e.target as LType.Layer & { getBounds?: () => LType.LatLngBounds }
                                     if (targetLayer.getBounds) {
                                         mapInstanceRef.current?.fitBounds(targetLayer.getBounds(), {
                                             padding: [30, 30],
@@ -311,7 +313,7 @@ const LeafletMap = () => {
             // Add layers to map with staggered rendering for smoother experience
             if (mapInstanceRef.current) {
                 regularLayer.addTo(mapInstanceRef.current)
-                
+
                 // Small delay before adding highlighted countries for smoother rendering
                 setTimeout(() => {
                     if (mapInstanceRef.current) {
@@ -331,7 +333,7 @@ const LeafletMap = () => {
                 return new Promise<void>((resolve) => {
                     requestAnimationFrame(() => {
                         highlightedLayer.eachLayer((layer) => {
-                            const layerWithBounds = layer as L.Layer & { getBounds?: () => L.LatLngBounds }
+                            const layerWithBounds = layer as LType.Layer & { getBounds?: () => LType.LatLngBounds }
                             if (layerWithBounds.getBounds) {
                                 highlightedBounds.extend(layerWithBounds.getBounds())
                                 hasHighlightedCountries = true
@@ -341,23 +343,23 @@ const LeafletMap = () => {
                         // Fit map to show all highlighted regions
                         if (hasHighlightedCountries && highlightedBounds.isValid() && mapInstanceRef.current) {
                             setTimeout(() => {
-                                mapInstanceRef.current?.fitBounds(highlightedBounds, { 
+                                mapInstanceRef.current?.fitBounds(highlightedBounds, {
                                     padding: [50, 50],
                                     maxZoom: 3
                                 })
                             }, 100)
                         }
-                        
+
                         resolve()
                     })
                 })
             }
 
             await calculateBoundsAsync()
-            
+
             setLoadingProgress(100)
             setLoadingStage('complete')
-            
+
             // Hide loading indicator after a short delay
             setTimeout(() => {
                 setLoadingStage('idle')
@@ -368,9 +370,10 @@ const LeafletMap = () => {
         } catch (error) {
             console.error('Error loading country boundaries:', error)
             setLoadingStage('idle')
-            
+
             // Show error message on map
-            if (mapInstanceRef.current) {
+            const L = leafletRef.current
+            if (mapInstanceRef.current && L) {
                 L.popup()
                     .setLatLng([0, 0])
                     .setContent(`
@@ -397,55 +400,8 @@ const LeafletMap = () => {
                 document.head.appendChild(link)
             }
         }
-        
+
         loadLeafletCSS()
-
-        // Initialize map only when visible
-        const map = L.map(mapRef.current, {
-            center: [10, 0],
-            zoom: 2,
-            minZoom: 2,
-            maxZoom: 8,
-            zoomControl: true,
-            scrollWheelZoom: true,
-            doubleClickZoom: true,
-            dragging: true,
-            touchZoom: true,
-            // Optimize rendering
-            preferCanvas: true,
-            renderer: L.canvas({ padding: 0.5 })
-        })
-
-        mapInstanceRef.current = map
-
-        // Add tile layer with lazy loading optimizations
-        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 8,
-            className: 'map-tiles',
-            // Performance optimizations
-            keepBuffer: 2, // Reduce tile buffer to minimize offscreen loading
-            updateWhenZooming: false, // Don't update during zoom animation
-            updateWhenIdle: true, // Only update when map is idle
-            // Add loading attribute for better performance
-            crossOrigin: 'anonymous'
-        })
-
-        // Add custom loading optimization
-        tileLayer.on('loading', () => {
-            // Optional: Add loading indicator
-        })
-
-        tileLayer.on('load', () => {
-            setIsInitialized(true)
-        })
-
-        tileLayer.addTo(map)
-
-        // Load the country boundaries after map is ready
-        map.whenReady(() => {
-            loadCountryBoundaries()
-        })
 
         // Add custom CSS for better styling
         const style = document.createElement('style')
@@ -498,11 +454,66 @@ const LeafletMap = () => {
                 opacity: 1;
             }
         `
-        
+
         // Safely append style to document head with null check
         if (typeof document !== 'undefined' && document.head) {
             document.head.appendChild(style)
         }
+
+        // Dynamically import Leaflet for better bundle optimization
+        import('leaflet').then((L) => {
+            if (!mapRef.current || mapInstanceRef.current) return
+
+            // Store reference to Leaflet
+            leafletRef.current = L.default
+
+            // Initialize map only when visible
+            const map = L.default.map(mapRef.current, {
+                center: [10, 0],
+                zoom: 2,
+                minZoom: 2,
+                maxZoom: 8,
+                zoomControl: true,
+                scrollWheelZoom: true,
+                doubleClickZoom: true,
+                dragging: true,
+                touchZoom: true,
+                // Optimize rendering
+                preferCanvas: true,
+                renderer: L.default.canvas({ padding: 0.5 })
+            })
+
+            mapInstanceRef.current = map
+
+            // Add tile layer with lazy loading optimizations
+            const tileLayer = L.default.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 8,
+                className: 'map-tiles',
+                // Performance optimizations
+                keepBuffer: 2, // Reduce tile buffer to minimize offscreen loading
+                updateWhenZooming: false, // Don't update during zoom animation
+                updateWhenIdle: true, // Only update when map is idle
+                // Add loading attribute for better performance
+                crossOrigin: 'anonymous'
+            })
+
+            // Add custom loading optimization
+            tileLayer.on('loading', () => {
+                // Optional: Add loading indicator
+            })
+
+            tileLayer.on('load', () => {
+                setIsInitialized(true)
+            })
+
+            tileLayer.addTo(map)
+
+            // Load the country boundaries after map is ready
+            map.whenReady(() => {
+                loadCountryBoundaries()
+            })
+        })
 
         // Cleanup function
         return () => {
@@ -528,7 +539,7 @@ const LeafletMap = () => {
                 {!isMapVisible && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
                         <div className="text-center">
-                            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                            <div className="animate-spin w-8 h-8 border-4 border-gray-700 border-t-transparent rounded-full mx-auto mb-2"></div>
                             <p className="text-gray-600 text-sm">Loading interactive map...</p>
                         </div>
                     </div>
@@ -538,7 +549,7 @@ const LeafletMap = () => {
                 {isMapVisible && !isInitialized && (
                     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md z-[1000]">
                         <div className="flex items-center space-x-2">
-                            <div className="animate-spin w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                            <div className="animate-spin w-4 h-4 border-2 border-gray-700 border-t-transparent rounded-full"></div>
                             <span className="text-sm text-gray-600">Loading map data...</span>
                         </div>
                     </div>
@@ -549,7 +560,7 @@ const LeafletMap = () => {
                     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg z-[1000] min-w-[200px]">
                         <div className="text-center">
                             <div className="flex items-center justify-center space-x-2 mb-2">
-                                <div className="animate-spin w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                                <div className="animate-spin w-4 h-4 border-2 border-gray-700 border-t-transparent rounded-full"></div>
                                 <span className="text-sm font-medium text-gray-700">
                                     {loadingStage === 'downloading' && 'Downloading map data...'}
                                     {loadingStage === 'processing' && 'Processing countries...'}
@@ -557,8 +568,8 @@ const LeafletMap = () => {
                                 </span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div 
-                                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                                <div
+                                    className="bg-gray-700 h-2 rounded-full transition-all duration-300"
                                     style={{ width: `${loadingProgress}%` }}
                                 ></div>
                             </div>
@@ -572,7 +583,7 @@ const LeafletMap = () => {
             <div className="mt-4 text-center text-sm text-gray-600">
                 <div className="flex items-center justify-center space-x-4 mb-2">
                     <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 bg-blue-500 rounded border border-blue-600 opacity-60"></div>
+                        <div className="w-4 h-4 bg-gray-700 rounded border border-gray-800 opacity-60"></div>
                         <span>Active Regions</span>
                     </div>
                     <div className="flex items-center space-x-2">

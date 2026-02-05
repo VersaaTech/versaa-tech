@@ -1,49 +1,84 @@
 'use client'
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Linkedin } from "lucide-react";
+import { Linkedin, User } from "lucide-react";
 
-const cardStyles = "border shadow-md rounded-2xl";
+interface TeamMember {
+    name: string;
+    role: string;
+    linkedIn?: string;
+}
+
+const teamMembers: TeamMember[] = [
+    {
+        name: "Fredrick Maeba",
+        role: "Lead - Recruitments",
+        linkedIn: "https://www.linkedin.com/in/fredrick-maeba/",
+    },
+    {
+        name: "Joslyn Mbae",
+        role: "Head - HR Recruitments",
+        linkedIn: "https://www.linkedin.com/in/joslyn-mbae-5b6852b0/",
+    },
+    {
+        name: "Fredrick Nyambedha",
+        role: "HR Project Manager",
+    },
+    {
+        name: "Joyce Nyamaidu",
+        role: "Business Development Manager",
+        linkedIn: "https://www.linkedin.com/in/joyce-ndamaiyu-715a02a1/",
+    },
+];
 
 export function OurTeam() {
-    const name = "Fredrick Maeba";
-    const role = "Lead - Recruitments";
-    const description = "Fredrick Maeba is an Executive Recruiter with over 6 years of experience, specializing in talent acquisition across industries such as FMCG, technology, manufacturing, healthcare, financial services just to mention. He has successfully delivered more than 60 strategic placements ranging from junior to C-suite level through connecting exceptional talent with opportunities that drive both organizational performance and individual career growth.";
-
     return (
         <section className="py-12 px-4 md:px-8">
             <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent mb-4">
+                <h2 className="text-3xl font-bold font-display text-foreground mb-4">
                     Our Team
                 </h2>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-                <Card className={cardStyles}>
-                    <CardContent className="p-6 md:p-8">
-                        <div className="flex flex-col items-center text-center mb-4">
-                            <div className="flex items-center gap-4 mb-1">
-                                <h3 className="text-2xl font-semibold text-gray-800">{name}</h3>
-                                <a 
-                                    href="https://www.linkedin.com/in/fredrick-maeba/" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-blue-600 hover:text-blue-700 transition-colors"
-                                    aria-label="Fredrick Maeba's LinkedIn profile"
-                                >
-                                    <Linkedin size={20} />
-                                </a>
+            <div className="max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                    {teamMembers.map((member, index) => {
+                        const isLastInRow = (index + 1) % 4 === 0;
+                        const isLastTwoInRow = (index + 1) % 2 === 0;
+
+                        return (
+                            <div
+                                key={member.name}
+                                className={`
+                                    p-6 flex flex-col items-center text-center group
+                                    border-b border-border lg:border-b-0
+                                    ${!isLastTwoInRow ? 'sm:border-r' : ''}
+                                    ${!isLastInRow ? 'lg:border-r' : ''}
+                                    last:border-b-0
+                                `}
+                            >
+                                <User className="w-10 h-10 text-blue-600 mb-3 transition-transform duration-300 group-hover:scale-110" />
+                                <div className="flex items-center gap-2 mb-1">
+                                    <h3 className="text-lg font-semibold text-foreground group-hover:text-blue-600 transition-colors duration-300">
+                                        {member.name}
+                                    </h3>
+                                    {member.linkedIn && (
+                                        <a
+                                            href={member.linkedIn}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-blue-600 hover:text-blue-700 transition-colors"
+                                            aria-label={`${member.name}'s LinkedIn profile`}
+                                        >
+                                            <Linkedin size={18} />
+                                        </a>
+                                    )}
+                                </div>
+                                <p className="text-blue-600 text-sm">{member.role}</p>
                             </div>
-                            <p className="text-blue-600">{role}</p>
-                        </div>
-                        <p className="text-gray-600 leading-relaxed">
-                            {description}
-                        </p>
-                    </CardContent>
-                </Card>
+                        );
+                    })}
+                </div>
             </div>
         </section>
     );
 }
-
-

@@ -38,7 +38,7 @@ export function ChatButton() {
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
               exit={{ scale: 0, opacity: 0 }}
-              className="relative rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white shadow-[0_0_15px_rgba(79,70,229,0.5)] flex items-center justify-center"
+              className="relative rounded-full bg-blue-600 hover:bg-blue-700 p-4 text-white shadow-[0_0_15px_rgba(37,99,235,0.5)] flex items-center justify-center"
               onClick={() => setIsOpen(true)}
               aria-label="Open chat"
             >
@@ -46,7 +46,7 @@ export function ChatButton() {
               {/* Pulsing ring effect */}
               {isPulsing && (
                 <m.div
-                  className="absolute inset-0 rounded-full border-2 border-indigo-400"
+                  className="absolute inset-0 rounded-full border-2 border-blue-400"
                   animate={{
                     scale: [1, 1.2, 1],
                     opacity: [0.7, 0, 0.7]

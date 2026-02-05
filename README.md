@@ -1,4 +1,4 @@
-# Versaa Tech
+# Versaatech
 
 A modern web application built with Next.js, TypeScript, and Tailwind CSS.
 
@@ -105,4 +105,4 @@ versaa-tech/
 ## 📝 License
 
 <!-- add a copyright here -->
-Copyright © 2025 Versaa Tech. All rights reserved.
+Copyright © 2025 Versaatech. All rights reserved.
