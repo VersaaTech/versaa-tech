@@ -1,11 +1,14 @@
 'use client'
 
-import { Linkedin, User } from "lucide-react";
+import { Linkedin } from "lucide-react";
 
 interface TeamMember {
     name: string;
     role: string;
     linkedIn?: string;
+    initials: string;
+    gradientFrom: string;
+    gradientTo: string;
 }
 
 const teamMembers: TeamMember[] = [
@@ -13,20 +16,32 @@ const teamMembers: TeamMember[] = [
         name: "Fredrick Maeba",
         role: "Lead - Recruitments",
         linkedIn: "https://www.linkedin.com/in/fredrick-maeba/",
+        initials: "FM",
+        gradientFrom: "from-rose-500",
+        gradientTo: "to-pink-600",
     },
     {
         name: "Joslyn Mbae",
         role: "Head - HR Recruitments",
         linkedIn: "https://www.linkedin.com/in/joslyn-mbae-5b6852b0/",
+        initials: "JM",
+        gradientFrom: "from-violet-500",
+        gradientTo: "to-purple-600",
     },
     {
         name: "Fredrick Nyambedha",
         role: "HR Project Manager",
+        initials: "FN",
+        gradientFrom: "from-amber-500",
+        gradientTo: "to-orange-600",
     },
     {
         name: "Joyce Nyamaidu",
         role: "Business Development Manager",
         linkedIn: "https://www.linkedin.com/in/joyce-ndamaiyu-715a02a1/",
+        initials: "JN",
+        gradientFrom: "from-cyan-500",
+        gradientTo: "to-blue-600",
     },
 ];
 
@@ -56,7 +71,25 @@ export function OurTeam() {
                                     last:border-b-0
                                 `}
                             >
-                                <User className="w-10 h-10 text-blue-600 mb-3 transition-transform duration-300 group-hover:scale-110" />
+                                {/* Profile Avatar with Initials and LinkedIn Overlay */}
+                                <div className="relative mb-4">
+                                    <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${member.gradientFrom} ${member.gradientTo} flex items-center justify-center shadow-md transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg`}>
+                                        <span className="text-xl font-bold text-white">{member.initials}</span>
+                                    </div>
+                                    {/* LinkedIn Overlay on Hover */}
+                                    {member.linkedIn && (
+                                        <a
+                                            href={member.linkedIn}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="absolute inset-0 w-16 h-16 rounded-full bg-blue-600/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            aria-label={`${member.name}'s LinkedIn profile`}
+                                        >
+                                            <Linkedin className="w-7 h-7 text-white" />
+                                        </a>
+                                    )}
+                                </div>
+
                                 <div className="flex items-center gap-2 mb-1">
                                     <h3 className="text-lg font-semibold text-foreground group-hover:text-blue-600 transition-colors duration-300">
                                         {member.name}
@@ -66,7 +99,7 @@ export function OurTeam() {
                                             href={member.linkedIn}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-blue-600 hover:text-blue-700 transition-colors"
+                                            className="text-blue-600 hover:text-blue-700 transition-colors lg:hidden"
                                             aria-label={`${member.name}'s LinkedIn profile`}
                                         >
                                             <Linkedin size={18} />

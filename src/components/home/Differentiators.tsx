@@ -13,55 +13,55 @@ const differentiators: Differentiator[] = [
         icon: Globe,
         title: "Your Right Shore Partner",
         color: "text-blue-600",
-        description: "We provide a seamless extension of your team, leveraging global talent to drive efficiency and innovation."
+        description: "We work as an extension of your team, tapping into global talent to help you move faster and work smarter."
     },
     {
         icon: Users,
         title: "Customer First Approach",
         color: "text-blue-600",
-        description: "Our solutions are tailored to your specific needs, ensuring a partnership that prioritizes your success."
+        description: "We shape our solutions around your specific needs, so the partnership always puts your goals first."
     },
     {
         icon: Rocket,
         title: "Consistent Delivery",
         color: "text-blue-600",
-        description: "We are committed to on-time and high-quality project delivery, every time."
+        description: "We deliver on time and at a high standard, every time."
     },
     {
         icon: Building,
         title: "Industry Expertise",
         color: "text-blue-600",
-        description: "Our team has deep knowledge across various industries, allowing us to provide informed and effective solutions."
+        description: "Our team knows these industries well, which means better, more practical solutions for you."
     },
     {
         icon: Search,
         title: "Market Research & Benchmarking",
         color: "text-blue-600",
-        description: "We use data-driven insights to ensure you stay ahead of the curve and make informed decisions."
+        description: "We use real market data to help you make smarter hiring and workforce decisions."
     },
     {
         icon: Badge,
         title: "Customer Delight",
         color: "text-blue-600",
-        description: "We strive to exceed expectations, creating positive experiences and lasting relationships."
+        description: "We aim to go beyond what's expected and build relationships that last."
     },
     {
         icon: Handshake,
         title: "Winning Together",
         color: "text-blue-600",
-        description: "We believe in collaborative partnerships, working with you to achieve shared goals."
+        description: "We work alongside you, not just for you, to reach shared goals."
     },
     {
         icon: Target,
         title: "Talent Curators",
         color: "text-blue-600",
-        description: "We specialize in identifying and attracting top talent, ensuring you have the right people for the job."
+        description: "We're focused on finding and attracting the right talent, so the people you hire are the people you need."
     },
     {
         icon: Award,
         title: "Brand Ambassadors",
         color: "text-blue-600",
-        description: "We represent your brand with pride, ensuring a positive and professional experience for all."
+        description: "We represent your brand with care, making sure every candidate interaction reflects well on you."
     }
 ]
 

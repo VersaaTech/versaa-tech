@@ -1,7 +1,7 @@
 import { ArrowRight, LineChart, Users2, Briefcase, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
-// Unified data structure for all services and sections
 interface ServiceLink {
     title: string;
     href: string;
@@ -15,6 +15,7 @@ interface OverviewSection {
     content: string;
     highlights?: string[];
     serviceLinks?: ServiceLink[];
+    image?: string;
 }
 
 const overviewData: OverviewSection[] = [
@@ -22,7 +23,7 @@ const overviewData: OverviewSection[] = [
         title: "Our Services",
         icon: Briefcase,
         iconColor: "text-blue-600",
-        content: "We offer a comprehensive suite of human capital solutions, tailored to meet the unique challenges and opportunities in today's dynamic business landscape.",
+        content: "We offer a full range of HR and recruitment services, built to fit the specific challenges your business faces.",
         serviceLinks: [
             {
                 title: "Executive Search and Selection",
@@ -47,12 +48,12 @@ const overviewData: OverviewSection[] = [
             {
                 title: "HR Process Outsourcing",
                 href: "/hr-process-outsourcing",
-                description: "Streamline your HR operations with our expert services."
+                description: "Simplify your HR operations with hands-on support."
             },
             {
                 title: "Payroll Outsourcing",
                 href: "/payroll-management",
-                description: "Comprehensive payroll management solutions."
+                description: "End-to-end payroll management, handled for you."
             },
         ]
     },
@@ -60,29 +61,30 @@ const overviewData: OverviewSection[] = [
         title: "Technical Expertise",
         icon: LineChart,
         iconColor: "text-blue-600",
-        content: "Our cornerstone is deep knowledge of job trends and market insights, coupled with vast experience in recruitment across various industry verticals.",
+        content: "We build on deep knowledge of job trends and market conditions, backed by years of hands-on recruitment experience across industries.",
         highlights: [
-            "Cutting-edge job market analytics",
+            "Up-to-date job market analytics",
             "Industry-specific recruitment strategies",
-            "Innovative talent acquisition techniques",
+            "Modern talent acquisition methods",
             "Data-driven performance metrics"
-        ]
+        ],
+        image: "/images/overview/technical-expertise.png"
     },
     {
         title: "Why Choose Us",
         icon: Users2,
         iconColor: "text-blue-600",
-        content: "Versaatech brings together a unique blend of corporate acumen and consulting prowess, led by globally recognized executives and industry veterans.",
+        content: "Versaatech combines strong corporate experience with a consulting mindset. Our team is led by executives and industry veterans who bring global perspective.",
         highlights: [
             "Leadership team with decades of experience",
-            "Agile and adaptive methodologies",
-            "Client-centric approach to solutions",
+            "Flexible, hands-on approach",
+            "Solutions shaped around your priorities",
             "Proven track record of success"
-        ]
+        ],
+        image: "/images/overview/why-choose-us.png"
     }
 ];
 
-// Reusable component for service links - Editorial Style
 const ServiceLinkCard = ({ service, isLastInRow }: { service: ServiceLink; isLastInRow: boolean }) => {
     return (
         <div className={`group ${!isLastInRow ? 'lg:border-r border-border' : ''}`}>
@@ -98,7 +100,6 @@ const ServiceLinkCard = ({ service, isLastInRow }: { service: ServiceLink; isLas
     );
 };
 
-// Reusable component for highlight lists
 const HighlightList = ({ highlights }: { highlights: string[] }) => {
     return (
         <ul className="space-y-3">
@@ -114,7 +115,6 @@ const HighlightList = ({ highlights }: { highlights: string[] }) => {
     );
 };
 
-// Reusable component for section headers
 const SectionHeader = ({ section }: { section: OverviewSection }) => {
     const IconComponent = section.icon;
 
@@ -131,16 +131,15 @@ const SectionHeader = ({ section }: { section: OverviewSection }) => {
 };
 
 export function Overview() {
-    // Separate services section from other sections
     const servicesSection = overviewData.find(section => section.title === "Our Services");
     const otherSections = overviewData.filter(section => section.title !== "Our Services");
 
     return (
         <section className="py-16 px-4 md:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 gap-0">
                 {/* Services Section - Full Width */}
                 {servicesSection && (
-                    <div className="p-6 space-y-6 md:col-span-2">
+                    <div className="p-6 space-y-6">
                         <SectionHeader section={servicesSection} />
                         <div>
                             <p className="text-muted-foreground mb-6">{servicesSection.content}</p>
@@ -173,19 +172,39 @@ export function Overview() {
                     </div>
                 )}
 
-                {/* Other Sections - Half Width Each */}
+                {/* Other Sections - With Images */}
                 {otherSections.map((section, index) => {
-                    const isLast = index === otherSections.length - 1;
+                    const isReversed = index % 2 === 1;
                     return (
                         <div
                             key={section.title}
-                            className={`p-6 space-y-6 md:col-span-1 ${!isLast ? 'md:border-r border-border' : ''}`}
+                            className="border-t border-border"
                         >
-                            <SectionHeader section={section} />
-                            <div>
-                                <p className="text-muted-foreground mb-6">{section.content}</p>
+                            <div className={`grid grid-cols-1 lg:grid-cols-5 min-h-[400px]`}>
+                                {/* Text Content */}
+                                <div className={`lg:col-span-3 p-8 flex flex-col justify-center ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
+                                    <SectionHeader section={section} />
+                                    <div>
+                                        <p className="text-muted-foreground mb-6">{section.content}</p>
+                                    </div>
+                                    {section.highlights && <HighlightList highlights={section.highlights} />}
+                                </div>
+
+                                {/* Image */}
+                                {section.image && (
+                                    <div className={`lg:col-span-2 relative min-h-[280px] lg:min-h-full ${isReversed ? 'lg:order-1 lg:border-r border-border' : 'lg:order-2 lg:border-l border-border'}`}>
+                                        <Image
+                                            src={section.image}
+                                            alt={section.title}
+                                            fill
+                                            className="object-cover"
+                                            sizes="(max-width: 1024px) 100vw, 40vw"
+                                        />
+                                        {/* Subtle gradient overlay for text readability */}
+                                        <div className={`absolute inset-0 bg-gradient-to-${isReversed ? 'l' : 'r'} from-background/20 to-transparent lg:from-background/40`} />
+                                    </div>
+                                )}
                             </div>
-                            {section.highlights && <HighlightList highlights={section.highlights} />}
                         </div>
                     );
                 })}
