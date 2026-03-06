@@ -1,5 +1,12 @@
-import { openai } from '@ai-sdk/openai';
-import { streamText, generateText } from 'ai';
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
+import { streamText, generateText, convertToModelMessages, type UIMessage } from 'ai';
+
+const openrouter = createOpenRouter({
+  headers: {
+    'HTTP-Referer': 'https://versaatech.com',
+    'X-Title': 'Versaatech',
+  },
+});
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
@@ -66,7 +73,7 @@ Rules:
 Respond with only the filenames, comma-separated, nothing else:`;
 
     const { text } = await generateText({
-      model: openai('gpt-4.1'), // Using the new cheaper GPT-4.1 model
+      model: openrouter('z-ai/glm-4.5-air:free'),
       prompt: classificationPrompt,
       temperature: 0.1, // Very low temperature for consistent classification
       maxOutputTokens: 100, // Keep classification response short
@@ -125,10 +132,17 @@ function loadSelectedKnowledgeFiles(selectedFiles: string[]): string {
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
-    
+    const { messages: uiMessages } = await req.json() as { messages: UIMessage[] };
+
+    // Convert UIMessage format (parts) to CoreMessage format (content) for streamText
+    const messages = await convertToModelMessages(uiMessages);
+
     // Get the latest user message for classification
-    const userMessage = messages[messages.length - 1]?.content || '';
+    const lastUiMessage = uiMessages[uiMessages.length - 1];
+    const userMessage = lastUiMessage?.parts
+      ?.filter((p: { type: string }) => p.type === 'text')
+      .map((p: { type: string; text?: string }) => p.text)
+      .join('') || '';
     
     // Dynamically discover available files
     const availableFiles = discoverKnowledgeFiles();
@@ -170,7 +184,7 @@ ${knowledgeBase}
 Important note: Your role is to provide clear, accurate, and company-specific responses based only on the information available in the knowledge base above. Make sure your answers are high quality and directly relevant to Versaatech's services and offerings.`;
 
     const result = streamText({
-      model: openai('gpt-5-mini'), // Using the new cheaper GPT-4.1 model
+      model: openrouter('z-ai/glm-4.5-air:free'),
       system: systemPrompt,
       messages,
       temperature: 0.3, // Lower temperature for more consistent, factual responses
