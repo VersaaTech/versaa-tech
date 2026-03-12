@@ -73,7 +73,7 @@ Rules:
 Respond with only the filenames, comma-separated, nothing else:`;
 
     const { text } = await generateText({
-      model: openrouter('z-ai/glm-4.5-air:free'),
+      model: openrouter('google/gemini-3.1-flash-lite-preview:free'),
       prompt: classificationPrompt,
       temperature: 0.1, // Very low temperature for consistent classification
       maxOutputTokens: 100, // Keep classification response short
@@ -184,7 +184,7 @@ ${knowledgeBase}
 Important note: Your role is to provide clear, accurate, and company-specific responses based only on the information available in the knowledge base above. Make sure your answers are high quality and directly relevant to Versaatech's services and offerings.`;
 
     const result = streamText({
-      model: openrouter('z-ai/glm-4.5-air:free'),
+      model: openrouter('google/gemini-3.1-flash-lite-preview:free'),
       system: systemPrompt,
       messages,
       temperature: 0.3, // Lower temperature for more consistent, factual responses

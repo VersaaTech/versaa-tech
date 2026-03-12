@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   poweredByHeader: false,
   
+  // Include knowledge-base files in serverless function bundles
+  outputFileTracingIncludes: {
+    '/api/chat': ['./knowledge-base/**/*'],
+  },
+
   // Experimental features to improve build performance
   experimental: {
     optimizePackageImports: ['@/lib/db', 'lucide-react', 'framer-motion'],
