@@ -1,5 +1,5 @@
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
-import { streamText, convertToModelMessages, type UIMessage } from 'ai';
+import { generateText, convertToModelMessages, type UIMessage } from 'ai';
 
 const openrouter = createOpenRouter({
   headers: {
@@ -85,7 +85,7 @@ ${knowledgeBase}
 
 Important note: Your role is to provide clear, accurate, and company-specific responses based only on the information available in the knowledge base above. Make sure your answers are high quality and directly relevant to Versaatech's services and offerings.`;
 
-    const result = streamText({
+    const { text } = await generateText({
       model: openrouter('nvidia/nemotron-3-super-120b-a12b:free'),
       system: systemPrompt,
       messages,
@@ -93,7 +93,9 @@ Important note: Your role is to provide clear, accurate, and company-specific re
       maxOutputTokens: 2000,
     });
 
-    return result.toTextStreamResponse();
+    return new Response(text, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
   } catch (error) {
     console.error('Error in chat API:', error);
     return new Response('Internal Server Error', { status: 500 });
