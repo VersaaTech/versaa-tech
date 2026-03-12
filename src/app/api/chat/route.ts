@@ -46,29 +46,43 @@ function loadKnowledgeBase(): string {
 }
 
 export async function POST(req: Request) {
+  // Step 1: Parse request
+  let uiMessages;
   try {
-    const { messages: uiMessages } = await req.json();
-
-    // Extract conversation history for the API call
-    const apiMessages: { role: string; content: string }[] = [];
-    for (const msg of uiMessages) {
-      const text = msg.parts
-        ?.filter((p: { type: string }) => p.type === 'text')
-        .map((p: { type: string; text?: string }) => p.text)
-        .join('') || '';
-      if (text) {
-        apiMessages.push({ role: msg.role, content: text });
-      }
+    const body = await req.json();
+    uiMessages = body.messages;
+    if (!uiMessages || !Array.isArray(uiMessages)) {
+      return new Response('Invalid request: messages required', { status: 400 });
     }
+  } catch {
+    return new Response('Invalid JSON body', { status: 400 });
+  }
 
-    const knowledgeBase = loadKnowledgeBase();
-
-    if (!knowledgeBase) {
-      console.error('No knowledge base files found');
-      return new Response('Knowledge base not available', { status: 500 });
+  // Step 2: Extract conversation messages
+  const apiMessages: { role: string; content: string }[] = [];
+  for (const msg of uiMessages) {
+    const text = msg.parts
+      ?.filter((p: { type: string }) => p.type === 'text')
+      .map((p: { type: string; text?: string }) => p.text)
+      .join('') || '';
+    if (text) {
+      apiMessages.push({ role: msg.role, content: text });
     }
+  }
 
-    const systemPrompt = `You are Versaatech's AI assistant, designed to answer user questions based on a corpus of company documents.
+  // Step 3: Load knowledge base
+  const knowledgeBase = loadKnowledgeBase();
+  if (!knowledgeBase) {
+    return new Response('Knowledge base not available', { status: 500 });
+  }
+
+  // Step 4: Check API key
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return new Response('API key not configured', { status: 500 });
+  }
+
+  const systemPrompt = `You are Versaatech's AI assistant, designed to answer user questions based on a corpus of company documents.
 
 How You Answer:
 
@@ -86,11 +100,13 @@ ${knowledgeBase}
 
 Important note: Your role is to provide clear, accurate, and company-specific responses based only on the information available in the knowledge base above. Make sure your answers are high quality and directly relevant to Versaatech's services and offerings.`;
 
-    // Call OpenRouter API directly to handle reasoning models properly
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  // Step 5: Call OpenRouter API
+  let response;
+  try {
+    response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://versaatech.com',
         'X-Title': 'Versaatech',
@@ -105,24 +121,27 @@ Important note: Your role is to provide clear, accurate, and company-specific re
         max_tokens: 2000,
       }),
     });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error('OpenRouter API error:', response.status, errorBody);
-      return new Response('AI service temporarily unavailable', { status: 502 });
-    }
-
-    const data = await response.json();
-    const choice = data.choices?.[0]?.message;
-
-    // Handle reasoning models: content may be null if all tokens went to reasoning
-    const text = choice?.content || choice?.reasoning || 'I apologize, but I was unable to generate a response. Please try again.';
-
-    return new Response(text, {
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-    });
   } catch (error) {
-    console.error('Error in chat API:', error);
-    return new Response('Internal Server Error', { status: 500 });
+    return new Response(`Failed to reach AI service: ${error instanceof Error ? error.message : 'unknown'}`, { status: 502 });
   }
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    return new Response(`AI service error ${response.status}: ${errorBody}`, { status: 502 });
+  }
+
+  // Step 6: Parse response
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    return new Response('Failed to parse AI response', { status: 502 });
+  }
+
+  const choice = data.choices?.[0]?.message;
+  const text = choice?.content || choice?.reasoning || 'I apologize, but I was unable to generate a response. Please try again.';
+
+  return new Response(text, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
 }
