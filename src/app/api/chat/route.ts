@@ -1,16 +1,7 @@
-import { createOpenRouter } from '@openrouter/ai-sdk-provider';
-import { generateText, convertToModelMessages, type UIMessage } from 'ai';
-
-const openrouter = createOpenRouter({
-  headers: {
-    'HTTP-Referer': 'https://versaatech.com',
-    'X-Title': 'Versaatech',
-  },
-});
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
-// Allow streaming responses up to 30 seconds
+// Allow responses up to 30 seconds
 export const maxDuration = 30;
 
 // Cache for loaded knowledge base content
@@ -44,7 +35,7 @@ function loadKnowledgeBase(): string {
       }
     }
 
-    console.log(`📚 Loaded ${allFiles.length} knowledge base files`);
+    console.log(`Loaded ${allFiles.length} knowledge base files`);
     knowledgeCache = content;
     knowledgeCacheTimestamp = now;
     return content;
@@ -56,9 +47,19 @@ function loadKnowledgeBase(): string {
 
 export async function POST(req: Request) {
   try {
-    const { messages: uiMessages } = await req.json() as { messages: UIMessage[] };
+    const { messages: uiMessages } = await req.json();
 
-    const messages = await convertToModelMessages(uiMessages);
+    // Extract conversation history for the API call
+    const apiMessages: { role: string; content: string }[] = [];
+    for (const msg of uiMessages) {
+      const text = msg.parts
+        ?.filter((p: { type: string }) => p.type === 'text')
+        .map((p: { type: string; text?: string }) => p.text)
+        .join('') || '';
+      if (text) {
+        apiMessages.push({ role: msg.role, content: text });
+      }
+    }
 
     const knowledgeBase = loadKnowledgeBase();
 
@@ -85,13 +86,37 @@ ${knowledgeBase}
 
 Important note: Your role is to provide clear, accurate, and company-specific responses based only on the information available in the knowledge base above. Make sure your answers are high quality and directly relevant to Versaatech's services and offerings.`;
 
-    const { text } = await generateText({
-      model: openrouter('nvidia/nemotron-3-super-120b-a12b:free'),
-      system: systemPrompt,
-      messages,
-      temperature: 0.3,
-      maxOutputTokens: 2000,
+    // Call OpenRouter API directly to handle reasoning models properly
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://versaatech.com',
+        'X-Title': 'Versaatech',
+      },
+      body: JSON.stringify({
+        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...apiMessages,
+        ],
+        temperature: 0.3,
+        max_tokens: 2000,
+      }),
     });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error('OpenRouter API error:', response.status, errorBody);
+      return new Response('AI service temporarily unavailable', { status: 502 });
+    }
+
+    const data = await response.json();
+    const choice = data.choices?.[0]?.message;
+
+    // Handle reasoning models: content may be null if all tokens went to reasoning
+    const text = choice?.content || choice?.reasoning || 'I apologize, but I was unable to generate a response. Please try again.';
 
     return new Response(text, {
       headers: { 'Content-Type': 'text/plain; charset=utf-8' },
