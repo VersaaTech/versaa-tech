@@ -4,13 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:pull": "prisma db pull",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.73",
     "@openrouter/ai-sdk-provider": "^2.1.1",
+    "@prisma/adapter-pg": "^7.5.0",
+    "@prisma/client": "^7.5.0",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
@@ -53,6 +59,7 @@
     "eslint": "^9.27.0",
     "eslint-config-next": "^16.1.6",
     "postcss": "^8",
+    "prisma": "^7.5.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

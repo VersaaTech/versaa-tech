@@ -1,44 +1,11 @@
-import { Pool } from 'pg';
+import prisma from './prisma';
+import { Prisma } from '../../generated/prisma/client';
 
-// Validate required environment variables
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is required');
-}
-
-// Create a connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? {
-    rejectUnauthorized: false
-  } : false,
-  max: 20,
-  min: 2,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000,
-});
-
-// Handle pool errors
-pool.on('error', (err) => {
-  console.error('PostgreSQL pool error:', err);
-});
-
-export default pool;
-
-// Helper function to execute queries
-export async function query(text: string, params?: unknown[]) {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(text, params);
-    return result;
-  } catch (error) {
-    console.error('Database query error:', error);
-    throw error;
-  } finally {
-    client.release();
-  }
-}
+// Re-export Prisma client for direct access if needed
+export { prisma };
 
 // Type definitions for our database entities
+// Keep original interface for backward compatibility (Prisma uses null, existing code uses undefined)
 export interface Job {
   id: number;
   title: string;
@@ -110,139 +77,102 @@ export class JobsDB {
     limit?: number;
     offset?: number;
   }): Promise<Job[]> {
-    let queryText = `SELECT * FROM jobs`;
-    const params: unknown[] = [];
-    const conditions: string[] = [];
+    const where: Prisma.jobsWhereInput = {};
 
     if (filters) {
-      if (filters.is_active !== undefined) {
-        conditions.push(`is_active = $${params.length + 1}`);
-        params.push(filters.is_active);
-      }
-      if (filters.featured !== undefined) {
-        conditions.push(`featured = $${params.length + 1}`);
-        params.push(filters.featured);
-      }
-      if (filters.job_type) {
-        conditions.push(`job_type = $${params.length + 1}`);
-        params.push(filters.job_type);
-      }
-      if (filters.work_mode) {
-        conditions.push(`work_mode = $${params.length + 1}`);
-        params.push(filters.work_mode);
-      }
-      if (filters.experience_level) {
-        conditions.push(`experience_level = $${params.length + 1}`);
-        params.push(filters.experience_level);
-      }
+      if (filters.is_active !== undefined) where.is_active = filters.is_active;
+      if (filters.featured !== undefined) where.featured = filters.featured;
+      if (filters.job_type) where.job_type = filters.job_type;
+      if (filters.work_mode) where.work_mode = filters.work_mode;
+      if (filters.experience_level) where.experience_level = filters.experience_level;
     }
 
-    if (conditions.length > 0) {
-      queryText += ` WHERE ${conditions.join(' AND ')}`;
-    }
+    const jobs = await prisma.jobs.findMany({
+      where,
+      orderBy: [
+        { is_closed: 'asc' },
+        { posted_date: 'desc' },
+      ],
+      ...(filters?.limit && { take: filters.limit }),
+      ...(filters?.offset && { skip: filters.offset }),
+    });
 
-    queryText += ' ORDER BY COALESCE(is_closed, false) ASC, posted_date DESC';
-
-    if (filters?.limit) {
-      queryText += ` LIMIT $${params.length + 1}`;
-      params.push(filters.limit);
-    }
-
-    if (filters?.offset) {
-      queryText += ` OFFSET $${params.length + 1}`;
-      params.push(filters.offset);
-    }
-
-    const result = await query(queryText, params);
-    return result.rows;
+    return jobs as unknown as Job[];
   }
 
   // Get a single job by ID
   static async getJobById(id: number): Promise<Job | null> {
-    const result = await query(`SELECT * FROM jobs WHERE id = $1`, [id]);
-    return result.rows[0] || null;
+    const job = await prisma.jobs.findUnique({ where: { id } });
+    return job as unknown as Job | null;
   }
 
   // Create a new job
   static async createJob(jobData: CreateJobData): Promise<Job> {
-    const {
-      title,
-      company,
-      location,
-      job_type,
-      work_mode,
-      salary_min,
-      salary_max,
-      salary_currency,
-      description,
-      requirements,
-      responsibilities,
-      benefits,
-      skills,
-      experience_level,
-      department,
-      application_deadline,
-      is_active,
-      featured,
-      is_closed,
-      created_by,
-      application_email,
-      application_url
-    } = jobData;
+    const job = await prisma.jobs.create({
+      data: {
+        title: jobData.title,
+        company: jobData.company,
+        location: jobData.location,
+        job_type: jobData.job_type,
+        work_mode: jobData.work_mode,
+        salary_min: jobData.salary_min,
+        salary_max: jobData.salary_max,
+        salary_currency: jobData.salary_currency,
+        description: jobData.description,
+        requirements: jobData.requirements,
+        responsibilities: jobData.responsibilities,
+        benefits: jobData.benefits,
+        skills: jobData.skills ?? Prisma.JsonNull,
+        experience_level: jobData.experience_level,
+        department: jobData.department,
+        application_deadline: jobData.application_deadline,
+        is_active: jobData.is_active,
+        featured: jobData.featured,
+        is_closed: jobData.is_closed,
+        created_by: jobData.created_by,
+        application_email: jobData.application_email,
+        application_url: jobData.application_url,
+      },
+    });
 
-    const result = await query(
-      `INSERT INTO jobs (
-        title, company, location, job_type, work_mode, salary_min, salary_max,
-        salary_currency, description, requirements, responsibilities, benefits,
-        skills, experience_level, department, application_deadline, is_active,
-        featured, is_closed, created_by, application_email, application_url
-      ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22
-      ) RETURNING *`,
-      [
-        title, company, location, job_type, work_mode, salary_min, salary_max,
-        salary_currency, description, requirements, responsibilities, benefits,
-        JSON.stringify(skills), experience_level, department, application_deadline,
-        is_active, featured, is_closed, created_by, application_email, application_url
-      ]
-    );
-
-    return result.rows[0];
+    return job as unknown as Job;
   }
 
   // Update a job
   static async updateJob(id: number, jobData: Partial<CreateJobData>): Promise<Job | null> {
-    const fields: string[] = [];
-    const values: unknown[] = [];
-    let paramCount = 1;
+    // Build the update data, handling skills JSONB separately
+    const { skills, ...rest } = jobData;
+    const data: Prisma.jobsUpdateInput = { ...rest };
 
-    Object.entries(jobData).forEach(([key, value]) => {
-      if (value !== undefined && key !== 'id') {
-        fields.push(`${key} = $${paramCount}`);
-        values.push(key === 'skills' ? JSON.stringify(value) : value);
-        paramCount++;
-      }
-    });
-
-    if (fields.length === 0) {
-      return null;
+    if (skills !== undefined) {
+      data.skills = skills;
     }
 
-    fields.push(`updated_at = NOW()`);
-    values.push(id);
-
-    const result = await query(
-      `UPDATE jobs SET ${fields.join(', ')} WHERE id = $${paramCount} RETURNING *`,
-      values
-    );
-
-    return result.rows[0] || null;
+    try {
+      const job = await prisma.jobs.update({
+        where: { id },
+        data,
+      });
+      return job as unknown as Job;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        return null;
+      }
+      throw error;
+    }
   }
 
   // Delete a job
   static async deleteJob(id: number): Promise<boolean> {
-    const result = await query(`DELETE FROM jobs WHERE id = $1`, [id]);
-    return (result.rowCount ?? 0) > 0;
+    try {
+      await prisma.jobs.delete({ where: { id } });
+      return true;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        return false;
+      }
+      throw error;
+    }
   }
 
   // Get job statistics
@@ -254,52 +184,59 @@ export class JobsDB {
     by_level: { [key: string]: number };
   }> {
     try {
-      const statsResult = await query(`
+      const result = await prisma.$queryRaw<
+        Array<{
+          total: bigint;
+          active: bigint;
+          featured: bigint;
+          by_type: Record<string, number>;
+          by_level: Record<string, number>;
+        }>
+      >`
         WITH job_stats AS (
-          SELECT 
+          SELECT
             COUNT(*) as total_jobs,
             COUNT(*) FILTER (WHERE is_active = true) as active_jobs,
             COUNT(*) FILTER (WHERE featured = true) as featured_jobs
           FROM jobs
         ),
         type_stats AS (
-          SELECT 
+          SELECT
             COALESCE(job_type, 'Unspecified') as job_type,
             COUNT(*) as count
-          FROM jobs 
-          WHERE is_active = true 
+          FROM jobs
+          WHERE is_active = true
           GROUP BY job_type
         ),
         level_stats AS (
-          SELECT 
+          SELECT
             COALESCE(experience_level, 'Unspecified') as experience_level,
             COUNT(*) as count
-          FROM jobs 
-          WHERE is_active = true 
+          FROM jobs
+          WHERE is_active = true
           GROUP BY experience_level
         )
-        SELECT 
+        SELECT
           (SELECT total_jobs FROM job_stats) as total,
           (SELECT active_jobs FROM job_stats) as active,
           (SELECT featured_jobs FROM job_stats) as featured,
           COALESCE(
-            (SELECT json_object_agg(job_type, count) FROM type_stats), 
+            (SELECT json_object_agg(job_type, count) FROM type_stats),
             '{}'::json
           ) as by_type,
           COALESCE(
-            (SELECT json_object_agg(experience_level, count) FROM level_stats), 
+            (SELECT json_object_agg(experience_level, count) FROM level_stats),
             '{}'::json
           ) as by_level
-      `);
+      `;
 
-      const result = statsResult.rows[0];
-      
+      const row = result[0];
       return {
-        total: parseInt(result.total) || 0,
-        active: parseInt(result.active) || 0,
-        featured: parseInt(result.featured) || 0,
-        by_type: result.by_type || {},
-        by_level: result.by_level || {}
+        total: Number(row.total) || 0,
+        active: Number(row.active) || 0,
+        featured: Number(row.featured) || 0,
+        by_type: row.by_type || {},
+        by_level: row.by_level || {},
       };
     } catch (error) {
       console.error('Error fetching job stats:', error);
@@ -308,8 +245,8 @@ export class JobsDB {
         active: 0,
         featured: 0,
         by_type: {},
-        by_level: {}
+        by_level: {},
       };
     }
   }
-} 
+}

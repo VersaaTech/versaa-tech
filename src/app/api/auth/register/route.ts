@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import pool from '@/lib/db';
+import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
 // Simple in-memory rate limiting (for production, use Redis or similar)
@@ -11,7 +11,7 @@ function getRateLimit(ip: string): { allowed: boolean; remaining: number } {
   const maxAttempts = 5; // 5 attempts per 15 minutes
 
   const current = rateLimitMap.get(ip);
-  
+
   if (!current || now > current.resetTime) {
     rateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
     return { allowed: true, remaining: maxAttempts - 1 };
@@ -28,19 +28,19 @@ function getRateLimit(ip: string): { allowed: boolean; remaining: number } {
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const ip = request.headers.get('x-forwarded-for') || 
-               request.headers.get('x-real-ip') || 
+    const ip = request.headers.get('x-forwarded-for') ||
+               request.headers.get('x-real-ip') ||
                'unknown';
     const { allowed, remaining } = getRateLimit(ip);
 
     if (!allowed) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Too many registration attempts. Please try again later.',
           rateLimitExceeded: true
         },
-        { 
+        {
           status: 429,
           headers: {
             'Retry-After': '900', // 15 minutes
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     if (!email || !password) {
       return NextResponse.json(
         { success: false, error: 'Email and password are required' },
-        { 
+        {
           status: 400,
           headers: { 'X-RateLimit-Remaining': remaining.toString() }
         }
@@ -94,21 +94,21 @@ export async function POST(request: NextRequest) {
 
     if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Password must contain at least one uppercase letter, one lowercase letter, and one number' 
+        {
+          success: false,
+          error: 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
         },
         { status: 400 }
       );
     }
 
     // Check if user already exists
-    const existingUser = await pool.query(
-      'SELECT id FROM users WHERE email = $1',
-      [email.toLowerCase()]
-    );
+    const existingUser = await prisma.users.findUnique({
+      where: { email: email.toLowerCase() },
+      select: { id: true },
+    });
 
-    if (existingUser.rows.length > 0) {
+    if (existingUser) {
       return NextResponse.json(
         { success: false, error: 'User with this email already exists' },
         { status: 409 }
@@ -119,12 +119,21 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, 14);
 
     // Create user with is_admin = false by default
-    const result = await pool.query(
-      'INSERT INTO users (email, password, name, is_admin, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING id, email, name, is_admin, created_at',
-      [email.toLowerCase(), hashedPassword, name.trim(), false]
-    );
-
-    const newUser = result.rows[0];
+    const newUser = await prisma.users.create({
+      data: {
+        email: email.toLowerCase(),
+        password: hashedPassword,
+        name: name.trim(),
+        is_admin: false,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        is_admin: true,
+        created_at: true,
+      },
+    });
 
     return NextResponse.json({
       success: true,
@@ -144,11 +153,11 @@ export async function POST(request: NextRequest) {
     console.error('Registration error:', error);
     // Don't expose internal errors to client in production
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: 'Registration failed. Please try again.'
       },
       { status: 500 }
     );
   }
-} 
+}

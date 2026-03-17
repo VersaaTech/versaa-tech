@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import pool from './db';
+import prisma from './prisma';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -17,20 +17,18 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const result = await pool.query(
-            'SELECT id, email, password, name, is_admin FROM users WHERE email = $1',
-            [credentials.email]
-          );
+          const user = await prisma.users.findUnique({
+            where: { email: credentials.email },
+            select: { id: true, email: true, password: true, name: true, is_admin: true },
+          });
 
-          const user = result.rows[0];
-          
           if (!user) {
             return null;
           }
 
           // Check password
           const isValidPassword = await bcrypt.compare(credentials.password, user.password);
-          
+
           if (!isValidPassword) {
             return null;
           }
@@ -38,7 +36,7 @@ export const authOptions: NextAuthOptions = {
             id: user.id.toString(),
             email: user.email,
             name: user.name,
-            isAdmin: user.is_admin,
+            isAdmin: user.is_admin === true,
           };
         } catch (error) {
           console.error('Error during user authorization:', error);
@@ -60,18 +58,18 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.isAdmin = (user as { isAdmin?: boolean }).isAdmin || false;
       }
-      
+
       // Always refresh admin status from database to ensure up-to-date privileges
       // This is important for when admin status changes after login
       if (token.email) {
         try {
-          const result = await pool.query(
-            'SELECT is_admin FROM users WHERE email = $1',
-            [token.email as string]
-          );
-          
-          if (result.rows.length > 0) {
-            token.isAdmin = result.rows[0].is_admin === true;
+          const dbUser = await prisma.users.findUnique({
+            where: { email: token.email as string },
+            select: { is_admin: true },
+          });
+
+          if (dbUser) {
+            token.isAdmin = dbUser.is_admin === true;
           } else {
             token.isAdmin = false;
           }
@@ -80,7 +78,7 @@ export const authOptions: NextAuthOptions = {
           // Keep existing value if database query fails
         }
       }
-      
+
       return token;
     },
   },
@@ -101,14 +99,14 @@ export const authOptions: NextAuthOptions = {
 // Helper function to check if user is admin by querying database
 export async function isUserAdmin(email: string | null | undefined): Promise<boolean> {
   if (!email) return false;
-  
+
   try {
-    const result = await pool.query(
-      'SELECT is_admin FROM users WHERE email = $1',
-      [email]
-    );
-    
-    return result.rows.length > 0 && result.rows[0].is_admin === true;
+    const user = await prisma.users.findUnique({
+      where: { email },
+      select: { is_admin: true },
+    });
+
+    return user?.is_admin === true;
   } catch (error) {
     console.error('Error checking admin status:', error);
     return false;
@@ -136,4 +134,4 @@ declare module 'next-auth/jwt' {
   interface JWT {
     isAdmin?: boolean;
   }
-} 
+}

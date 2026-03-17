@@ -48,3 +48,4 @@ database/
 
 # CLAUDE.md
 CLAUDE.md
+/generated/prisma

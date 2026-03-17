@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model jobs {
+  id                   Int       @id @default(autoincrement())
+  title                String    @db.VarChar(255)
+  company              String    @db.VarChar(255)
+  location             String?   @db.VarChar(255)
+  job_type             String?   @db.VarChar(50)
+  work_mode            String?   @db.VarChar(50)
+  salary_min           Int?
+  salary_max           Int?
+  salary_currency      String?   @default("USD") @db.VarChar(10)
+  description          String
+  requirements         String?
+  responsibilities     String?
+  benefits             String?
+  skills               Json?
+  experience_level     String?   @db.VarChar(50)
+  department           String?   @db.VarChar(100)
+  posted_date          DateTime? @default(now()) @db.Timestamp(6)
+  application_deadline DateTime? @db.Timestamp(6)
+  is_active            Boolean?  @default(true)
+  featured             Boolean?  @default(false)
+  created_at           DateTime? @default(now()) @db.Timestamp(6)
+  updated_at           DateTime? @default(now()) @updatedAt @db.Timestamp(6)
+  created_by           String?   @db.VarChar(255)
+  application_email    String?   @db.VarChar(255)
+  application_url      String?   @db.VarChar(500)
+  external_job_id      String?   @db.VarChar(100)
+  is_closed            Boolean?  @default(false)
+
+  @@index([is_active], map: "idx_jobs_active")
+  @@index([is_closed], map: "idx_jobs_closed")
+  @@index([company], map: "idx_jobs_company")
+  @@index([experience_level], map: "idx_jobs_experience_level")
+  @@index([featured], map: "idx_jobs_featured")
+  @@index([job_type], map: "idx_jobs_job_type")
+  @@index([location], map: "idx_jobs_location")
+  @@index([posted_date(sort: Desc)], map: "idx_jobs_posted_date")
+  @@index([work_mode], map: "idx_jobs_work_mode")
+}
+
+model users {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  name       String?   @db.VarChar(255)
+  is_admin   Boolean?  @default(false)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @updatedAt @db.Timestamp(6)
+}

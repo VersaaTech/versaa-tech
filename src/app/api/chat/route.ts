@@ -1,7 +1,16 @@
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
+import { streamText, convertToModelMessages, type UIMessage } from 'ai';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
-// Allow responses up to 30 seconds
+const openrouter = createOpenRouter({
+  headers: {
+    'HTTP-Referer': 'https://versaatech.com',
+    'X-Title': 'Versaatech',
+  },
+});
+
+// Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 // Cache for loaded knowledge base content
@@ -46,43 +55,19 @@ function loadKnowledgeBase(): string {
 }
 
 export async function POST(req: Request) {
-  // Step 1: Parse request
-  let uiMessages;
   try {
-    const body = await req.json();
-    uiMessages = body.messages;
-    if (!uiMessages || !Array.isArray(uiMessages)) {
-      return new Response('Invalid request: messages required', { status: 400 });
+    const { messages: uiMessages } = await req.json() as { messages: UIMessage[] };
+
+    const messages = await convertToModelMessages(uiMessages);
+
+    const knowledgeBase = loadKnowledgeBase();
+
+    if (!knowledgeBase) {
+      console.error('No knowledge base files found');
+      return new Response('Knowledge base not available', { status: 500 });
     }
-  } catch {
-    return new Response('Invalid JSON body', { status: 400 });
-  }
 
-  // Step 2: Extract conversation messages
-  const apiMessages: { role: string; content: string }[] = [];
-  for (const msg of uiMessages) {
-    const text = msg.parts
-      ?.filter((p: { type: string }) => p.type === 'text')
-      .map((p: { type: string; text?: string }) => p.text)
-      .join('') || '';
-    if (text) {
-      apiMessages.push({ role: msg.role, content: text });
-    }
-  }
-
-  // Step 3: Load knowledge base
-  const knowledgeBase = loadKnowledgeBase();
-  if (!knowledgeBase) {
-    return new Response('Knowledge base not available', { status: 500 });
-  }
-
-  // Step 4: Check API key
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) {
-    return new Response('API key not configured', { status: 500 });
-  }
-
-  const systemPrompt = `You are Versaatech's AI assistant, designed to answer user questions based on a corpus of company documents.
+    const systemPrompt = `You are Versaatech's AI assistant, designed to answer user questions based on a corpus of company documents.
 
 How You Answer:
 
@@ -100,48 +85,17 @@ ${knowledgeBase}
 
 Important note: Your role is to provide clear, accurate, and company-specific responses based only on the information available in the knowledge base above. Make sure your answers are high quality and directly relevant to Versaatech's services and offerings.`;
 
-  // Step 5: Call OpenRouter API
-  let response;
-  try {
-    response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://versaatech.com',
-        'X-Title': 'Versaatech',
-      },
-      body: JSON.stringify({
-        model: 'nvidia/nemotron-3-super-120b-a12b:free',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...apiMessages,
-        ],
-        temperature: 0.3,
-        max_tokens: 2000,
-      }),
+    const result = streamText({
+      model: openrouter('nvidia/nemotron-3-super-120b-a12b:free'),
+      system: systemPrompt,
+      messages,
+      temperature: 0.3,
+      maxOutputTokens: 2000,
     });
+
+    return result.toTextStreamResponse();
   } catch (error) {
-    return new Response(`Failed to reach AI service: ${error instanceof Error ? error.message : 'unknown'}`, { status: 502 });
+    console.error('Error in chat API:', error);
+    return new Response('Internal Server Error', { status: 500 });
   }
-
-  if (!response.ok) {
-    const errorBody = await response.text();
-    return new Response(`AI service error ${response.status}: ${errorBody}`, { status: 502 });
-  }
-
-  // Step 6: Parse response
-  let data;
-  try {
-    data = await response.json();
-  } catch {
-    return new Response('Failed to parse AI response', { status: 502 });
-  }
-
-  const choice = data.choices?.[0]?.message;
-  const text = choice?.content || choice?.reasoning || 'I apologize, but I was unable to generate a response. Please try again.';
-
-  return new Response(text, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-  });
 }
