@@ -4,7 +4,7 @@ import "./globals.css"
 import { Navigation } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
 import ScrollToTopButton from "@/components/ScrollToTopButton"
-import { ChatButton } from "@/components/chat/ChatButton"
+// import { ChatButton } from "@/components/chat/ChatButton"
 import SessionProvider from "@/components/SessionProvider"
 import LazyToaster from "@/components/LazyToaster"
 import { JsonLd } from "@/components/JsonLd"
@@ -104,7 +104,7 @@ export default function RootLayout({
           {children}
           <Footer />
           <ScrollToTopButton />
-          <ChatButton />
+          {/* <ChatButton /> */}
           <LazyToaster />
         </SessionProvider>
       </body>

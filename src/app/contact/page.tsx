@@ -23,28 +23,8 @@ export default function ContactPage() {
                             </p>
                         </div>
 
-                        {/* Dubai Office */}
-                        <div className="p-6 border-b border-border lg:border-r">
-                            <div className="flex items-center gap-3 mb-4">
-                                <MapPin className="h-6 w-6 text-blue-600" />
-                                <h2 className="text-xl font-bold text-foreground">Dubai Office</h2>
-                            </div>
-                            <div className="text-muted-foreground">
-                                <a
-                                    href="https://maps.app.goo.gl/mqRjPrPCXqfYwNWx5"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="hover:text-blue-600 transition-colors"
-                                >
-                                    <p>Meydan Grandstand, 6th Floor</p>
-                                    <p>Meydan Road, Nad Al Sheba</p>
-                                    <p>Dubai, U.A.E</p>
-                                </a>
-                            </div>
-                        </div>
-
                         {/* Contact Details */}
-                        <div className="p-6 border-b border-border md:border-r lg:border-r-0">
+                        <div className="p-6 border-b border-border lg:border-r">
                             <div className="flex items-center gap-3 mb-4">
                                 <Phone className="h-6 w-6 text-blue-600" />
                                 <h2 className="text-xl font-bold text-foreground">Contact</h2>
@@ -71,20 +51,8 @@ export default function ContactPage() {
                             </div>
                         </div>
 
-                        {/* Business Hours */}
-                        <div className="p-6 border-b md:border-b-0 border-border md:border-r">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Clock className="h-6 w-6 text-blue-600" />
-                                <h2 className="text-xl font-bold text-foreground">Business Hours</h2>
-                            </div>
-                            <div className="text-muted-foreground font-medium">
-                                <p>Monday - Friday: 8AM - 5PM</p>
-                                <p>Saturday: 8AM - 1PM</p>
-                            </div>
-                        </div>
-
                         {/* Kenya Office */}
-                        <div className="p-6 border-b md:border-b-0 border-border lg:border-r">
+                        <div className="p-6 border-b border-border md:border-r lg:border-r-0">
                             <div className="flex items-center gap-3 mb-4">
                                 <MapPin className="h-6 w-6 text-blue-600" />
                                 <h2 className="text-xl font-bold text-foreground">Kenya Office</h2>
@@ -100,6 +68,38 @@ export default function ContactPage() {
                                     <p>Floor M1, Unit 7</p>
                                     <p>Nairobi, Kenya</p>
                                 </a>
+                            </div>
+                        </div>
+
+                        {/* Dubai Office */}
+                        <div className="p-6 border-b md:border-b-0 border-border md:border-r">
+                            <div className="flex items-center gap-3 mb-4">
+                                <MapPin className="h-6 w-6 text-blue-600" />
+                                <h2 className="text-xl font-bold text-foreground">Dubai Office</h2>
+                            </div>
+                            <div className="text-muted-foreground">
+                                <a
+                                    href="https://maps.app.goo.gl/mqRjPrPCXqfYwNWx5"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-blue-600 transition-colors"
+                                >
+                                    <p>Meydan Grandstand, 6th Floor</p>
+                                    <p>Meydan Road, Nad Al Sheba</p>
+                                    <p>Dubai, U.A.E</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Business Hours */}
+                        <div className="p-6 border-b md:border-b-0 border-border lg:border-r">
+                            <div className="flex items-center gap-3 mb-4">
+                                <Clock className="h-6 w-6 text-blue-600" />
+                                <h2 className="text-xl font-bold text-foreground">Business Hours</h2>
+                            </div>
+                            <div className="text-muted-foreground font-medium">
+                                <p>Monday - Friday: 8AM - 5PM</p>
+                                <p>Saturday: 8AM - 1PM</p>
                             </div>
                         </div>
 

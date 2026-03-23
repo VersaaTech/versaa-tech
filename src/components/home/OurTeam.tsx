@@ -13,20 +13,20 @@ interface TeamMember {
 
 const teamMembers: TeamMember[] = [
     {
+        name: "Joslyn Mbae",
+        role: "Head - HR Projects",
+        linkedIn: "https://www.linkedin.com/in/joslyn-mbae-5b6852b0/",
+        initials: "JM",
+        gradientFrom: "from-violet-500",
+        gradientTo: "to-purple-600",
+    },
+    {
         name: "Fredrick Maeba",
         role: "Lead - Recruitments",
         linkedIn: "https://www.linkedin.com/in/fredrick-maeba/",
         initials: "FM",
         gradientFrom: "from-rose-500",
         gradientTo: "to-pink-600",
-    },
-    {
-        name: "Joslyn Mbae",
-        role: "Head - HR Recruitments",
-        linkedIn: "https://www.linkedin.com/in/joslyn-mbae-5b6852b0/",
-        initials: "JM",
-        gradientFrom: "from-violet-500",
-        gradientTo: "to-purple-600",
     },
     {
         name: "Fredrick Nyambedha",
