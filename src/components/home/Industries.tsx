@@ -133,20 +133,20 @@ export function Industries() {
             opacity: 1,
             transition: {
                 duration: 0.6,
-                ease: "easeOut"
+                ease: "easeOut" as const
             }
         }
-    };
+    } as const;
 
     const buttonVariants = {
         hover: {
             scale: 1.1,
             transition: {
-                type: "spring",
+                type: "spring" as const,
                 stiffness: 300
             }
         }
-    };
+    } as const;
 
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false)

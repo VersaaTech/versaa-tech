@@ -7,13 +7,13 @@ export const containerVariants = {
     opacity: 1,
     transition: { duration: 0.8, staggerChildren: 0.15 },
   },
-}
+} as const
 
 export const itemVariants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.5, ease: 'easeOut' },
+    transition: { duration: 0.5, ease: 'easeOut' as const },
   },
-}
+} as const

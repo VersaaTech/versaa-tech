@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import Link from "next/link"
 import { LayoutGrid, Building2, Lightbulb, Info, Users, ChevronDown, Building, Phone, Briefcase, Search, UserCheck, Banknote, UserCog, Settings, BarChart3, Layers } from 'lucide-react'
