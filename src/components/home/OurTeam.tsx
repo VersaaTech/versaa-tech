@@ -1,117 +1,80 @@
-'use client'
+import { Linkedin } from 'lucide-react'
+import Link from 'next/link'
 
-import { Linkedin } from "lucide-react";
-
-interface TeamMember {
-    name: string;
-    role: string;
-    linkedIn?: string;
-    initials: string;
-    gradientFrom: string;
-    gradientTo: string;
-}
-
-const teamMembers: TeamMember[] = [
-    {
-        name: "Joslyn Mbae",
-        role: "Head - HR Projects",
-        linkedIn: "https://www.linkedin.com/in/joslyn-mbae-5b6852b0/",
-        initials: "JM",
-        gradientFrom: "from-violet-500",
-        gradientTo: "to-purple-600",
-    },
-    {
-        name: "Fredrick Maeba",
-        role: "Lead - Recruitments",
-        linkedIn: "https://www.linkedin.com/in/fredrick-maeba/",
-        initials: "FM",
-        gradientFrom: "from-rose-500",
-        gradientTo: "to-pink-600",
-    },
-    {
-        name: "Fredrick Nyambedha",
-        role: "HR Project Manager",
-        initials: "FN",
-        gradientFrom: "from-amber-500",
-        gradientTo: "to-orange-600",
-    },
-    {
-        name: "Joyce Nyamaidu",
-        role: "Business Development Manager",
-        linkedIn: "https://www.linkedin.com/in/joyce-ndamaiyu-715a02a1/",
-        initials: "JN",
-        gradientFrom: "from-cyan-500",
-        gradientTo: "to-blue-600",
-    },
-];
+const team = [
+  {
+    initials: "JM",
+    name: "Joslyn Mbae",
+    role: "Head — HR Projects",
+    color: "from-violet-500 to-violet-700",
+    linkedin: "https://www.linkedin.com/in/joslyn-mbae-5b6852b0/",
+  },
+  {
+    initials: "FN",
+    name: "Fredrick Nyambedha",
+    role: "HR Project Manager",
+    color: "from-amber-500 to-amber-700",
+    linkedin: null,
+  },
+  {
+    initials: "JN",
+    name: "Joyce Nyamaidu",
+    role: "Business Dev Manager",
+    color: "from-cyan-500 to-cyan-700",
+    linkedin: "https://www.linkedin.com/in/joyce-ndamaiyu-715a02a1/",
+  },
+]
 
 export function OurTeam() {
-    return (
-        <section className="py-12 px-4 md:px-8">
-            <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold font-display text-foreground mb-4">
-                    Our Team
-                </h2>
+  return (
+    <section className="py-16 px-4 md:px-8 bg-muted/30">
+
+      {/* Header */}
+      <p className="text-xs font-semibold tracking-widest uppercase text-blue-600 mb-2">
+        The crew
+      </p>
+      <h2 className="text-3xl font-bold font-display text-foreground mb-3">
+        Meet the Team
+      </h2>
+      <p className="text-muted-foreground mb-10 max-w-2xl">
+        The people doing the work every day, making sure every client and candidate gets the best experience.
+      </p>
+
+      {/* Team Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {team.map((member) => (
+          <div
+            key={member.name}
+            className="group bg-background rounded-xl border border-border p-6 flex flex-col items-center text-center hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+          >
+            {/* Avatar */}
+            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center text-white font-bold text-xl mb-4`}>
+              {member.initials}
             </div>
 
-            <div className="max-w-6xl mx-auto">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                    {teamMembers.map((member, index) => {
-                        const isLastInRow = (index + 1) % 4 === 0;
-                        const isLastTwoInRow = (index + 1) % 2 === 0;
+            {/* Info */}
+            <h3 className="font-semibold text-foreground group-hover:text-blue-600 transition-colors duration-200 mb-1">
+              {member.name}
+            </h3>
+            <p className="text-xs text-blue-600 font-medium mb-3">
+              {member.role}
+            </p>
 
-                        return (
-                            <div
-                                key={member.name}
-                                className={`
-                                    p-6 flex flex-col items-center text-center group
-                                    border-b border-border lg:border-b-0
-                                    ${!isLastTwoInRow ? 'sm:border-r' : ''}
-                                    ${!isLastInRow ? 'lg:border-r' : ''}
-                                    last:border-b-0
-                                `}
-                            >
-                                {/* Profile Avatar with Initials and LinkedIn Overlay */}
-                                <div className="relative mb-4">
-                                    <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${member.gradientFrom} ${member.gradientTo} flex items-center justify-center shadow-md transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg`}>
-                                        <span className="text-xl font-bold text-white">{member.initials}</span>
-                                    </div>
-                                    {/* LinkedIn Overlay on Hover */}
-                                    {member.linkedIn && (
-                                        <a
-                                            href={member.linkedIn}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="absolute inset-0 w-16 h-16 rounded-full bg-blue-600/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                            aria-label={`${member.name}'s LinkedIn profile`}
-                                        >
-                                            <Linkedin className="w-7 h-7 text-white" />
-                                        </a>
-                                    )}
-                                </div>
+            {/* LinkedIn */}
+            {member.linkedin && (
+              <Link
+                href={member.linkedin}
+                target="_blank"
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-blue-600 transition-colors duration-200 border border-border rounded-full px-3 py-1"
+              >
+                <Linkedin className="w-3 h-3" />
+                LinkedIn
+              </Link>
+            )}
+          </div>
+        ))}
+      </div>
 
-                                <div className="flex items-center gap-2 mb-1">
-                                    <h3 className="text-lg font-semibold text-foreground group-hover:text-blue-600 transition-colors duration-300">
-                                        {member.name}
-                                    </h3>
-                                    {member.linkedIn && (
-                                        <a
-                                            href={member.linkedIn}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-blue-600 hover:text-blue-700 transition-colors lg:hidden"
-                                            aria-label={`${member.name}'s LinkedIn profile`}
-                                        >
-                                            <Linkedin size={18} />
-                                        </a>
-                                    )}
-                                </div>
-                                <p className="text-blue-600 text-sm">{member.role}</p>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-        </section>
-    );
+    </section>
+  )
 }
