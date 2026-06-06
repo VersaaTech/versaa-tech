@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import type * as LType from 'leaflet'
 
-// TypeScript interfaces for GeoJSON structure
 interface GeoJSONProperties {
     NAME?: string
     name?: string
@@ -31,65 +30,65 @@ interface ProcessCountriesResult {
     regularFeatures: GeoJSONFeature[]
 }
 
-// Define our target countries for each region
+// ✅ UPDATED: Full Africa, Middle East, India, USA
 const targetRegions = {
-    EastAfrica: [
-        'Burundi', 'Comoros', 'Djibouti', 'Ethiopia', 'Eritrea', 'Kenya', 
-        'Rwanda', 'Seychelles', 'Somalia', 'South Sudan', 'Sudan', 
-        'Tanzania', 'Uganda'
+    Africa: [
+        'Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina Faso', 'Burundi',
+        'Cameroon', 'Cape Verde', 'Central African Republic', 'Chad', 'Comoros',
+        'Democratic Republic of the Congo', 'Republic of Congo', 'Djibouti',
+        'Egypt', 'Equatorial Guinea', 'Eritrea', 'Eswatini', 'Ethiopia',
+        'Gabon', 'Gambia', 'Ghana', 'Guinea', 'Guinea-Bissau', 'Ivory Coast',
+        'Kenya', 'Lesotho', 'Liberia', 'Libya', 'Madagascar', 'Malawi', 'Mali',
+        'Mauritania', 'Mauritius', 'Morocco', 'Mozambique', 'Namibia', 'Niger',
+        'Nigeria', 'Rwanda', 'Senegal', 'Seychelles', 'Sierra Leone', 'Somalia',
+        'South Africa', 'South Sudan', 'Sudan', 'Tanzania', 'Togo', 'Tunisia',
+        'Uganda', 'Zambia', 'Zimbabwe'
     ],
     MiddleEast: [
-        'Turkey', 'Cyprus', 'Israel', 'Jordan', 'Egypt', 'Saudi Arabia', 
-        'Kuwait', 'Oman', 'Bahrain', 'Qatar', 'United Arab Emirates'
+        'Israel', 'Jordan', 'Saudi Arabia', 'Kuwait', 'Oman',
+        'Bahrain', 'Qatar', 'United Arab Emirates', 'Iraq', 'Lebanon',
+        'Syria', 'Yemen'
     ],
+    India: ['India'],
     USA: ['United States of America', 'United States'],
-    Mexico: ['Mexico']
 }
 
-// Function to determine which region a country belongs to
 const getCountryRegion = (countryName: string): string | null => {
     if (!countryName) return null
-    
+
     const normalizedCountryName = countryName.toLowerCase().trim()
-    
+
     for (const [region, countries] of Object.entries(targetRegions)) {
         if (countries.some(country => {
             const normalizedTarget = country.toLowerCase().trim()
-            
-            // Exact match first
+
             if (normalizedCountryName === normalizedTarget) {
                 return true
             }
-            
-            // Handle common variations
+
             if (normalizedTarget === 'united states of america' || normalizedTarget === 'united states') {
-                return normalizedCountryName === 'united states of america' || 
-                       normalizedCountryName === 'united states' ||
-                       normalizedCountryName === 'usa'
+                return normalizedCountryName === 'united states of america' ||
+                    normalizedCountryName === 'united states' ||
+                    normalizedCountryName === 'usa'
             }
-            
+
             if (normalizedTarget === 'united arab emirates' || normalizedTarget === 'uae') {
-                return normalizedCountryName === 'united arab emirates' || 
-                       normalizedCountryName === 'uae'
+                return normalizedCountryName === 'united arab emirates' ||
+                    normalizedCountryName === 'uae'
             }
-            
-            // Handle South Sudan specifically
+
             if (normalizedTarget === 'south sudan') {
                 return normalizedCountryName === 'south sudan'
             }
-            
-            // Handle Sudan (but not South Sudan)
+
             if (normalizedTarget === 'sudan') {
                 return normalizedCountryName === 'sudan' && !normalizedCountryName.includes('south')
             }
-            
-            // For other countries, only match if the country name exactly matches or 
-            // the GeoJSON name contains the full target country name as a word boundary
+
             const words = normalizedCountryName.split(/\s+/)
             const targetWords = normalizedTarget.split(/\s+/)
-            
-            // Check if all target words are found in the country name
-            return targetWords.every(targetWord => 
+
+            return targetWords.every(targetWord =>
                 words.some(word => word === targetWord)
             )
         })) {
@@ -99,7 +98,6 @@ const getCountryRegion = (countryName: string): string | null => {
     return null
 }
 
-// Style functions for different states
 const getDefaultStyle = () => ({
     fillColor: '#e5e7eb',
     weight: 1,
@@ -109,60 +107,55 @@ const getDefaultStyle = () => ({
 })
 
 const getHighlightedStyle = () => ({
-    fillColor: '#374151',  // gray-700
+    fillColor: '#374151',
     weight: 2,
     opacity: 1,
-    color: '#1f2937',      // gray-800
+    color: '#1f2937',
     fillOpacity: 0.5
 })
 
 const getHoverStyle = () => ({
-    fillColor: '#1f2937',  // gray-800
+    fillColor: '#1f2937',
     weight: 3,
     opacity: 1,
-    color: '#111827',      // gray-900
+    color: '#111827',
     fillOpacity: 0.7
 })
 
-// Performance-optimized processing function
 const processCountriesInChunks = async (
-    features: GeoJSONFeature[], 
+    features: GeoJSONFeature[],
     chunkSize: number = 50,
     onChunkProcessed?: (processedCount: number, totalCount: number) => void
 ): Promise<ProcessCountriesResult> => {
     const highlightedFeatures: GeoJSONFeature[] = []
     const regularFeatures: GeoJSONFeature[] = []
-    
+
     for (let i = 0; i < features.length; i += chunkSize) {
         const chunk = features.slice(i, i + chunkSize)
-        
-        // Process chunk asynchronously
+
         await new Promise<void>((resolve) => {
-            // Use requestAnimationFrame for smooth processing
             requestAnimationFrame(() => {
                 chunk.forEach(feature => {
                     const countryName = feature?.properties?.NAME || feature?.properties?.name || ''
                     const region = getCountryRegion(countryName)
-                    
+
                     if (region) {
                         highlightedFeatures.push(feature)
                     } else {
                         regularFeatures.push(feature)
                     }
                 })
-                
-                // Report progress
+
                 onChunkProcessed?.(Math.min(i + chunkSize, features.length), features.length)
                 resolve()
             })
         })
-        
-        // Small delay to prevent blocking the main thread
+
         if (i + chunkSize < features.length) {
             await new Promise(resolve => setTimeout(resolve, 1))
         }
     }
-    
+
     return { highlightedFeatures, regularFeatures }
 }
 
@@ -176,7 +169,6 @@ const LeafletMap = () => {
     const [loadingProgress, setLoadingProgress] = useState(0)
     const [loadingStage, setLoadingStage] = useState<'idle' | 'downloading' | 'processing' | 'rendering' | 'complete'>('idle')
 
-    // Intersection Observer for lazy loading
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -186,9 +178,7 @@ const LeafletMap = () => {
                     }
                 })
             },
-            {
-                rootMargin: '100px' // Start loading when map is 100px from viewport
-            }
+            { rootMargin: '100px' }
         )
 
         const currentMapRef = mapRef.current
@@ -203,7 +193,6 @@ const LeafletMap = () => {
         }
     }, [isMapVisible])
 
-    // Optimized GeoJSON loading function
     const loadCountryBoundaries = useCallback(async () => {
         const L = leafletRef.current
         if (!mapInstanceRef.current || !mapRef.current || !L) {
@@ -215,41 +204,33 @@ const LeafletMap = () => {
             setLoadingStage('downloading')
             setLoadingProgress(0)
 
-            console.log('Loading country boundaries...')
-
-            // Using fetch with streaming support for large files
             const response = await fetch('/world.geojson')
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`)
             }
 
-            // Stream the response for better memory usage
             const geoJsonData: GeoJSONData = await response.json()
-            console.log('GeoJSON data loaded successfully')
 
             setLoadingStage('processing')
             setLoadingProgress(25)
 
-            // Double-check map is still available
             if (!mapInstanceRef.current) {
                 console.warn('Map instance no longer available')
                 return
             }
 
-            // Process countries in chunks for better performance
             const { highlightedFeatures, regularFeatures } = await processCountriesInChunks(
                 geoJsonData.features,
-                30, // Smaller chunk size for smoother processing
+                30,
                 (processed, total) => {
-                    setLoadingProgress(25 + (processed / total) * 50) // 25-75% for processing
+                    setLoadingProgress(25 + (processed / total) * 50)
                 }
             )
 
             setLoadingStage('rendering')
             setLoadingProgress(75)
 
-            // Create separate layers for highlighted and regular countries for better performance
             const createCountryLayer = (features: GeoJSONFeature[], isHighlighted: boolean) => {
                 const featureCollection: GeoJSONData = {
                     type: 'FeatureCollection',
@@ -261,28 +242,24 @@ const LeafletMap = () => {
                         const countryName = feature?.properties?.NAME || feature?.properties?.name || 'Unknown'
                         const region = getCountryRegion(countryName)
 
-                        // Add popup with country information
                         layer.bindPopup(`
                             <div class="p-3">
                                 <h3 class="font-bold text-lg text-gray-800">${countryName}</h3>
                                 ${region ?
-                                    `<p class="text-blue-600 font-medium mt-1">Region: ${region.replace(/([A-Z])/g, ' $1').trim()}</p>` :
-                                    '<p class="text-gray-500 mt-1">Not in our active regions</p>'
-                                }
+                                `<p class="text-blue-600 font-medium mt-1">Region: ${region.replace(/([A-Z])/g, ' $1').trim()}</p>` :
+                                '<p class="text-gray-500 mt-1">Not in our active regions</p>'
+                            }
                             </div>
                         `, {
                             closeButton: true,
                             className: 'custom-popup'
                         })
 
-                        // Add interactive effects only for highlighted countries
                         if (isHighlighted && region) {
                             layer.on({
                                 mouseover: (e) => {
                                     const targetLayer = e.target as LType.Path
                                     targetLayer.setStyle(getHoverStyle())
-
-                                    // Bring to front for better visibility
                                     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                                         targetLayer.bringToFront()
                                     }
@@ -306,26 +283,22 @@ const LeafletMap = () => {
                 })
             }
 
-            // Add regular countries first (they'll be in the background)
             const regularLayer = createCountryLayer(regularFeatures, false)
             const highlightedLayer = createCountryLayer(highlightedFeatures, true)
 
-            // Add layers to map with staggered rendering for smoother experience
             if (mapInstanceRef.current) {
                 regularLayer.addTo(mapInstanceRef.current)
 
-                // Small delay before adding highlighted countries for smoother rendering
                 setTimeout(() => {
                     if (mapInstanceRef.current) {
                         highlightedLayer.addTo(mapInstanceRef.current)
-                        geoJsonLayerRef.current = highlightedLayer // Store reference to highlighted layer
+                        geoJsonLayerRef.current = highlightedLayer
                     }
                 }, 50)
             }
 
             setLoadingProgress(90)
 
-            // Calculate bounds for highlighted regions and fit map
             const calculateBoundsAsync = async () => {
                 const highlightedBounds = L.latLngBounds([])
                 let hasHighlightedCountries = false
@@ -340,7 +313,6 @@ const LeafletMap = () => {
                             }
                         })
 
-                        // Fit map to show all highlighted regions
                         if (hasHighlightedCountries && highlightedBounds.isValid() && mapInstanceRef.current) {
                             setTimeout(() => {
                                 mapInstanceRef.current?.fitBounds(highlightedBounds, {
@@ -360,18 +332,14 @@ const LeafletMap = () => {
             setLoadingProgress(100)
             setLoadingStage('complete')
 
-            // Hide loading indicator after a short delay
             setTimeout(() => {
                 setLoadingStage('idle')
             }, 1000)
-
-            console.log('Country boundaries loaded and styled successfully')
 
         } catch (error) {
             console.error('Error loading country boundaries:', error)
             setLoadingStage('idle')
 
-            // Show error message on map
             const L = leafletRef.current
             if (mapInstanceRef.current && L) {
                 L.popup()
@@ -390,7 +358,6 @@ const LeafletMap = () => {
     useEffect(() => {
         if (!mapRef.current || mapInstanceRef.current || !isMapVisible) return
 
-        // Load Leaflet CSS dynamically when map becomes visible
         const loadLeafletCSS = () => {
             if (!document.querySelector('link[href*="leaflet.css"]')) {
                 const link = document.createElement('link')
@@ -403,7 +370,6 @@ const LeafletMap = () => {
 
         loadLeafletCSS()
 
-        // Add custom CSS for better styling
         const style = document.createElement('style')
         style.textContent = `
             .leaflet-container {
@@ -446,7 +412,6 @@ const LeafletMap = () => {
                 border-radius: 4px !important;
                 font-size: 10px !important;
             }
-            /* Optimize tile loading */
             .leaflet-tile {
                 transition: opacity 0.2s;
             }
@@ -455,21 +420,18 @@ const LeafletMap = () => {
             }
         `
 
-        // Safely append style to document head with null check
         if (typeof document !== 'undefined' && document.head) {
             document.head.appendChild(style)
         }
 
-        // Dynamically import Leaflet for better bundle optimization
         import('leaflet').then((L) => {
             if (!mapRef.current || mapInstanceRef.current) return
 
-            // Store reference to Leaflet
             leafletRef.current = L.default
 
-            // Initialize map only when visible
+            // ✅ UPDATED: Better center and zoom to show all 4 regions
             const map = L.default.map(mapRef.current, {
-                center: [10, 0],
+                center: [20, 40],
                 zoom: 2,
                 minZoom: 2,
                 maxZoom: 8,
@@ -478,29 +440,20 @@ const LeafletMap = () => {
                 doubleClickZoom: true,
                 dragging: true,
                 touchZoom: true,
-                // Optimize rendering
                 preferCanvas: true,
                 renderer: L.default.canvas({ padding: 0.5 })
             })
 
             mapInstanceRef.current = map
 
-            // Add tile layer with lazy loading optimizations
             const tileLayer = L.default.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 maxZoom: 8,
                 className: 'map-tiles',
-                // Performance optimizations
-                keepBuffer: 2, // Reduce tile buffer to minimize offscreen loading
-                updateWhenZooming: false, // Don't update during zoom animation
-                updateWhenIdle: true, // Only update when map is idle
-                // Add loading attribute for better performance
+                keepBuffer: 2,
+                updateWhenZooming: false,
+                updateWhenIdle: true,
                 crossOrigin: 'anonymous'
-            })
-
-            // Add custom loading optimization
-            tileLayer.on('loading', () => {
-                // Optional: Add loading indicator
             })
 
             tileLayer.on('load', () => {
@@ -509,15 +462,12 @@ const LeafletMap = () => {
 
             tileLayer.addTo(map)
 
-            // Load the country boundaries after map is ready
             map.whenReady(() => {
                 loadCountryBoundaries()
             })
         })
 
-        // Cleanup function
         return () => {
-            // Safely remove style from document head with null checks
             if (typeof document !== 'undefined' && document.head && style && document.head.contains(style)) {
                 document.head.removeChild(style)
             }
@@ -530,12 +480,11 @@ const LeafletMap = () => {
 
     return (
         <div className="w-full">
-            <div 
-                ref={mapRef} 
+            <div
+                ref={mapRef}
                 className="w-full h-[400px] md:h-[500px] rounded-lg shadow-sm border border-gray-200 relative"
                 style={{ background: '#f8fafc', minHeight: '400px' }}
             >
-                {/* Loading placeholder */}
                 {!isMapVisible && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
                         <div className="text-center">
@@ -544,8 +493,7 @@ const LeafletMap = () => {
                         </div>
                     </div>
                 )}
-                
-                {/* Show loading indicator while tiles are loading */}
+
                 {isMapVisible && !isInitialized && (
                     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md z-[1000]">
                         <div className="flex items-center space-x-2">
@@ -555,7 +503,6 @@ const LeafletMap = () => {
                     </div>
                 )}
 
-                {/* Enhanced loading indicator for GeoJSON processing */}
                 {loadingStage !== 'idle' && loadingStage !== 'complete' && (
                     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-lg z-[1000] min-w-[200px]">
                         <div className="text-center">
@@ -578,8 +525,7 @@ const LeafletMap = () => {
                     </div>
                 )}
             </div>
-            
-            {/* Legend and instructions */}
+
             <div className="mt-4 text-center text-sm text-gray-600">
                 <div className="flex items-center justify-center space-x-4 mb-2">
                     <div className="flex items-center space-x-2">
@@ -599,4 +545,4 @@ const LeafletMap = () => {
     )
 }
 
-export default LeafletMap 
+export default LeafletMap
