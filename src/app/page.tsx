@@ -30,9 +30,9 @@ export default function Home() {
         </section>
         <section id="about" className={sectionSpacing}>
           <About />
-          <section id="certifications" className={sectionSpacing}>
+          {/* <section id="certifications" className={sectionSpacing}>
             <Certifications />
-          </section>
+          </section> */}
           <section id="about-leadership" className={sectionSpacing}>
             <Team />
           </section>
