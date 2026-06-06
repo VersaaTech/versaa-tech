@@ -15,7 +15,7 @@ export default function ContactPage() {
           Let&apos;s Have a Conversation
         </h2>
         <p className="text-muted-foreground mb-10 max-w-2xl">
-          Whether you&apos;re looking for your next role or building your next team — we&apos;re here to help.
+          Whether you&apos;re looking for your next role or building your next team &mdash; we&apos;re here to help.
         </p>
 
         {/* Top Row — Role Selector + Contact Info */}
@@ -116,11 +116,12 @@ export default function ContactPage() {
           <Clock className="w-4 h-4 text-blue-600 flex-shrink-0" />
           <p className="text-sm text-muted-foreground">
             <span className="font-semibold text-foreground">Business Hours: </span>
-            Monday – Friday: 8AM – 5PM &nbsp;|&nbsp; Saturday: 8AM – 1PM
+            Monday &ndash; Friday: 8AM &ndash; 5PM &nbsp;|&nbsp; Saturday: 8AM &ndash; 1PM
           </p>
         </div>
 
       </div>
     </section>
   )
+}
 }
