@@ -4,7 +4,6 @@ import "./globals.css"
 import { Navigation } from "@/components/Navigation"
 import { Footer } from "@/components/Footer"
 import ScrollToTopButton from "@/components/ScrollToTopButton"
-// import { ChatButton } from "@/components/chat/ChatButton"
 import SessionProvider from "@/components/SessionProvider"
 import LazyToaster from "@/components/LazyToaster"
 import { JsonLd } from "@/components/JsonLd"
@@ -76,17 +75,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Structured Data - Organization and WebSite Schema */}
         <JsonLd data={[organizationSchema, websiteSchema]} />
-
-        {/* Preconnect for Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* Resource hints for performance */}
         <link rel="dns-prefetch" href="https://unpkg.com" />
-
-        {/* Favicon and manifest */}
         <link rel="icon" href="/favicons/favicon-16x16.png" sizes="16x16" type="image/png" />
         <link rel="icon" href="/favicons/favicon-32x32.png" sizes="32x32" type="image/png" />
         <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180" />
@@ -94,9 +86,9 @@ export default function RootLayout({
         <link rel="icon" href="/favicons/android-chrome-512x512.png" sizes="512x512" type="image/png" />
         <link rel="manifest" href="/favicons/site.webmanifest" />
         <meta name="apple-mobile-web-app-title" content="Versaatech" />
-
-        {/* Performance optimization meta tags */}
         <meta httpEquiv="x-dns-prefetch-control" content="on" />
+        {/* Tidio Chat Widget */}
+        <script src="//code.tidio.co/acgy5j3eggqgdp7l3bfazcsjihuh0ogo.js" async></script>
       </head>
       <body className={`${inter.variable} ${jakarta.variable} font-body`} suppressHydrationWarning>
         <SessionProvider session={null}>
@@ -104,7 +96,6 @@ export default function RootLayout({
           {children}
           <Footer />
           <ScrollToTopButton />
-          {/* <ChatButton /> */}
           <LazyToaster />
         </SessionProvider>
       </body>
