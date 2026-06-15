@@ -1,125 +1,112 @@
-import { MapPin, Phone, Clock, Mail } from 'lucide-react'
+import { MapPin, Phone, Clock } from 'lucide-react'
 import { RoleSelector } from './RoleSelector'
 import { ContactFormsDialog } from './ContactFormsDialog'
 
-const businessHours = "Monday - Friday: 8AM - 5PM | Saturday: 8AM - 1PM"
-
 export default function ContactPage() {
-  return (
-    <section className="py-16 px-4 md:px-8 bg-background">
-      <div className="max-w-6xl mx-auto">
+    return (
+        <section className="py-12 bg-background">
+            <div className="px-4 md:px-8">
+                <div className="max-w-6xl mx-auto">
+                    <h1 className="text-3xl font-bold font-display text-center mb-16 text-foreground">
+                        Let&apos;s Have a Conversation...
+                    </h1>
 
-        <p className="text-xs font-semibold tracking-widest uppercase text-blue-600 mb-2">
-          Get in touch
-        </p>
-        <h2 className="text-3xl font-bold font-display text-foreground mb-3">
-          {"Let's Have a Conversation"}
-        </h2>
-        <p className="text-muted-foreground mb-10 max-w-2xl">
-          {"Whether you're looking for your next role or building your next team - we're here to help."}
-        </p>
+                    {/* Contact Information Grid - 2x3 Layout */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                        {/* Get in Touch Section */}
+                        <div className="p-6 border-b border-border md:border-r">
+                            <RoleSelector />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                            <p className="text-sm text-muted-foreground text-center">
+                                Prefer form submission?{' '}
+                                <ContactFormsDialog />
+                            </p>
+                        </div>
 
-          <div className="lg:col-span-1 bg-background rounded-xl border border-border p-6 flex flex-col gap-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-lg">
-                {"👤"}
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Select Your Role</h3>
-                <p className="text-xs text-muted-foreground">To get started</p>
-              </div>
+                        {/* Contact Details */}
+                        <div className="p-6 border-b border-border lg:border-r">
+                            <div className="flex items-center gap-3 mb-4">
+                                <Phone className="h-6 w-6 text-blue-600" />
+                                <h2 className="text-xl font-bold text-foreground">Contact</h2>
+                            </div>
+                            <div className="space-y-3">
+                                <div>
+                                    <p className="text-sm text-muted-foreground mb-1">Email</p>
+                                    <a
+                                        href="mailto:info@versaatech.com"
+                                        className="text-blue-600 hover:text-blue-700 transition-colors font-medium"
+                                    >
+                                        info@versaatech.com
+                                    </a>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-muted-foreground mb-1">Phone</p>
+                                    <a
+                                        href="tel:+254781126819"
+                                        className="text-blue-600 hover:text-blue-700 transition-colors font-medium"
+                                    >
+                                        +254 781 126 819
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Kenya Office */}
+                        <div className="p-6 border-b border-border md:border-r lg:border-r-0">
+                            <div className="flex items-center gap-3 mb-4">
+                                <MapPin className="h-6 w-6 text-blue-600" />
+                                <h2 className="text-xl font-bold text-foreground">Kenya Office</h2>
+                            </div>
+                            <div className="text-muted-foreground">
+                                <a
+                                    href="https://maps.app.goo.gl/vGGmdSy6AnNkeGxGA"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-blue-600 transition-colors"
+                                >
+                                    <p>The Mirage, Tower 2</p>
+                                    <p>Floor M1, Unit 7</p>
+                                    <p>Nairobi, Kenya</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Dubai Office */}
+                        <div className="p-6 border-b md:border-b-0 border-border md:border-r">
+                            <div className="flex items-center gap-3 mb-4">
+                                <MapPin className="h-6 w-6 text-blue-600" />
+                                <h2 className="text-xl font-bold text-foreground">Dubai Office</h2>
+                            </div>
+                            <div className="text-muted-foreground">
+                                <a
+                                    href="https://maps.app.goo.gl/mqRjPrPCXqfYwNWx5"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-blue-600 transition-colors"
+                                >
+                                    <p>Meydan Grandstand, 6th Floor</p>
+                                    <p>Meydan Road, Nad Al Sheba</p>
+                                    <p>Dubai, U.A.E</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Business Hours */}
+                        <div className="p-6 border-b md:border-b-0 border-border lg:border-r">
+                            <div className="flex items-center gap-3 mb-4">
+                                <Clock className="h-6 w-6 text-blue-600" />
+                                <h2 className="text-xl font-bold text-foreground">Business Hours</h2>
+                            </div>
+                            <div className="text-muted-foreground font-medium">
+                                <p>Monday - Friday: 8AM - 5PM</p>
+                                <p>Saturday: 8AM - 1PM</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
-            <RoleSelector />
-            <p className="text-xs text-muted-foreground text-center">
-              {"Prefer form submission? "}
-              <ContactFormsDialog />
-            </p>
-          </div>
-
-          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-            <div className="bg-muted/30 rounded-xl border border-border p-5 flex gap-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <Mail className="w-4 h-4 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-1 font-medium">Email</p>
-                
-                  href="mailto:info@versaatech.com"
-                  className="text-sm font-semibold text-blue-600 hover:underline"
-                >
-                  info@versaatech.com
-                </a>
-              </div>
-            </div>
-
-            <div className="bg-muted/30 rounded-xl border border-border p-5 flex gap-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <Phone className="w-4 h-4 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-1 font-medium">Phone</p>
-                
-                  href="tel:+254781126819"
-                  className="text-sm font-semibold text-blue-600 hover:underline"
-                >
-                  +254 781 126 819
-                </a>
-              </div>
-            </div>
-
-            <div className="bg-muted/30 rounded-xl border border-border p-5 flex gap-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-4 h-4 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-1 font-medium">Nairobi Office</p>
-                
-                  href="https://maps.app.goo.gl/vGGmdSy6AnNkeGxGA"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-foreground hover:text-blue-600 transition-colors leading-relaxed"
-                >
-                  The Mirage, Tower 2
-                  <br />
-                  Floor M1, Unit 7, Nairobi
-                </a>
-              </div>
-            </div>
-
-            <div className="bg-muted/30 rounded-xl border border-border p-5 flex gap-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-4 h-4 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-1 font-medium">Dubai Office</p>
-                
-                  href="https://maps.app.goo.gl/mqRjPrPCXqfYwNWx5"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-foreground hover:text-blue-600 transition-colors leading-relaxed"
-                >
-                  Meydan Grandstand, 6th Floor
-                  <br />
-                  Meydan Road, Dubai U.A.E
-                </a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 bg-muted/30 rounded-xl border border-border px-5 py-4">
-          <Clock className="w-4 h-4 text-blue-600 flex-shrink-0" />
-          <p className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">Business Hours: </span>
-            {businessHours}
-          </p>
-        </div>
-
-      </div>
-    </section>
-  )
+        </section>
+    )
 }
