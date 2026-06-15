@@ -87,8 +87,6 @@ export default function RootLayout({
         <link rel="manifest" href="/favicons/site.webmanifest" />
         <meta name="apple-mobile-web-app-title" content="Versaatech" />
         <meta httpEquiv="x-dns-prefetch-control" content="on" />
-        {/* Tidio Chat Widget */}
-        <script src="//code.tidio.co/acgy5j3eggqgdp7l3bfazcsjihuh0ogo.js" async></script>
       </head>
       <body className={`${inter.variable} ${jakarta.variable} font-body`} suppressHydrationWarning>
         <SessionProvider session={null}>
@@ -98,6 +96,7 @@ export default function RootLayout({
           <ScrollToTopButton />
           <LazyToaster />
         </SessionProvider>
+        <script src="//code.tidio.co/acgy5j3eggqgdp7l3bfazcsjihuh0ogo.js" async></script>
       </body>
     </html>
   )
